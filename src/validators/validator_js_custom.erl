@@ -7,7 +7,7 @@
 -include_lib ("wf.hrl").
 -compile(export_all).
 
-render_action(Record) -> 
+render_action(Record) ->
     Text = wf:js_escape(Record#js_custom.text),
     Function = Record#js_custom.function,
     Args = Record#js_custom.args,

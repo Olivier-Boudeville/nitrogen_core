@@ -12,4 +12,3 @@
 -spec render_action(#make_writable{}) -> actions().
 render_action(#make_writable{target=Target}) ->
 	#script{script=wf:f(<<"objs('~s').prop('readonly',false);">>, [Target])}.
-

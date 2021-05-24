@@ -123,11 +123,11 @@ default of which for Nitrogen can be seen here:
 
 ```erlang
     {sasl, [
-        {sasl_error_logger, {file, "log/sasl-error.log"}},
-        {errlog_type, error},
-        {error_logger_mf_dir, "log/sasl"},      % Log directory
-        {error_logger_mf_maxbytes, 10485760},   % 10 MB max file size
-        {error_logger_mf_maxfiles, 5}           % 5 files max
+	{sasl_error_logger, {file, "log/sasl-error.log"}},
+	{errlog_type, error},
+	{error_logger_mf_dir, "log/sasl"},      % Log directory
+	{error_logger_mf_maxbytes, 10485760},   % 10 MB max file size
+	{error_logger_mf_maxfiles, 5}           % 5 files max
     ]}
 
 ```
@@ -204,8 +204,8 @@ default of which for Nitrogen can be seen here:
     You should have the following in your config:
 
     ```erlang
-        {document_root, "priv/static"},
-        {static_paths, "favicon.ico", "js/", "css/"},
+	{document_root, "priv/static"},
+	{static_paths, "favicon.ico", "js/", "css/"},
 
     ```
 
@@ -384,30 +384,30 @@ Here's the complete text of the default plugins.config:
   pid        /var/run/nginx.pid;
 
   events {
-              worker_connections  4096;
+	      worker_connections  4096;
   }
 
   http {
-          include       /etc/nginx/mime.types;
-          default_type  application/octet-stream;
+	  include       /etc/nginx/mime.types;
+	  default_type  application/octet-stream;
 
-          access_log      /var/log/nginx/access.log;
+	  access_log      /var/log/nginx/access.log;
 
-          sendfile        on;
+	  sendfile        on;
 
-          keepalive_timeout  10;
-          tcp_nodelay        on;
+	  keepalive_timeout  10;
+	  tcp_nodelay        on;
 
-          gzip  on;
+	  gzip  on;
 
-          proxy_set_header X-Forwarded-Host $host;
-          proxy_set_header X-Forwarded-Server $host;
-          proxy_set_header Host $host;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	  proxy_set_header X-Forwarded-Host $host;
+	  proxy_set_header X-Forwarded-Server $host;
+	  proxy_set_header Host $host;
+	  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
 
-          include /etc/nginx/conf.d/*.conf;
-          include /etc/nginx/sites-enabled/*;
+	  include /etc/nginx/conf.d/*.conf;
+	  include /etc/nginx/sites-enabled/*;
   }
 
 ```
@@ -416,12 +416,12 @@ Here's the complete text of the default plugins.config:
 
 ```php
   server {
-          listen   80;
-          server_name  mysite.com www.mysite.com;
-          access_log  /var/log/nginx/mysite.com.access.log;
-          location / {
-                  proxy_pass http://127.0.0.1:8000;
-          }
+	  listen   80;
+	  server_name  mysite.com www.mysite.com;
+	  access_log  /var/log/nginx/mysite.com.access.log;
+	  location / {
+		  proxy_pass http://127.0.0.1:8000;
+	  }
   }
 
 ```
@@ -434,30 +434,30 @@ Here's the complete text of the default plugins.config:
 ```php
   # My config for a site that I only want serving SSL content.
   server {
-          listen   80;
+	  listen   80;
 
-          server_name www.mysite.com, mysite.com;
-          access_log  /var/log/nginx/mysite.com.access.log;
+	  server_name www.mysite.com, mysite.com;
+	  access_log  /var/log/nginx/mysite.com.access.log;
 
     # rewrite all requests to be SSL
-          rewrite ^(.*) https://$host$1 permanent;
+	  rewrite ^(.*) https://$host$1 permanent;
   }
 
   server {
-          listen 443;
-          server_name mysite.com www.mysite.com
-          access_log /var/log/nginx/mysite.ssl.access.log;
+	  listen 443;
+	  server_name mysite.com www.mysite.com
+	  access_log /var/log/nginx/mysite.ssl.access.log;
 
-          ssl on;
+	  ssl on;
 
-          ssl_certificate ssl/mysite/mysite.com.crt;
-          ssl_certificate_key ssl/mysite/mysite.com.key;
-          ssl_client_certificate ssl/mysite/ca.crt;
+	  ssl_certificate ssl/mysite/mysite.com.crt;
+	  ssl_certificate_key ssl/mysite/mysite.com.key;
+	  ssl_client_certificate ssl/mysite/ca.crt;
 
-          location / {
-          # This installation is running on port 8021, as you can plainly see.
-            proxy_pass http://127.0.0.1:8000;
-          }
+	  location / {
+	  # This installation is running on port 8021, as you can plainly see.
+	    proxy_pass http://127.0.0.1:8000;
+	  }
   }
 
 ```

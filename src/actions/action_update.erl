@@ -8,21 +8,21 @@
 -include("wf.hrl").
 
 -export([
-        render_action/1,
-        update/2,
-        update/3,
-        replace/2,
-        replace/3,
-        insert_top/2,
-        insert_top/3,
-        insert_bottom/2,
-        insert_bottom/3,
-        insert_before/2,
-        insert_before/3,
-        insert_after/2,
-        insert_after/3,
-        remove/1,
-        remove/2
+	render_action/1,
+	update/2,
+	update/3,
+	replace/2,
+	replace/3,
+	insert_top/2,
+	insert_top/3,
+	insert_bottom/2,
+	insert_bottom/3,
+	insert_before/2,
+	insert_before/3,
+	insert_after/2,
+	insert_after/3,
+	remove/1,
+	remove/2
     ]).
 
 
@@ -38,15 +38,15 @@ render_action(#update{type=Type, anchor=Anchor, target=Target, elements=Elements
 
     % Turn the HTML into a Javascript statement that will update the right element.
     wf:f(<<"Nitrogen.$~s(\"~s\", \"~s\", \"~ts\");">>,
-        [Type, Anchor, Target, wf:js_escape(Html)]);
+	[Type, Anchor, Target, wf:js_escape(Html)]);
 
 %% Handle other actions (insert_before, insert_after, etc)
-%% This will convert any record that uses action_update as its module into an #update record, with the the 
+%% This will convert any record that uses action_update as its module into an #update record, with the the
 render_action(Record) ->
     render_action(setelement(1, Record, update)).
 
 
-update(Target, Elements) -> 
+update(Target, Elements) ->
     update(normal, Target, Elements).
 
 update(Priority, Target, Elements) ->
@@ -58,16 +58,16 @@ replace(Target, Elements) ->
 replace(Priority, Target, Elements) ->
     update(Priority, replace, Target, Elements).
 
-insert_top(Target, Elements) -> 
+insert_top(Target, Elements) ->
     insert_top(normal, Target, Elements).
 
-insert_top(Priority, Target, Elements) -> 
+insert_top(Priority, Target, Elements) ->
     update(Priority, insert_top, Target, Elements).
 
-insert_bottom(Target, Elements) -> 
+insert_bottom(Target, Elements) ->
     insert_bottom(normal, Target, Elements).
 
-insert_bottom(Priority, Target, Elements) -> 
+insert_bottom(Priority, Target, Elements) ->
     update(Priority, insert_bottom, Target, Elements).
 
 insert_before(Target, Elements) ->
@@ -93,10 +93,10 @@ remove(Priority, Target) ->
 update(Priority, Type, Target, Elements) ->
     Anchor = wf_context:anchor(),
     Action = #update {
-        type=Type,
-        anchor  = Anchor, 
-        target  = wf:coalesce([Target, Anchor]), 
-        elements=Elements		
+	type=Type,
+	anchor  = Anchor,
+	target  = wf:coalesce([Target, Anchor]),
+	elements=Elements
     },
 
     wf_context:add_action(Priority, [Action]),

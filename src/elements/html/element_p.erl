@@ -14,16 +14,15 @@
 reflect() -> record_info(fields, p).
 
 -spec render_element(#p{}) -> body().
-render_element(Record) -> 
+render_element(Record) ->
     Body = [
-        wf:html_encode(Record#p.text, Record#p.html_encode),
-        Record#p.body
+	wf:html_encode(Record#p.text, Record#p.html_encode),
+	Record#p.body
     ],
     wf_tags:emit_tag(p, Body, [
-        {id, Record#p.html_id},
-        {class, [p, Record#p.class]},
-        {title, Record#p.title},
-        {style, Record#p.style},
-        {data_fields, Record#p.data_fields}
+	{id, Record#p.html_id},
+	{class, [p, Record#p.class]},
+	{title, Record#p.title},
+	{style, Record#p.style},
+	{data_fields, Record#p.data_fields}
     ]).
-

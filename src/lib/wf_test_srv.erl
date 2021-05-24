@@ -34,19 +34,19 @@
 main() ->
     Trigger = wf:to_integer(wf:q(id)),
     case is_trigger_valid(Trigger) of
-        false ->
-            "Invalid Test Launch Path";
-        true ->
-            FirstTestPath = next_test_path(),
-            wf:redirect(FirstTestPath)
+	false ->
+	    "Invalid Test Launch Path";
+	true ->
+	    FirstTestPath = next_test_path(),
+	    wf:redirect(FirstTestPath)
     end.
 
 start(AppName) when is_atom(AppName) ->
     {ok, TestPaths} = application:get_env(AppName, tests),
     %% when we remove support for R15, we can change this to get_env/3
     Opts = case application:get_env(AppName, test_options) of
-        undefined -> [];
-        {ok, Op} -> Op
+	undefined -> [];
+	{ok, Op} -> Op
     end,
     start(undefined, TestPaths, Opts).
 
@@ -55,8 +55,8 @@ start(BrowserExec, TestPaths) ->
 
 start(BrowserExec, TestPaths, Opts) ->
     BaseUrl = case proplists:get_value(base_url, Opts) of
-        undefined -> "http://127.0.0.1:8000";
-        Base -> Base
+	undefined -> "http://127.0.0.1:8000";
+	Base -> Base
     end,
     Trigger = ?WF_UNIQUE,
     LaunchUrl = wf:f(BaseUrl ++ "/wf_test_srv?id=~p", [Trigger]),
@@ -87,14 +87,14 @@ set_autoadvance(TF) when is_boolean(TF) ->
 
 next_test_path() ->
     case gen_server:call(?MODULE, next_test_path) of
-        {ok, Next} ->
-            Next;
-        autoadvance_disabled ->
-            %% autoadvance is disabled
-            autoadvance_disabled;
-        undefined ->
-            print_summary_and_close(),
-            done
+	{ok, Next} ->
+	    Next;
+	autoadvance_disabled ->
+	    %% autoadvance is disabled
+	    autoadvance_disabled;
+	undefined ->
+	    print_summary_and_close(),
+	    done
     end.
 
 print_summary_and_close() ->

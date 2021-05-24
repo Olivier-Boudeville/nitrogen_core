@@ -6,13 +6,11 @@
 -module (action_redirect).
 -include("wf.hrl").
 -export([
-        render_action/1,
-        redirect/1,
-        redirect_to_login/1,
-        redirect_to_login/2,
-        redirect_from_login/1,
-        login_redirect_url/1,
-        login_redirect_url/2
+	render_action/1,
+	redirect/1,
+	redirect_to_login/1,
+	redirect_to_login/2,
+	redirect_from_login/1
     ]).
 
 -spec render_action(#redirect{}) -> text().
@@ -24,7 +22,7 @@ render_action(#redirect{url=Url, login=Login}) ->
 redirect(Url) ->
     wf:wire(#redirect { url=Url }),
     wf:f("<script nonce=\"~s\">window.location=\"~ts\";</script>",
-         [wf_context:script_nonce(), wf:js_escape(Url)]).
+	 [wf_context:script_nonce(), wf:js_escape(Url)]).
 
 -spec redirect_url(Login :: boolean() | url(), Url :: url()) -> url().
 redirect_url(_Login=false, Url) ->
@@ -59,6 +57,6 @@ redirect_to_login(LoginUrl) ->
 redirect_from_login(DefaultUrl) ->
     PickledUrl = wf:q(x),
     case wf:depickle(PickledUrl) of
-        undefined -> redirect(DefaultUrl);
-        Other -> redirect(Other)
+	undefined -> redirect(DefaultUrl);
+	Other -> redirect(Other)
     end.

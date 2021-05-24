@@ -7,7 +7,7 @@
   edit in place.
 
   The user clicks on the label, and it is replaced with a textbox, an OK button, and a
-  Cancel button. 
+  Cancel button.
 
   If the user clicks OK, a callback is issued to the delegate module
   so that it can save the new text.
@@ -50,5 +50,3 @@
  *  [inplace element](./inplace.md)
 
  *  [textbox element](./textbox.md)
-
- 

@@ -25,30 +25,30 @@ render_element(Record) ->
     OptionsJs = options_to_js(Record#mermaid.options, Record#mermaid.diagram_options),
 
     Script0 = wf:f(<<"mermaid.mermaidAPI.initialize(~s);">>, [OptionsJs]),
-    
+
     wf:wire(#script{
-        dependency_js = <<"/nitrogen/mermaid.min.js">>,
-        script=Script0
+	dependency_js = <<"/nitrogen/mermaid.min.js">>,
+	script=Script0
     }),
 
     Script1 = wf:f("Nitrogen.$mermaid('~s', '~s');", [GraphID, wf:js_escape(Code)]),
 
     wf:wire(#script{
-        dependency_js = <<"/nitrogen/mermaid.min.js">>,
-        script=Script1
+	dependency_js = <<"/nitrogen/mermaid.min.js">>,
+	script=Script1
     }),
 
     Classid = wf_render_elements:normalize_id(GraphID),
 
     Panel = #panel {
-        html_id = Record#mermaid.html_id,
-        id = GraphID,
-        anchor = Record#mermaid.anchor,
-        class = [Classid, wf_mermaid, Record#mermaid.class],
-        title = Record#mermaid.title,
-        body = [],
-        data_fields=Record#mermaid.data_fields,
-        style = Record#mermaid.style
+	html_id = Record#mermaid.html_id,
+	id = GraphID,
+	anchor = Record#mermaid.anchor,
+	class = [Classid, wf_mermaid, Record#mermaid.class],
+	title = Record#mermaid.title,
+	body = [],
+	data_fields=Record#mermaid.data_fields,
+	style = Record#mermaid.style
     },
     element_panel:render_element(Panel).
 

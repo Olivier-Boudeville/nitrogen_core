@@ -12,21 +12,21 @@ The process registry handler is a simple key-value store specifically for
   synchronizes Nitrogen nodes' process registries together.
 
 ### Behavior Functions
- 
+
 ##### `init(Config, State)`
 
   Initialize the Process Registry handler
 
- *  /Return Value/ - `{ok, NewState}` 
+ *  /Return Value/ - `{ok, NewState}`
 
 ##### `finish(Config, State)`
 
   Clean up the Process Registry handler
 
  *  /Return Value/ - `{ok, NewState}`
-  
+
 ##### `get_pid(Key, Config, State)`
-  
+
   Returns a Pid from the provided `Key`.
 
  *  `Key` - Any erlang term to use as a key. For the session handler, Nitrogen
@@ -34,10 +34,10 @@ The process registry handler is a simple key-value store specifically for
       comet pool ID, or a timer Pid. The point is, `Key` can be just about
       anything.
 
- *  /Return Value/ - `{ok, Pid, NewState}`.  If `Key` is not found, then `Pid` will be `undefined`. 
+ *  /Return Value/ - `{ok, Pid, NewState}`.  If `Key` is not found, then `Pid` will be `undefined`.
 
 ##### `get_pid(Key, Function, Config, State)`
-  
+
   Returns a Pid from the provided `Key`.
 
  *  `Key` - Same as above.

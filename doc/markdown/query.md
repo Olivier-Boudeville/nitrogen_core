@@ -7,19 +7,19 @@
 The query handler controls how Nitrogen's `wf:q` and its siblings (`wf:qs`, `wf:mq`, `wf:mqs`) retrieves values from POST, GET, or other methods.
 
 ### Behavior Functions
- 
+
 ##### `init(Config, State)`
 
   Initialize the handler
 
- *  /Return Value/ - `{ok, NewState}` 
+ *  /Return Value/ - `{ok, NewState}`
 
 ##### `finish(Config, State)`
 
   Clean up the handler
 
  *  /Return Value/ - `{ok, NewState}`
-  
+
 ##### `get_value(Key, Config, State)`
 
   This function should define how a querystring (GET) or form (POST) value is
@@ -30,7 +30,7 @@ The query handler controls how Nitrogen's `wf:q` and its siblings (`wf:qs`, `wf:
 
  *  /Return Value/ - The value found for the provided `Key`.
 
- *  /Note:/ This will throw an error if more than one value is found for the 
+ *  /Note:/ This will throw an error if more than one value is found for the
     `Key`
 
 ##### `get_values(Key, Config, State)`
@@ -40,12 +40,12 @@ The query handler controls how Nitrogen's `wf:q` and its siblings (`wf:qs`, `wf:
 
  *  `Key` - The key to find
 
- *  /Return Value/ - Description of the return 
+ *  /Return Value/ - Description of the return
 
 ##### `get_params(Config, State)`
-  
+
  *  /Return Value/ - This function returns an Erlang
-  [proplist](http://www.erlang.org/doc/man/proplists.html) (a list of 
+  [proplist](http://www.erlang.org/doc/man/proplists.html) (a list of
   key-value pairs, ie `[{Key,Value},...]`) of all the request variables and
   their values.
 
@@ -87,9 +87,9 @@ finish(_Config, _State) ->
 %% Given a path, return the value that matches the path.
 get_value(Path, Config, State) ->
     case get_values(Path, Config, State) of
-        [] -> undefined;
-        [One] -> One;
-        _Many -> throw({?MODULE, too_many_matches, Path})
+	[] -> undefined;
+	[One] -> One;
+	_Many -> throw({?MODULE, too_many_matches, Path})
     end.
 
 get_values(Path, _Config, State) ->
@@ -100,9 +100,9 @@ get_values(Path, _Config, State) ->
 get_params(_Config, State) ->
     Params = State,
     F = fun({KeyPartsReversed, Value}) ->
-        KeyParts = lists:reverse(KeyPartsReversed),
-        Key = string:join(KeyParts, "."),
-        { Key, Value }
+	KeyParts = lists:reverse(KeyPartsReversed),
+	Key = string:join(KeyParts, "."),
+	{ Key, Value }
     end,
     lists:map(F, Params).
 
@@ -119,10 +119,10 @@ refine_params([], Params) ->
     [V || {_, V} <- Params];
 refine_params([H|T], Params) ->
     F = fun({Path, Value}, Acc) ->
-        case split_on(H, Path) of
-            {ok, RemainingPath} -> [{RemainingPath, Value}|Acc];
-            false -> Acc
-        end
+	case split_on(H, Path) of
+	    {ok, RemainingPath} -> [{RemainingPath, Value}|Acc];
+	    false -> Acc
+	end
     end,
     Params1 = lists:foldl(F, [], Params),
     refine_params(T, lists:reverse(Params1)).
@@ -142,8 +142,8 @@ normalize_path(Path) when ?IS_STRING(Path) ->
 %% Most tokens will start with "wfid_". Strip this out.
 strip_wfid(Path) ->
     case Path of
-        "wfid_" ++ S -> S;
-        S -> S
+	"wfid_" ++ S -> S;
+	S -> S
     end.
 
 

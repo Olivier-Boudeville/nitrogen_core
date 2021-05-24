@@ -14,21 +14,21 @@
 
 
 -callback init(         handler_config(),
-                        handler_state()) -> {ok, handler_state()}.
+			handler_state()) -> {ok, handler_state()}.
 -callback finish(       handler_config(),
-                        handler_state()) -> {ok, handler_state()}.
+			handler_state()) -> {ok, handler_state()}.
 -callback get_has_role( Role :: term(),
-                        handler_config(),
-                        handler_state()) -> IsInRole :: boolean().
+			handler_config(),
+			handler_state()) -> IsInRole :: boolean().
 -callback set_has_role( Role :: term(),
-                        IsInRole :: boolean(),
-                        handler_config(),
-                        handler_state()) -> {ok, handler_state()}.
+			IsInRole :: boolean(),
+			handler_config(),
+			handler_state()) -> {ok, handler_state()}.
 -callback get_roles(    handler_config(),
-                        handler_state()) -> [Role :: term()].
+			handler_state()) -> [Role :: term()].
 
 -callback clear_all(    handler_config(),
-                        handler_state()) -> {ok, handler_state()}.
+			handler_state()) -> {ok, handler_state()}.
 
 % get_has_role(Role, State) -> {ok, IsInRole, NewState}.
 % Returns true or false depending on whether the user is in the specified role.

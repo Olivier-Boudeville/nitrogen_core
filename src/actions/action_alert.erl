@@ -7,5 +7,5 @@
 -include ("wf.hrl").
 -compile(export_all).
 
-render_action(Record) -> 
-    wf:f("window.alert(\"~ts\");", [wf:js_escape(Record#alert.text)]).	
+render_action(Record) ->
+    wf:f("window.alert(\"~ts\");", [wf:js_escape(Record#alert.text)]).

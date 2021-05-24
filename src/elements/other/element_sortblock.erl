@@ -15,15 +15,15 @@
 reflect() -> record_info(fields, sortblock).
 
 -spec render_element(#sortblock{}) -> body().
-render_element(Record) -> 
+render_element(Record) ->
     % Get properties...
     Anchor = Record#sortblock.anchor,
     Tag = Record#sortblock.tag,
     Delegate = Record#sortblock.delegate,
     PostbackInfo = wf_event:serialize_event_context({Delegate, Tag}, Anchor, undefined, false, ?MODULE),
     Handle = case Record#sortblock.handle of
-        undefined -> "null";
-        Other -> wf:f("'.~s'", [Other])
+	undefined -> "null";
+	Other -> wf:f("'.~s'", [Other])
     end,
     ConnectWithGroups = groups_to_connect_with(Record#sortblock.connect_with_groups),
     GroupClasses = groups_to_classes(Record#sortblock.group),
@@ -31,20 +31,20 @@ render_element(Record) ->
     ForcePlaceholderSize = Record#sortblock.force_placeholder_size,
 
     % Emit the javascript...
-    Script = #script { 
-        script=wf:f("Nitrogen.$sortblock('~s', {handle: ~s, connectWith: [~s], placeholder: '~s', forcePlaceholderSize: ~s}, '~s');", [Anchor, Handle, ConnectWithGroups, Placeholder, ForcePlaceholderSize, PostbackInfo])
+    Script = #script {
+	script=wf:f("Nitrogen.$sortblock('~s', {handle: ~s, connectWith: [~s], placeholder: '~s', forcePlaceholderSize: ~s}, '~s');", [Anchor, Handle, ConnectWithGroups, Placeholder, ForcePlaceholderSize, PostbackInfo])
     },
     wf:wire(Script),
 
     element_panel:render_element(#panel {
-        html_id=Record#sortblock.html_id,
-        id=Record#sortblock.id,
-        anchor=Record#sortblock.anchor,
-        class=[sortblock, GroupClasses|Record#sortblock.class],
-        title=Record#sortblock.title,
-        style=Record#sortblock.style,
-        body=Record#sortblock.items,
-        data_fields=Record#sortblock.data_fields
+	html_id=Record#sortblock.html_id,
+	id=Record#sortblock.id,
+	anchor=Record#sortblock.anchor,
+	class=[sortblock, GroupClasses|Record#sortblock.class],
+	title=Record#sortblock.title,
+	style=Record#sortblock.style,
+	body=Record#sortblock.items,
+	data_fields=Record#sortblock.data_fields
     }).
 
 -spec event(any()) -> any().

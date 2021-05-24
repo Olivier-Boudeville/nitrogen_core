@@ -9,9 +9,9 @@
 
 render_action(Record) ->
     #jquery_effect {
-        type=toggle,
-        effect = Record#toggle.effect,
-        options = Record#toggle.options,
-        speed = Record#toggle.speed,
-        actions = Record#toggle.actions
+	type=toggle,
+	effect = Record#toggle.effect,
+	options = Record#toggle.options,
+	speed = Record#toggle.speed,
+	actions = Record#toggle.actions
     }.

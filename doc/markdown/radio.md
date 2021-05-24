@@ -46,7 +46,7 @@
   different for use with the RESTful elements, as all RESTful elements share the
   `html_name` attributes. If you're not sure, just use `name`)
 
-### See Also 
+### See Also
 
  *  [base](./element_base.md)
  *  [radiogroup](./radiogroup.md)

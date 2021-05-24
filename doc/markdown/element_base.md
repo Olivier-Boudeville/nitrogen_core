@@ -32,13 +32,13 @@
    * `title` (string) - Set the HTML `title` attribute of the element.
 
    * `style` (string) - Sets inline CSS style on the element.
-  
-   * `html_id` (atom or string) - Sets the HTML `id` attribute of the 
+
+   * `html_id` (atom or string) - Sets the HTML `id` attribute of the
     element.
 
    * `data_fields` (property list) - Sets a series of HTML `data-` fields in
     the element. For example, the following `#panel`:
-  
+
 ```erlang
   #panel{
     data_fields=[
@@ -48,9 +48,9 @@
   }
 
 ```
-  
+
     Would produce the following pseudo-HTML:
-  
+
 ```html
   <div data-ship="bounty" data-action="mutiny"></div>
 

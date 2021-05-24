@@ -8,22 +8,22 @@ This element produces a [jQuery Mobile Collapsible Content](http://api.jquerymob
 ### Usage
 
 ```erlang
-   #mobile_collapsible { 
+   #mobile_collapsible {
       collapsed=true,
       header_text="See my favorite movies",
       content_body=[
-         #list{body=[
-            #listitem{text="Big Trouble in Little China"},
-            #listitem{text="Dumb and Dumber"},
-            #listitem{text="Gladiator"}
-         ]}
+	 #list{body=[
+	    #listitem{text="Big Trouble in Little China"},
+	    #listitem{text="Dumb and Dumber"},
+	    #listitem{text="Gladiator"}
+	 ]}
       ]
    }
 
 ```
 
 ### Attributes
-   
+
    * `header_text` (string) - The header text of the collapsible.  This is
      the text that will be clicked on to expand or collapse the content
 
@@ -37,7 +37,7 @@ This element produces a [jQuery Mobile Collapsible Content](http://api.jquerymob
 
    * `content_theme` (atom) - Set the jQuery Mobile swatch letter for the
      content.
-   
+
    * `collapsed` (boolean) - Set to true to have the element start
      collapsed, false to start open. (default 'true')
 

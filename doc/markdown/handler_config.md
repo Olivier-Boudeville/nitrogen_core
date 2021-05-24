@@ -8,19 +8,19 @@
   is probably not something that's likely to get changed.
 
 ### Behavior Functions
- 
+
 ##### `init(Config, State)`
 
   Initialize the handler
 
- *  /Return Value/ - `{ok, NewState}` 
+ *  /Return Value/ - `{ok, NewState}`
 
 ##### `finish(Config, State)`
 
   Clean up the handler
 
  *  /Return Value/ - `{ok, NewState}`
-  
+
 ##### `get_value(Key, DefaultValue, Config, State)`
 
   Search the configuration for the key and return the value
@@ -64,19 +64,19 @@ finish(_Config, _State) ->
 
 get_value(Key, DefaultValue, Config, State) ->
     case get_values(Key, [DefaultValue], Config, State) of
-        [Value] ->
-            Value;
-        Values ->
-            error_logger:error_msg("Too many matching config values for key: ~p~n", [Key]),
-            throw({nitrogen_error, too_many_matching_values, Key, Values})
+	[Value] ->
+	    Value;
+	Values ->
+	    error_logger:error_msg("Too many matching config values for key: ~p~n", [Key]),
+	    throw({nitrogen_error, too_many_matching_values, Key, Values})
     end.
 
 get_values(Key, DefaultValue, _Config, _State) ->
     case application:get_env(nitrogen, Key) of
-        {ok, Value} ->
-            [Value];
-        undefined ->
-            DefaultValue
+	{ok, Value} ->
+	    [Value];
+	undefined ->
+	    DefaultValue
     end.
 
 ```

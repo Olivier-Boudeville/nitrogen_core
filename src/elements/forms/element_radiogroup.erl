@@ -14,7 +14,7 @@
 reflect() -> record_info(fields, radiogroup).
 
 -spec render_element(#radiogroup{}) -> body().
-render_element(Record) -> 
+render_element(Record) ->
     % Set the group to the current HtmlID...
     Anchor = Record#radiogroup.anchor,
 
@@ -24,19 +24,19 @@ render_element(Record) ->
 
     % Render the record...
     element_panel:render_element(#panel {
-        id=Record#radiogroup.id,
-        anchor=Record#radiogroup.anchor,
-        class=[radiogroup, Record#radiogroup.class],
-        title=Record#radiogroup.title,
-        style=Record#radiogroup.style,
-        data_fields=Record#radiogroup.data_fields,
-        body=Body
+	id=Record#radiogroup.id,
+	anchor=Record#radiogroup.anchor,
+	class=[radiogroup, Record#radiogroup.class],
+	title=Record#radiogroup.title,
+	style=Record#radiogroup.style,
+	data_fields=Record#radiogroup.data_fields,
+	body=Body
     }).
 
 set_name_fun(Name) ->
     fun
-        (X = #radio{}) ->
-            X#radio{name=Name};
-        (X) ->
-            X
+	(X = #radio{}) ->
+	    X#radio{name=Name};
+	(X) ->
+	    X
     end.

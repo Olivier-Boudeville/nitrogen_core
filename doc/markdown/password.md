@@ -24,11 +24,11 @@
       browser. Can be toggled with `wf:wire(ElementID, #make_writable{})` and
       `wf:wire(ElementID, #make_readonly{})`.
 
-   * `next` (atom) - 
-      If set with a valid control ID, pressing the enter key in the 
+   * `next` (atom) -
+      If set with a valid control ID, pressing the enter key in the
       password box will automatically move focus to the specified control.
 
-   * `postback` (Erlang term) - 
+   * `postback` (Erlang term) -
       If set, pressing the enter key in the password box will automatically
       initiate a Nitrogen postback with the supplied term.
 
@@ -44,4 +44,3 @@
  *  [dropdown element](./dropdown.md)
  *  [option element](./option.md)
  *  [Simple Controls Demos](http://nitrogenproject.com/demos/simplecontrols)
- 

@@ -30,5 +30,3 @@
  *  [base element](./element_base.md)
 
  *  [span element](./span.md)
-
- 

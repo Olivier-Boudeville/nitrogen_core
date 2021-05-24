@@ -36,15 +36,15 @@ This is demonstrated below:
 ```html
    <body>
       <div data-role="page" id="pagediv">
-         <div data-role="header">
-            <h1>[[[page:title()]]]</h1>
-         </div>
-         <div data-role="content">
-            [[[page:body()]]]
-         </div>
-         <div data-role="footer">
-            <h4>[[[page:footer()]]]</h4>
-         </div>
+	 <div data-role="header">
+	    <h1>[[[page:title()]]]</h1>
+	 </div>
+	 <div data-role="content">
+	    [[[page:body()]]]
+	 </div>
+	 <div data-role="footer">
+	    <h4>[[[page:footer()]]]</h4>
+	 </div>
       </div>
    </body>
 
@@ -62,15 +62,15 @@ This is demonstrated below:
 ```html
    <body>
       <div data-role="page" id="pagediv" data-code="[[[mobile_script]]]">
-         <div data-role="header">
-            <h1>[[[page:title()]]]</h1>
-         </div>
-         <div data-role="content">
-            [[[page:body()]]]
-         </div>
-         <div data-role="footer">
-            <h4>[[[page:footer()]]]</h4>
-         </div>
+	 <div data-role="header">
+	    <h1>[[[page:title()]]]</h1>
+	 </div>
+	 <div data-role="content">
+	    [[[page:body()]]]
+	 </div>
+	 <div data-role="footer">
+	    <h4>[[[page:footer()]]]</h4>
+	 </div>
       </div>
    </body>
 

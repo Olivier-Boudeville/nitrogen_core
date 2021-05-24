@@ -8,14 +8,14 @@
 -author('tom.mcnulty@cetiforge.com').
 -include_lib ("wf.hrl").
 -define(NO_SHORT_TAGS(TagName),(
-    TagName =/= 'div' andalso 
-    TagName =/= 'span' andalso 
-    TagName =/= 'label' andalso 
-    TagName =/= 'textarea' andalso 
-    TagName =/= 'table' andalso 
-    TagName =/= 'tr' andalso 
-    TagName =/= 'th' andalso 
-    TagName =/= 'td' andalso 
+    TagName =/= 'div' andalso
+    TagName =/= 'span' andalso
+    TagName =/= 'label' andalso
+    TagName =/= 'textarea' andalso
+    TagName =/= 'table' andalso
+    TagName =/= 'tr' andalso
+    TagName =/= 'th' andalso
+    TagName =/= 'td' andalso
     TagName =/= 'p' andalso
     TagName =/= 'i' andalso
     TagName =/= 'a' andalso
@@ -41,9 +41,9 @@ html_name(Id, Name)
     html_name(wf_render_elements:temp_id(), Name);
 html_name(Id, Name) ->
     case Name of
-        undefined -> {name, Id};
-        ""        -> {name, Id};
-        Name      -> {name, Name}
+	undefined -> {name, Id};
+	""        -> {name, Id};
+	Name      -> {name, Name}
     end.
 
 %%%  Empty tags %%%
@@ -51,10 +51,10 @@ html_name(Id, Name) ->
 emit_tag(TagName, Props) ->
     STagName = wf:to_list(TagName),
     [
-        "<",
-        STagName,
-        write_props(Props),
-        "/>"
+	"<",
+	STagName,
+	write_props(Props),
+	"/>"
     ].
 
 %%% Tags with child content %%%
@@ -69,15 +69,15 @@ emit_tag(TagName, [], Props) when ?NO_SHORT_TAGS(TagName) ->
 emit_tag(TagName, Content, Props) ->
     STagName = wf:to_list(TagName),
     [
-        "<", 
-        STagName, 
-        write_props(Props), 
-        ">", 
-        Content,
-        "</", 
-        STagName, 
-        ">"
-    ].    
+	"<",
+	STagName,
+	write_props(Props),
+	">",
+	Content,
+	"</",
+	STagName,
+	">"
+    ].
 
 %%% Property display functions %%%
 
@@ -119,7 +119,7 @@ display_property({Prop, []}) when Prop =/= "value" ->
     [];
 
 display_property({Prop, undefined}) when Prop =/= "value" ->
-    [];    
+    [];
 
 display_property({Prop, Value}) when is_integer(Value); is_atom(Value); is_float(Value) ->
     [" ", Prop, "=\"", wf:to_list(Value), "\""];
@@ -136,7 +136,7 @@ display_property({Prop, Value}) ->
 
 
 
-%% 
+%%
 data_tags(Data) ->
     [display_property(data_tag(Datum)) || Datum <- Data].
 

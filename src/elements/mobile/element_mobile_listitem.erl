@@ -10,16 +10,16 @@
 
 reflect() -> record_info(fields, mobile_listitem).
 
-render_element(Record) -> 
+render_element(Record) ->
     #listitem{
-        id=Record#mobile_listitem.id,
-        class=Record#mobile_listitem.class,
-        html_id=Record#mobile_listitem.html_id,
-        style=Record#mobile_listitem.style,
-        body=Record#mobile_listitem.body,
-        text=Record#mobile_listitem.text,
-        data_fields=[
-            {theme,Record#mobile_listitem.theme}
-            | Record#mobile_listitem.data_fields
-        ]
+	id=Record#mobile_listitem.id,
+	class=Record#mobile_listitem.class,
+	html_id=Record#mobile_listitem.html_id,
+	style=Record#mobile_listitem.style,
+	body=Record#mobile_listitem.body,
+	text=Record#mobile_listitem.text,
+	data_fields=[
+	    {theme,Record#mobile_listitem.theme}
+	    | Record#mobile_listitem.data_fields
+	]
     }.

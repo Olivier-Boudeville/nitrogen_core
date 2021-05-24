@@ -5,19 +5,19 @@
 
 %%% - INTERFACE - %%%
 
-continue(Tag, Fun) -> 
+continue(Tag, Fun) ->
     continue(Tag, Fun, 20 * 1000).
 
-continue(Tag, Fun, TimeoutMS) -> 
+continue(Tag, Fun, TimeoutMS) ->
     wf:wire(#continue { tag=Tag, function=Fun, timeout=TimeoutMS }).
 
 
 %%% - ACTIONS - %%%
 
-render_action(Record) -> 
+render_action(Record) ->
     % Spawn a wrapped comet function.
     #comet {
-        function=fun() -> continue_wrapper(Record) end
+	function=fun() -> continue_wrapper(Record) end
     }.
 
 continue_wrapper(Record) ->
@@ -31,9 +31,9 @@ continue_wrapper(Record) ->
     wf:flush(),
 
     % Wait for the event/1 function below to request the results...
-    receive 
-        {get_results, Pid, Ref} -> 
-            Pid ! {get_results_response, Record, Result, Ref}
+    receive
+	{get_results, Pid, Ref} ->
+	    Pid ! {get_results_response, Record, Result, Ref}
     end.
 
 run_continue_function(Record) ->
@@ -44,29 +44,29 @@ run_continue_function(Record) ->
     Ref = make_ref(),
     Self = self(),
 
-    Context = wf_context:context(),			
+    Context = wf_context:context(),
     % Spawn the user's function...
-    Pid = spawn(fun() -> 
-        wf_context:context(Context),
-        wf_context:clear_action_queue(),
-        try 
-            Self ! {result, Fun(), Ref}
-        catch 
-            _Type : timeout ->
-                timeout;
-            Type : Error ->
-                error_logger:error_msg("Error in continuation function ~p (~p) - ~p : ~p~nStack Trace: ~p", [Fun, Tag, Type, Error, erlang:get_stacktrace()]),
-                Self ! {result, error, Ref}
-        end
+    Pid = spawn(fun() ->
+	wf_context:context(Context),
+	wf_context:clear_action_queue(),
+	try
+	    Self ! {result, Fun(), Ref}
+	catch
+	    _Type : timeout ->
+		timeout;
+	    Type : Error ->
+		error_logger:error_msg("Error in continuation function ~p (~p) - ~p : ~p~nStack Trace: ~p", [Fun, Tag, Type, Error, erlang:get_stacktrace()]),
+		Self ! {result, error, Ref}
+	end
 
     end),
 
     % Wait for the result, and return it...
-    receive {result, Result, Ref} -> 
-        Result
+    receive {result, Result, Ref} ->
+	Result
     after Timeout ->
-        erlang:exit(Pid, timeout),
-        timeout 
+	erlang:exit(Pid, timeout),
+	timeout
     end.
 
 
@@ -75,14 +75,13 @@ event({finished, Pid, Ref}) ->
     % continue/2 on the page or element that initiated
     % the continuation...
     Pid ! { get_results, self(), Ref},
-    receive 
-        {get_results_response, Record, Result, Ref} ->
-            Tag = Record#continue.tag,	
-            Delegate = Record#continue.delegate,
-            PageModule = wf_context:page_module(),
-            Module = wf:coalesce([Delegate, PageModule]),
-            Module:continue(Tag, Result)
+    receive
+	{get_results_response, Record, Result, Ref} ->
+	    Tag = Record#continue.tag,
+	    Delegate = Record#continue.delegate,
+	    PageModule = wf_context:page_module(),
+	    Module = wf:coalesce([Delegate, PageModule]),
+	    Module:continue(Tag, Result)
     after 2000 ->
-        stop
+	stop
     end.
-

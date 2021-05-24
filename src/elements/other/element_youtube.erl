@@ -23,7 +23,7 @@ reflect() -> record_info(fields, youtube).
 
 embed_url(Key) ->
 	KeyBin = wf:to_binary(Key),
-	<<"https://www.youtube.com/embed/",KeyBin/binary>>.	
+	<<"https://www.youtube.com/embed/",KeyBin/binary>>.
 
 extract_key(URL) ->
 	extract_key(URL, ?KEY_REGEXES).
@@ -34,7 +34,7 @@ extract_key(URL, [RE|REs]) ->
 	case re:run(URL, RE, ?RE_OPT) of
 		{match, Key} ->
 			Key;
-		nomatch -> 
+		nomatch ->
 			extract_key(URL, REs)
 	end.
 
@@ -57,4 +57,3 @@ render_element(#youtube{
 		{frameborder,"0"},
 	    ?WF_IF(Allowfullscreen, {allowfullscreen})
 	]).
-

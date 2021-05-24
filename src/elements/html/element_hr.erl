@@ -14,12 +14,12 @@
 reflect() -> record_info(fields, hr).
 
 -spec render_element(#hr{}) -> body().
-render_element(Record) -> 
+render_element(Record) ->
     wf_tags:emit_tag(hr, [
-        {id, Record#hr.html_id},
-        {size, 1},
-        {class, [hr, Record#hr.class]},
-        {title, Record#hr.title},
-        {style, Record#hr.style},
-        {data_fields, Record#hr.data_fields}
+	{id, Record#hr.html_id},
+	{size, 1},
+	{class, [hr, Record#hr.class]},
+	{title, Record#hr.title},
+	{style, Record#hr.style},
+	{data_fields, Record#hr.data_fields}
     ]).

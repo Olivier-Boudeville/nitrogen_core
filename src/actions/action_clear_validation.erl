@@ -7,7 +7,7 @@
 -include_lib ("wf.hrl").
 -compile(export_all).
 
-render_action(Record) -> 
+render_action(Record) ->
     % Some values...
     TriggerPath = wf_render_actions:normalize_path(Record#clear_validation.validation_trigger),
     TargetPath = wf_render_actions:normalize_path(Record#clear_validation.validation_target),
@@ -48,7 +48,7 @@ clear_target_validators(Target) ->
 	FilteredValidators = [X || X={_, ValPath, _} <- Validators, ValPath =/= Target],
 	set_validators(FilteredValidators),
 	wf:f("Nitrogen.$destroy_target_validation('~ts')",[Target]).
-	
+
 clear_trigger_validators(Trigger) ->
 	Validators = get_validators(),
 	FilteredValidators = [X || X={ValGroup, _, _} <- Validators, ValGroup =/= Trigger],

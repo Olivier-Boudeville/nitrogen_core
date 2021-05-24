@@ -28,5 +28,3 @@
  *  [animate element](./animate.md)
 
  *  [toggle element](./toggle.md)
-
- 

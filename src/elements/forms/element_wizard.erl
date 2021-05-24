@@ -12,12 +12,12 @@
     event/1,
     next_button_ids/2
 ]).
-        
+
 -spec reflect() -> [atom()].
 reflect() -> record_info(fields, wizard).
 
 -spec render_element(#wizard{}) -> body().
-render_element(Record = #wizard{tag=Tag, next_class=NextClass, back_class=BackClass, finish_class=FinishClass}) -> 
+render_element(Record = #wizard{tag=Tag, next_class=NextClass, back_class=BackClass, finish_class=FinishClass}) ->
 	% Set up steps...
 	wf:assert(Record#wizard.id /= undefined, wizard_needs_a_proper_name),
 	wf:assert(is_list(Record#wizard.steps), wizard_steps_must_be_a_list),
@@ -47,38 +47,38 @@ render_element(Record = #wizard{tag=Tag, next_class=NextClass, back_class=BackCl
 							text=Record#wizard.back,
 							postback={back, N, StepIDs},
 							delegate=?MODULE,
-                            class=BackClass
+			    class=BackClass
 						}
 					]},
 					#tablecell{class=wizard_buttons_next,body=[
 						#button{
-							id=button_id(TopOrBot,next,N), 
-							show_if=(not IsLast), 
-							text=Record#wizard.next, 
-							postback={next, N, StepIDs}, 
+							id=button_id(TopOrBot,next,N),
+							show_if=(not IsLast),
+							text=Record#wizard.next,
+							postback={next, N, StepIDs},
 							delegate=?MODULE,
-                            class=NextClass
+			    class=NextClass
 						},
 						#button{
-							id=button_id(TopOrBot,finish,N), 
-							show_if=IsLast, 
-							text=Record#wizard.finish, 
-							postback={finish, Tag}, 
+							id=button_id(TopOrBot,finish,N),
+							show_if=IsLast,
+							text=Record#wizard.finish,
+							postback={finish, Tag},
 							delegate=?MODULE,
-                            class=FinishClass
-						} 
+			    class=FinishClass
+						}
 					]}
 				]}
 			]}
 		end,
-		
+
 		#panel { id=StepID, style="display: none;", body=[
 			#panel{class=wizard_title,body=[
 				#span{class=wizard_title_text,text=StepTitle},
-                ?WF_IF(Record#wizard.show_progress, #span{
-                    class=wizard_progress,
-                    text=wf:f(Record#wizard.progress_text,[N, StepCount])
-                })
+		?WF_IF(Record#wizard.show_progress, #span{
+		    class=wizard_progress,
+		    text=wf:f(Record#wizard.progress_text,[N, StepCount])
+		})
 			]},
 			ButtonRow(top),
 			#panel { class=wizard_body, body=StepBody },
@@ -89,28 +89,28 @@ render_element(Record = #wizard{tag=Tag, next_class=NextClass, back_class=BackCl
 	% Combine the steps.
 	Terms = #panel {
 		class=[wizard,Record#wizard.class],
-        data_fields=Record#wizard.data_fields,
-		body=[F(X) || X <- StepSeq] 
+	data_fields=Record#wizard.data_fields,
+		body=[F(X) || X <- StepSeq]
 	},
-	
+
 	% Show the first step.
-	wf:wire(hd(StepIDs), #show{}),	
-	
+	wf:wire(hd(StepIDs), #show{}),
+
 	% Render.
 	Terms.
-	
+
 -spec event(term()) -> ok.
-event({back, N, StepIDs}) -> 
+event({back, N, StepIDs}) ->
 	wf:wire(lists:nth(N, StepIDs), #hide {}),
 	wf:wire(lists:nth(N - 1, StepIDs), #show {}),
-	ok;	
+	ok;
 
-event({next, N, StepIDs}) -> 
+event({next, N, StepIDs}) ->
 	wf:wire(lists:nth(N, StepIDs), #hide {}),
 	wf:wire(lists:nth(N + 1, StepIDs), #show {}),
-	ok;	
+	ok;
 
-event({finish, Tag}) -> 
+event({finish, Tag}) ->
 	Delegate = wf:page_module(),
 	Delegate:wizard_event(Tag),
 	ok.
@@ -119,11 +119,10 @@ event({finish, Tag}) ->
 next_button_ids(Step, NumSteps) ->
     NextOrFinish = ?WF_IF(Step==NumSteps,finish,next),
     [
-        button_id(top, NextOrFinish, Step),
-        button_id(bottom, NextOrFinish, Step)
+	button_id(top, NextOrFinish, Step),
+	button_id(bottom, NextOrFinish, Step)
     ].
 
 -spec button_id(TB :: top|bottom, BNF :: back|next|finish, Step :: integer()) -> id().
 button_id(TB, BNF, Step) ->
     wf:to_atom(wf:to_list([TB,"_",BNF,"_",Step])).
-

@@ -19,7 +19,7 @@
 reflect() -> record_info(fields, dropdown).
 
 -spec render_element(#dropdown{}) -> body().
-render_element(Record) -> 
+render_element(Record) ->
 
     wire_postback(Record),
     action_event:maybe_wire_next(Record#dropdown.anchor, Record#dropdown.next),
@@ -31,15 +31,15 @@ render_element(Record) ->
     Size = provided_or_default_size(Record),
 
     wf_tags:emit_tag(select, Options, [
-        {id, Record#dropdown.html_id},
-        {class, [dropdown, Record#dropdown.class]},
-        {title, Record#dropdown.title},
-        {style, Record#dropdown.style},
-        {name, Record#dropdown.html_name},
-        {size, Size},
-        MultipleAttribute,
-        DisabledAttribute,
-        {data_fields, Record#dropdown.data_fields}
+	{id, Record#dropdown.html_id},
+	{class, [dropdown, Record#dropdown.class]},
+	{title, Record#dropdown.title},
+	{style, Record#dropdown.style},
+	{name, Record#dropdown.html_name},
+	{size, Size},
+	MultipleAttribute,
+	DisabledAttribute,
+	{data_fields, Record#dropdown.data_fields}
     ]).
 
 provided_or_default_size(#dropdown{size=auto, multiple=true}) ->
@@ -52,13 +52,13 @@ provided_or_default_size(#dropdown{size=Size}) ->
 wire_postback(Dropdown) when Dropdown#dropdown.postback==undefined ->
     ignore;
 wire_postback(Dropdown) ->
-    wf:wire(Dropdown#dropdown.anchor, #event { 
-        type=change, 
-        postback=Dropdown#dropdown.postback,
-        handle_invalid=Dropdown#dropdown.handle_invalid,
-        on_invalid=Dropdown#dropdown.on_invalid,
-        validation_group=Dropdown#dropdown.id,
-        delegate=Dropdown#dropdown.delegate 
+    wf:wire(Dropdown#dropdown.anchor, #event {
+	type=change,
+	postback=Dropdown#dropdown.postback,
+	handle_invalid=Dropdown#dropdown.handle_invalid,
+	on_invalid=Dropdown#dropdown.on_invalid,
+	validation_group=Dropdown#dropdown.id,
+	delegate=Dropdown#dropdown.delegate
     }).
 
 format_options(Dropdown) when Dropdown#dropdown.options==undefined ->
@@ -98,8 +98,8 @@ create_option_group(Selected, HtmlEncode, #option_group{text=Text, options=Optio
     LabelProp = {label, wf:html_encode(Text, HtmlEncode)},
     DisabledProp = ?WF_IF(Disabled, disabled, undefined),
     Props = [
-        LabelProp,
-        DisabledProp
+	LabelProp,
+	DisabledProp
     ],
     wf_tags:emit_tag(optgroup, OptionTags, Props).
 
@@ -116,9 +116,9 @@ create_option_full(Selected, HtmlEncode, Opt = #option{text=Text, value=Value, d
     DisabledProp = ?WF_IF(Disabled, disabled, undefined),
     ValueProp = ?WF_IF(Value =:= undefined, [], {value, wf:html_encode(Value, HtmlEncode)}),
     Props = [
-        SelectedProp,
-        DisabledProp,
-        ValueProp
+	SelectedProp,
+	DisabledProp,
+	ValueProp
     ],
     wf_tags:emit_tag(option, Content, Props).
 
@@ -127,9 +127,9 @@ is_selected(_DropDownValue, #option{selected=true})  ->
     %% If the #option.selected=true, then short-circuit and return true.
     true;
 is_selected(DropDownValue, #option{selected=OptSelected, value=OptValue})
-        when OptSelected=:=false;
-             OptValue=:=undefined;
-             DropDownValue=:=undefined ->
+	when OptSelected=:=false;
+	     OptValue=:=undefined;
+	     DropDownValue=:=undefined ->
     false;
 is_selected(DropDownValue, #option{value=OptValue}) ->
     %% Finally, if none of the above short-circuits trip, then we can convert

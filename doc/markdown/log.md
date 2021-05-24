@@ -10,21 +10,21 @@
   above function calls.
 
 ### Behavior Functions
- 
+
 ##### `init(Config, State)`
 
   Initialize the handler
 
- *  /Return Value/ - `{ok, NewState}` 
+ *  /Return Value/ - `{ok, NewState}`
 
 ##### `finish(Config, State)`
 
   Clean up the handler
 
  *  /Return Value/ - `{ok, NewState}`
-  
+
 ##### `info(Message, Config, State)`
-  
+
   Generate an info message
 
  *  `Message` - The string to generate the message
@@ -32,7 +32,7 @@
  *  /Return Value/ - Description of the return value
 
 ##### `warning(Message, Config, State)`
-  
+
   Generate a warning message
 
  *  `Message` - The string to generate the message
@@ -40,7 +40,7 @@
  *  /Return Value/ - Description of the return value
 
 ##### `error(Message, Config, State)`
-  
+
   Generate an error message
 
  *  `Message` - The string to generate the message

@@ -10,7 +10,7 @@
 ### Usage
 
 ```erlang
-  #mobile_panel { 
+  #mobile_panel {
     display_mode=push,
     body=[
       #h3{text="Menu"},
@@ -21,12 +21,12 @@
 ```
 
 ### Attributes
-   
+
    * `body` (Nitrogen element or list of elements) - Set the element(s) that
     will be rendered within this panel.
 
    * `theme` (atom) - Set the jQuery Mobile swatch letter for the content.
-   
+
    * `dismissible` (boolean) - Set to true to allow it to be dismissed with
     the Escape key or clicking outside of the panel contents.
 

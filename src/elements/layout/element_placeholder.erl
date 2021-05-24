@@ -14,5 +14,5 @@
 reflect() -> record_info(fields, placeholder).
 
 -spec render_element(#placeholder{}) -> body().
-render_element(Record) -> 
+render_element(Record) ->
     Record#placeholder.body.

@@ -6,65 +6,65 @@
 % This is a "simple as possible" session handler. Unfortunately,
 % due to time constraints, had to leave out some great code
 % contributed by Dave Peticolas that fit Nitrogen sessions
-% into a gen_server. My code below is far inferior. 
+% into a gen_server. My code below is far inferior.
 % Someone please make it better! - Rusty
 
 -module (simple_session_handler).
 -include("wf.hrl").
 -behaviour (session_handler).
 -export ([
-    init/2, 
+    init/2,
     finish/2,
-    get_value/4, 
-    set_value/4, 
+    get_value/4,
+    set_value/4,
     clear_all/2,
     session_id/2
 ]).
 -record (state, {unique, node}).
 
-init(_Config, _State) -> 
+init(_Config, _State) ->
     % Get the session cookie and node...
     Cookie = wf:cookie(get_cookie_name()),
     State = case wf:depickle(Cookie) of
-        undefined -> new_state();
-        Other=#state{} -> Other;
-        _ -> new_state()
+	undefined -> new_state();
+	Other=#state{} -> Other;
+	_ -> new_state()
     end,
     {ok, State}.
 
-finish(_Config, State) -> 
+finish(_Config, State) ->
     % Drop the session cookie...
     Timeout = wf:config_default(session_timeout, 20),
     Opts = [
-        {path, "/"},
-        {minutes_to_live, Timeout},
-        {http_only, true}
+	{path, "/"},
+	{minutes_to_live, Timeout},
+	{http_only, true}
     ],
     ok = wf:cookie(get_cookie_name(), wf:pickle(State), Opts),
     {ok, []}.
 
-get_value(Key, DefaultValue, Config, State) -> 
+get_value(Key, DefaultValue, Config, State) ->
     {ok, Pid} = get_session_pid(Config, State),
     Ref = make_ref(),
     Pid!{get_value, Key, self(), Ref},
-    Value = receive 
-        {ok, undefined, Ref} -> DefaultValue;
-        {ok, Other, Ref} -> Other
+    Value = receive
+	{ok, undefined, Ref} -> DefaultValue;
+	{ok, Other, Ref} -> Other
     end,
     {ok, Value, State}.
 
-set_value(Key, Value, Config, State) -> 
+set_value(Key, Value, Config, State) ->
     {ok, Pid} = get_session_pid(Config, State),
     Ref = make_ref(),
     Pid!{set_value, Key, Value, self(), Ref},
-    receive {ok, OldValue, Ref} -> ok end,	
+    receive {ok, OldValue, Ref} -> ok end,
     {ok, OldValue, State}.
 
-clear_all(Config, State) -> 
+clear_all(Config, State) ->
     {ok, Pid} = get_session_pid(Config, State),
     Ref = make_ref(),
     Pid!{clear_all, self(), Ref},
-    receive {ok, Ref} -> ok end,	
+    receive {ok, Ref} -> ok end,
     {ok, State}.
 
 session_id(_Config, State) ->
@@ -85,33 +85,33 @@ get_session_pid(_Config, State) ->
 session_loop(Session, Timeout) ->
     %% Timeout in 10 if the session is empty...
     TimeoutMS = case Session == [] of
-        true  -> 10 * 1000;
-        false -> Timeout * 60 * 1000
+	true  -> 10 * 1000;
+	false -> Timeout * 60 * 1000
     end,
     receive
-        {get_value, Key, Pid, Ref} ->
-            Value = case lists:keysearch(Key, 1, Session) of
-                {value, {Key, V}} -> V;
-                false -> undefined
-            end,
-            Pid!{ok, Value, Ref},
-            session_loop(Session, Timeout);
+	{get_value, Key, Pid, Ref} ->
+	    Value = case lists:keysearch(Key, 1, Session) of
+		{value, {Key, V}} -> V;
+		false -> undefined
+	    end,
+	    Pid!{ok, Value, Ref},
+	    session_loop(Session, Timeout);
 
-        {set_value, Key, Value, Pid, Ref} ->
-            OldValue = case lists:keysearch(Key, 1, Session) of
-                {value, {Key, V}} -> V;
-                false -> undefined
-            end,
-            Session1 = lists:keystore(Key, 1, Session, {Key, Value}),
-            Pid!{ok, OldValue, Ref},
-            session_loop(Session1, Timeout);			
+	{set_value, Key, Value, Pid, Ref} ->
+	    OldValue = case lists:keysearch(Key, 1, Session) of
+		{value, {Key, V}} -> V;
+		false -> undefined
+	    end,
+	    Session1 = lists:keystore(Key, 1, Session, {Key, Value}),
+	    Pid!{ok, OldValue, Ref},
+	    session_loop(Session1, Timeout);
 
-        {clear_all, Pid, Ref} ->
-            Pid!{ok, Ref},
-            session_loop([], Timeout)	
+	{clear_all, Pid, Ref} ->
+	    Pid!{ok, Ref},
+	    session_loop([], Timeout)
 
-    after TimeoutMS -> 
-        exit(timed_out)
+    after TimeoutMS ->
+	exit(timed_out)
     end.
 
 new_state() ->

@@ -24,18 +24,18 @@ render_element(Record) ->
     AutoCompleteSelectPostbackInfo = wf_event:serialize_event_context({autocomplete_select_event, Delegate, Tag }, Anchor, undefined, false, ?MODULE ),
 
     AutoCompleteOptions = [
-        {dataType, <<"json">>},
-        {minLength, AutoCompleteMinLength},
-        {delay, AutoCompleteDelay}
+	{dataType, <<"json">>},
+	{minLength, AutoCompleteMinLength},
+	{delay, AutoCompleteDelay}
     ],
 
     AutoCompleteScript = #script {
-        script = wf:f("Nitrogen.$autocomplete('~s', ~s, '~s', '~s');", [
-          Anchor,
-          wf:json_encode(AutoCompleteOptions),
-          AutoCompleteEnterPostbackInfo,
-          AutoCompleteSelectPostbackInfo
-        ])
+	script = wf:f("Nitrogen.$autocomplete('~s', ~s, '~s', '~s');", [
+	  Anchor,
+	  wf:json_encode(AutoCompleteOptions),
+	  AutoCompleteEnterPostbackInfo,
+	  AutoCompleteSelectPostbackInfo
+	])
     },
     wf:wire(AutoCompleteScript),
 
@@ -60,9 +60,9 @@ event({autocomplete_enter_event, Delegate, EnterTag})->
 
 change_headers_for_nonwebsocket() ->
     case wf_context:type() of
-        postback_websocket ->
-            ok;
-        _ ->
-            wf_context:type(first_request),
-            wf:content_type("application/json")
+	postback_websocket ->
+	    ok;
+	_ ->
+	    wf_context:type(first_request),
+	    wf:content_type("application/json")
     end.

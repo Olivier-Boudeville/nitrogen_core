@@ -32,7 +32,7 @@
  *  `POST` :: `post(PathInfo)`
  *  `PUT` :: `put(PathInfo)`
  *  `DELETE` :: `delete(PathInfo)`
-   
+
    Less commonly used Request methods:
 
  *  `CONNECT` :: `connect(PathInfo)`

@@ -28,7 +28,7 @@
  *  [Base element](./element_base.md.md)
 
  *  [HTML5 Header element](html5_header.md)
-   
+
  *  [HTML5 Footer element](html5_footer.md)
 
  *  [Panel element](panel.md)

@@ -12,4 +12,3 @@
 -spec render_action(#make_readonly{}) -> actions().
 render_action(#make_readonly{target=Target}) ->
 	#script{script=wf:f(<<"objs('~s').prop('readonly',true);">>, [Target])}.
-

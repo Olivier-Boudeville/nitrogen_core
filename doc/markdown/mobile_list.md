@@ -8,19 +8,19 @@ This element produces a wrapper for [jQuery Mobile Listviews](http://jquerymobil
 ### Usage
 
 ```erlang
-   #mobile_list { 
+   #mobile_list {
       theme=d,
       body=[
-         #mobile_listitem { ... },
-         #mobile_listitem { ... },
-         #mobile_listitem { ... }
+	 #mobile_listitem { ... },
+	 #mobile_listitem { ... },
+	 #mobile_listitem { ... }
       ]
    }
 
 ```
 
 ### Attributes
- 
+
    * `inset` (boolean) - Whether or not to render the list inset or outset.
 
    * `body` (string) - The body of the list element, generally containing only `#mobile_list{}` elements.

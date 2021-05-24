@@ -28,7 +28,7 @@
   {simple_bridge, "", {git, "git://github.com/nitrogen/simple_bridge", {tag, "v2.0.0"}}},
 
 ```
-  
+
    Then run `make upgrade` in your app, which should fetch the latest versions
    and recompile your app accordingly.
 
@@ -65,7 +65,7 @@ $ git pull origin master
    That second line is just to make sure we're actually on the master branch.
    Previous versions of Nitrogen had an issue that might have caused us to be
    on a detached branch, this will ensure we're good to go.
-  
+
    After running that command, sync very likely would have crashed. That's
    okay: it's supervised, so it would be restarted with a fresh state.
 

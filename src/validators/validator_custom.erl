@@ -7,7 +7,7 @@
 -include("wf.hrl").
 -compile(export_all).
 
-render_action(Record) -> 
+render_action(Record) ->
     TriggerPath= Record#custom.trigger,
     TargetPath = Record#custom.target,
     Validators = state_handler:get_state(validators, []),

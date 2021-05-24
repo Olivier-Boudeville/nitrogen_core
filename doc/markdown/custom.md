@@ -18,7 +18,7 @@
        lower -> string:to_lower(Value) == Value
      end
    end,
-	
+
    % Wire the validator in upper case mode...
    wf:wire(ButtonID, TextBoxID, #validate { validators=[
      %% If we wanted to validate lowercase, we could change

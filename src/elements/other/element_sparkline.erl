@@ -19,27 +19,27 @@
 reflect() -> record_info(fields, sparkline).
 
 -spec render_element(#sparkline{}) -> body().
-render_element(Record) -> 
+render_element(Record) ->
     Anchor = Record#sparkline.anchor,
     Values = Record#sparkline.values,
     ValuesS = ["[",wf:join([wf:to_list(X) || X <- Values], ","),"]"],
     OptionsS = options_to_js([{type, Record#sparkline.type}|Record#sparkline.options]),
     wf:wire(#script{
-        dependency_js = <<"/nitrogen/jquery.sparkline.js">>,
-        script=wf:f(<<"objs('~s').sparkline(~s, ~s);">>, [Anchor, ValuesS, OptionsS])
+	dependency_js = <<"/nitrogen/jquery.sparkline.js">>,
+	script=wf:f(<<"objs('~s').sparkline(~s, ~s);">>, [Anchor, ValuesS, OptionsS])
     }),
     Span = #span {
-        html_id = Record#sparkline.html_id,
-        id = Record#sparkline.id,
-        anchor = Record#sparkline.anchor,
-        class = [sparkline, Record#sparkline.class],
-        title = Record#sparkline.title,
-        data_fields = Record#sparkline.data_fields,
-        style = Record#sparkline.style
+	html_id = Record#sparkline.html_id,
+	id = Record#sparkline.id,
+	anchor = Record#sparkline.anchor,
+	class = [sparkline, Record#sparkline.class],
+	title = Record#sparkline.title,
+	data_fields = Record#sparkline.data_fields,
+	style = Record#sparkline.style
     },
     element_span:render_element(Span).
 
-%% Options is a list of {Key,Value} tuples  
+%% Options is a list of {Key,Value} tuples
 options_to_js(Options) ->
     Options1 = [format_option(X) || X <- Options],
     Options2 = wf:join(Options1, ","),

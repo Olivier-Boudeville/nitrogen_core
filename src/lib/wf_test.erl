@@ -19,7 +19,7 @@
     test_auto/2,
     test_auto/3,
     test_auto/4,
-    
+
     test/5,
 
     test_js/2,
@@ -56,28 +56,28 @@ start_all(App) ->
     {ok, Browsers} = application:get_env(App, test_browsers),
     {ok, Tests} = application:get_env(App, tests),
     Opts = case application:get_env(App, test_options) of
-        undefined -> [];
-        {ok, O} -> O
+	undefined -> [];
+	{ok, O} -> O
     end,
 
     lists:foreach(fun(Browser) ->
-        wf_test:log("Starting tests with ~s",[Browser]),
-        Pid = wf_test_srv:start(Browser, Tests, Opts),
-        erlang:monitor(process, Pid),
-        receive
-            {'DOWN', _, process, Pid, _ } ->
-                wf_test:log("Finished tests with ~s~n",[Browser])
-        end
+	wf_test:log("Starting tests with ~s",[Browser]),
+	Pid = wf_test_srv:start(Browser, Tests, Opts),
+	erlang:monitor(process, Pid),
+	receive
+	    {'DOWN', _, process, Pid, _ } ->
+		wf_test:log("Finished tests with ~s~n",[Browser])
+	end
     end, Browsers),
     init:stop().
 
 start(TestFun) ->
     Uri = wf:uri(),
     {ok, Pid} = wf:comet(fun() ->
-        erlang:put(wf_test_passed, 0),
-        erlang:put(wf_test_failed, 0),
-        TestFun(),
-        summarize_and_continue(Uri)
+	erlang:put(wf_test_passed, 0),
+	erlang:put(wf_test_failed, 0),
+	TestFun(),
+	summarize_and_continue(Uri)
     end),
     wf:state(test_comet_pid, Pid).
 
@@ -92,9 +92,9 @@ summarize_and_continue(Uri) ->
     Total = Passed + Failed,
     wf_test:log("Module ~p (~p of ~p tests passed)~n", [Uri, Passed, Total]),
     case wf_test_srv:next_test_path() of
-        done -> ok; 
-        autoadvance_disabled -> ok;
-        Next -> wf:redirect(Next)
+	done -> ok;
+	autoadvance_disabled -> ok;
+	Next -> wf:redirect(Next)
     end.
 
 
@@ -142,27 +142,27 @@ test(AutoPostback, Name, _Setup=undefined, Assertion, Options) ->
     test(AutoPostback, Name, fun() -> ok end, Assertion, Options);
 test(AutoPostback, Name, Setup, Assertion, Options) when is_function(Setup, 0), is_function(Assertion, 0) ->
     try
-        Timeout = get_option(Options, timeout),
-        Delay = get_option(Options, delay),
-        wf:session({assertion, Name}, Assertion),
-        ToExec = fun() ->
-            Setup(),
-            maybe_wire_autopostback(AutoPostback, Name, Delay)
-        end,
-        wf:wire(#event{postback={test_exec, ToExec}, delegate=?MODULE}),
-        wf:flush(),
-        receive
-            Name ->
-                internal_pass(Name);
-            {fail, Name, Reason} ->
-                internal_fail(Name, Reason)
-        after
-            Timeout ->
-                internal_fail(Name, {timeout, Timeout})
-         end
+	Timeout = get_option(Options, timeout),
+	Delay = get_option(Options, delay),
+	wf:session({assertion, Name}, Assertion),
+	ToExec = fun() ->
+	    Setup(),
+	    maybe_wire_autopostback(AutoPostback, Name, Delay)
+	end,
+	wf:wire(#event{postback={test_exec, ToExec}, delegate=?MODULE}),
+	wf:flush(),
+	receive
+	    Name ->
+		internal_pass(Name);
+	    {fail, Name, Reason} ->
+		internal_fail(Name, Reason)
+	after
+	    Timeout ->
+		internal_fail(Name, {timeout, Timeout})
+	 end
     catch
-        Class:Error ->
-            internal_fail(Name, {Class, Error, erlang:get_stacktrace()})
+	Class:Error ->
+	    internal_fail(Name, {Class, Error, erlang:get_stacktrace()})
     end.
 
 maybe_wire_autopostback(false=_AutoPostback, _, _) ->
@@ -174,18 +174,18 @@ maybe_wire_autopostback(true=_AutoPostback, Name, Delay) ->
 
 -define(wf_assert(Name, Assertion, Expectation),
     try Assertion of
-        Expectation -> pass(Name);
-        Other -> fail(Name, [{expected, Expectation}, {returned, Other}])
+	Expectation -> pass(Name);
+	Other -> fail(Name, [{expected, Expectation}, {returned, Other}])
     catch
-        Class:Error ->
-            fail(Name, {Class, Error, erlang:get_stacktrace()})
+	Class:Error ->
+	    fail(Name, {Class, Error, erlang:get_stacktrace()})
     end).
 
 test_event(Name) ->
     case wf:session({assertion, Name}) of
-        undefined -> ok;
-        Assert ->
-            ?wf_assert(Name, Assert(), true)
+	undefined -> ok;
+	Assert ->
+	    ?wf_assert(Name, Assert(), true)
     end.
 
 event({test_exec, Fun}) ->
@@ -199,7 +199,7 @@ test_js(Name, {Setup, JS, Assertion}) ->
 test_js(Name, {Setup, JS, Assertion, Options}) ->
     test_js(Name, Setup, JS, Assertion, Options).
 
-test_js(Name, Setup, JS, Assertion) -> 
+test_js(Name, Setup, JS, Assertion) ->
     test_js(Name, Setup, JS, Assertion, ?OPTS).
 
 test_js(Name, _Setup=undefined, JS, Assertion, Options) ->
@@ -208,27 +208,27 @@ test_js(Name, Setup, JS, _Assertion=undefined, Options) ->
     test_js(Name, Setup, JS, fun(_) -> true end, Options);
 test_js(Name, Setup, JS, Assertion, Options) ->
     try
-        Delay = get_option(Options, delay),
-        Timeout = get_option(Options, timeout),
-        ToExec = fun() ->
-            wf:wire(#api{name=Name, tag=Assertion, delegate=?MODULE}),
-            Setup(),
-            wire_api_call(JS, Name, Delay)
-        end,
-        wf:wire(#event{delegate=?MODULE, postback={test_exec, ToExec}}),
-        wf:flush(),
-        receive
-            Name ->
-                internal_pass(Name);
-            {fail, Name, Reason} ->
-                internal_fail(Name, Reason)
-        after
-            Timeout ->
-                internal_fail(Name, {timeout, Timeout})
-         end
+	Delay = get_option(Options, delay),
+	Timeout = get_option(Options, timeout),
+	ToExec = fun() ->
+	    wf:wire(#api{name=Name, tag=Assertion, delegate=?MODULE}),
+	    Setup(),
+	    wire_api_call(JS, Name, Delay)
+	end,
+	wf:wire(#event{delegate=?MODULE, postback={test_exec, ToExec}}),
+	wf:flush(),
+	receive
+	    Name ->
+		internal_pass(Name);
+	    {fail, Name, Reason} ->
+		internal_fail(Name, Reason)
+	after
+	    Timeout ->
+		internal_fail(Name, {timeout, Timeout})
+	 end
     catch
-        Class:Error ->
-            internal_fail(Name, {Class, Error, erlang:get_stacktrace()})
+	Class:Error ->
+	    internal_fail(Name, {Class, Error, erlang:get_stacktrace()})
     end.
 
 wire_api_call(JS, Name, _Delay=0) ->
@@ -249,7 +249,7 @@ internal_pass(Name) ->
 internal_fail(Name, Reason) ->
     increment_fail(),
     wf_test:log("...FAILED (~p).~n Reason: ~p", [Name, Reason]).
-   
+
 increment_pass() ->
     wf_test_srv:passed(1),
     N = erlang:get(wf_test_passed),
@@ -262,16 +262,16 @@ increment_fail() ->
 
 get_option(Options, Key) ->
     case proplists:get_value(Key, Options) of
-        undefined ->
-            proplists:get_value(Key, ?OPTS);
-        Val -> Val
+	undefined ->
+	    proplists:get_value(Key, ?OPTS);
+	Val -> Val
     end.
 
 
 logfile() ->
     case init:get_argument(testlog) of
-        error -> undefined;
-        {ok, [[File]]} -> {ok, File}
+	error -> undefined;
+	{ok, [[File]]} -> {ok, File}
     end.
 
 log(Msg, Args) ->
@@ -280,8 +280,8 @@ log(Msg, Args) ->
 log(Msg) ->
     io:format(Msg),
     case logfile() of
-        undefined -> ok;
-        {ok, File} ->
-            filelib:ensure_dir(File),
-            file:write_file(File, Msg, [append])
+	undefined -> ok;
+	{ok, File} ->
+	    filelib:ensure_dir(File),
+	    file:write_file(File, Msg, [append])
     end.

@@ -7,6 +7,6 @@
 -include("wf.hrl").
 
 -callback init(         handler_config(),
-                        handler_state()) -> {ok, handler_state()}.
+			handler_state()) -> {ok, handler_state()}.
 -callback finish(       handler_config(),
-                        handler_state()) -> {ok, handler_state()}.
+			handler_state()) -> {ok, handler_state()}.

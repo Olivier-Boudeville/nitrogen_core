@@ -86,7 +86,7 @@
    [wf:wire(Buttonid, pet_name, Validator) || Buttonid <- Buttonids].
 
 ```
-         
+
 ### See Also
 
  *  [base element](element_base.md)

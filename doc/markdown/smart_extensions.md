@@ -24,7 +24,7 @@
 ]}
 
 ```
-    
+
  *  `EXTENSION` :: is the string extension of the file
     ("json", "csv", etc).
 
@@ -43,14 +43,14 @@
 
   To use Nitrogen's built-in JSON smart extension the following would be
   used:
-  
+
 ```erlang
 {smart_extensions, [
   {"json", json_main, {nitrogen_smart_extensions, json}}
 ]}
 
 ```
-    
+
   Then add a `json_main()` function to your page module, which
   returns an Erlang proplist. The proplist will automatically be
   converted to a JSON string and the MIME-type will be set to
@@ -76,9 +76,9 @@ json_main() ->
     "favorite_fruit":"This is a string",
     "a_list_of_numbers":[45,100,50000,60],
     "some_value":[84,104,105,115,32,119,111,117,108,100,32,97,
-                  108,115,111,32,114,101,110,100,101,114,32,97,
-                  115,32,97,32,108,105,115,116,32,111,102,32,
-                  110,117,109,98,101,114,115]
+		  108,115,111,32,114,101,110,100,101,114,32,97,
+		  115,32,97,32,108,105,115,116,32,111,102,32,
+		  110,117,109,98,101,114,115]
    }
 
 ```
@@ -186,7 +186,7 @@ handle(EntryFun) ->
 
 ```
 
-And that's it.  
+And that's it.
 
 ### See Also
 

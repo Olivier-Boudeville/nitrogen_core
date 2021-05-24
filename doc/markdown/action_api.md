@@ -4,8 +4,8 @@
 
 ## API Action - #api {}
 
-  This action will wire an API function to the page for easily initiating 
-  postbacks through javascript. These postbacks will be expecting 
+  This action will wire an API function to the page for easily initiating
+  postbacks through javascript. These postbacks will be expecting
   the `api_event(ApiName,Tag,JSArgs)` to be defined in the module.
 
 ### Usage
@@ -70,5 +70,3 @@
  *  [base element](./action_base.md)
 
  *  [confirm element](./confirm.md)
-
- 

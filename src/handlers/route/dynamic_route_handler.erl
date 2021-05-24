@@ -7,27 +7,27 @@
 -behaviour (route_handler).
 -include("wf.hrl").
 -export ([
-    init/2, 
+    init/2,
     finish/2
 ]).
 
 %% @doc
 %% dynamic_route_handler looks at the requested path and file extension
-%% to determine how a request should be served. If the request path has no 
+%% to determine how a request should be served. If the request path has no
 %% extension, then it assumes this request should be handled by a Nitrogen
 %% page module that matches the path with slashes converted to underscores.
-%% If no module is found, then it will chop off the last part of the path 
+%% If no module is found, then it will chop off the last part of the path
 %% (storing it for later access in wf:path_info/0) and try again, repeating
 %% until either a module is found, or there are no more parts to chop. If
 %% a module still can't be found, then the web_404 module is used if defined
 %% by the user, otherwise a 404 is generated internally.
-%% 
+%%
 %% Requests for "/" are automatically sent to index.
 %%
 %% If the request path does have an extension, then it is treated like a request
 %% for a static file. This is delegated back to the HTTP server.
 
-init(_Config, State) -> 
+init(_Config, State) ->
     % Get the path...
     Bridge = wf_context:bridge(),
     Path = sbw:path(Bridge),
@@ -44,7 +44,7 @@ init(_Config, State) ->
 
     {ok, State}.
 
-finish(_Config, State) -> 
+finish(_Config, State) ->
     {ok, State}.
 
 %%% PRIVATE FUNCTIONS %%%
@@ -55,7 +55,7 @@ finish(_Config, State) ->
 % Otherwise, try to load a module according to each part of the path.
 % First, cycle through code:all_loaded(). If not there, then check erl_prim_loader:get_file()
 % If still not there, then 404.
-route("/") -> 
+route("/") ->
     {list_to_atom(module_name(["index"])), main, []};
 
 route(Path) ->
@@ -69,28 +69,28 @@ handle_initial_entry_point(Path, {module, EntryFun, ProcessingFun}) ->
     Tokens = string:tokens(Path1, "/"),
     % Check for a loaded module. If not found, then try to load it.
     case try_load_module(EntryFun, ProcessingFun, Tokens) of
-        {Module, EntryPoint, PathInfo} -> 
-            {Module, EntryPoint, PathInfo};
-        undefined ->
-            {web_404, main, Path1}
+	{Module, EntryPoint, PathInfo} ->
+	    {Module, EntryPoint, PathInfo};
+	undefined ->
+	    {web_404, main, Path1}
     end.
 
 determine_initial_entry_point(Filename) ->
     SmartExtensions = wf:config_default(smart_extensions, []),
     Ext = string:strip(filename:extension(Filename), left, $.),
     case lists:keyfind(Ext, 1, SmartExtensions) of
-        {Ext, EntryFun, ProcessingFun={_,_}} ->
-            {module, EntryFun, ProcessingFun};
-        {Ext, EntryFun, undefined} ->
-            {module, EntryFun, undefined};
-        {Ext, EntryFun} ->
-            {module, EntryFun, undefined};
-        false when Ext==[] ->
-            {module, main, undefined};
-        false ->
-            static;
-        Other ->
-            throw({invalid_smart_extension_definition, Other})
+	{Ext, EntryFun, ProcessingFun={_,_}} ->
+	    {module, EntryFun, ProcessingFun};
+	{Ext, EntryFun, undefined} ->
+	    {module, EntryFun, undefined};
+	{Ext, EntryFun} ->
+	    {module, EntryFun, undefined};
+	false when Ext==[] ->
+	    {module, main, undefined};
+	false ->
+	    static;
+	Other ->
+	    throw({invalid_smart_extension_definition, Other})
     end.
 
 module_name(Tokens) ->
@@ -102,13 +102,13 @@ module_name(Tokens) ->
 	_ModuleName = string:join(AllTokens, "_").
 
 verify_and_atomize_module(ModuleName) when is_list(ModuleName) ->
-    try 
-        list_to_existing_atom(ModuleName)
+    try
+	list_to_existing_atom(ModuleName)
     catch _:_ ->
-        case erl_prim_loader:get_file(ModuleName ++ ".beam") of
-            {ok, _, _} -> list_to_atom(ModuleName);
-            _ -> list_to_atom("$not_found")
-        end
+	case erl_prim_loader:get_file(ModuleName ++ ".beam") of
+	    {ok, _, _} -> list_to_atom(ModuleName);
+	    _ -> list_to_atom("$not_found")
+	end
     end.
 
 try_load_module(EntryFun, ProcessingFun, Tokens) ->
@@ -127,31 +127,31 @@ try_load_module(EntryFun, ProcessingFun, Tokens, ExtraTokens) ->
     %% to enter by default. Smart Extensions might look for a different entry
     %% function like 'json_main'.
     case erlang:function_exported(Module, EntryFun, 0) of
-        true -> 
-            PathInfo = string:join(ExtraTokens, "/"),
-            RealEntry = case ProcessingFun of
-                undefined ->
-                    %% There's no processing function, so we just enter the
-                    %% module normally
-                    EntryFun;
-                {ProcMod, ProcFun} ->
-                    %% We've identified that this has the entry point for the
-                    %% associated smart extension, and this smart extension has
-                    %% a processing Mod:Fun combination, so we'll pass that as
-                    %% the entry point.
-                    fun() -> ProcMod:ProcFun(fun Module:EntryFun/0) end
-            end,
-            {Module, RealEntry, PathInfo};
-        false ->
-            case is_rest_module(Module) of
-                true ->
-                    PathInfo = string:join(ExtraTokens, "/"),
-                    %% If this is a rest request, we handle it with the nitrogen_rest module
-                    Entry = fun() -> nitrogen_rest:handle_request(Module) end,
-                    {Module, Entry, PathInfo};
-                false ->
-                    next_try_load_module(EntryFun, ProcessingFun, Tokens, ExtraTokens)
-            end
+	true ->
+	    PathInfo = string:join(ExtraTokens, "/"),
+	    RealEntry = case ProcessingFun of
+		undefined ->
+		    %% There's no processing function, so we just enter the
+		    %% module normally
+		    EntryFun;
+		{ProcMod, ProcFun} ->
+		    %% We've identified that this has the entry point for the
+		    %% associated smart extension, and this smart extension has
+		    %% a processing Mod:Fun combination, so we'll pass that as
+		    %% the entry point.
+		    fun() -> ProcMod:ProcFun(fun Module:EntryFun/0) end
+	    end,
+	    {Module, RealEntry, PathInfo};
+	false ->
+	    case is_rest_module(Module) of
+		true ->
+		    PathInfo = string:join(ExtraTokens, "/"),
+		    %% If this is a rest request, we handle it with the nitrogen_rest module
+		    Entry = fun() -> nitrogen_rest:handle_request(Module) end,
+		    {Module, Entry, PathInfo};
+		false ->
+		    next_try_load_module(EntryFun, ProcessingFun, Tokens, ExtraTokens)
+	    end
     end.
 
 
@@ -172,10 +172,10 @@ check_for_404(Module, PathInfo, Path) ->
     % is not, then try to load the web_404 page. If that
     % is not available, then default to the 'file_not_found_page' module.
     case wf_utils:ensure_loaded(Module) of
-        {module, Module} -> {Module, PathInfo};
-        _ -> 
-            case wf_utils:ensure_loaded(web_404) of
-                {module, web_404} -> {web_404, Path};
-                _ -> {file_not_found_page, Path}
-            end
+	{module, Module} -> {Module, PathInfo};
+	_ ->
+	    case wf_utils:ensure_loaded(web_404) of
+		{module, web_404} -> {web_404, Path};
+		_ -> {file_not_found_page, Path}
+	    end
     end.

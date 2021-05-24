@@ -29,5 +29,3 @@
  *  [tableheader element](./tableheader.md)
 
  *  [tablecell element](./tablecell.md)
-
- 

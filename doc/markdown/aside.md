@@ -16,9 +16,9 @@
    #article { body=[
       "Here is some article content",
       #aside{body=[
-         GlossaryOfTerms,
-         #br{},
-         RelatedArticles
+	 GlossaryOfTerms,
+	 #br{},
+	 RelatedArticles
       ]}
    ]}.
 
@@ -30,7 +30,7 @@
 
    * `role` (String) - The role of the HTML5 Aside element.
 
-### See Also 
+### See Also
 
  *  [Base element](./element_base.md.md)
  *  [Article element](article.md)

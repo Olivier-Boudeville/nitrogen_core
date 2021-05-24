@@ -7,7 +7,7 @@
 -include("wf.hrl").
 -export([render_action/1]).
 
-render_action(#disable_option{target=Target, value=Value}) -> 
+render_action(#disable_option{target=Target, value=Value}) ->
     toggle_option(true, Target, Value);
 render_action(#enable_option{target=Target, value=Value}) ->
     toggle_option(false, Target, Value).

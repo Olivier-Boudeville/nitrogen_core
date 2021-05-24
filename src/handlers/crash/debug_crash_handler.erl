@@ -22,8 +22,8 @@ first_request(Type, Error, Stacktrace, _Config, _State) ->
     %% We use raw HTML here instead of Nitrogen elements in case the error is
     %% internal to nitrogen (like if the element rendering system is broken).
     [
-        <<"<h2>&#9888; There was an error processing this page &#9888;</h2>">>,
-        <<"<code><pre>">>,format_error(Type, Error, Stacktrace),<<"</pre></code>">>
+	<<"<h2>&#9888; There was an error processing this page &#9888;</h2>">>,
+	<<"<code><pre>">>,format_error(Type, Error, Stacktrace),<<"</pre></code>">>
     ].
 
 postback_request(Type, Error, Stacktrace, _Config, _State) ->

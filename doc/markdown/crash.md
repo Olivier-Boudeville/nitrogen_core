@@ -22,21 +22,21 @@
   the problem").
 
 ### Behavior Functions
- 
+
 ##### `init(Config, State)`
 
   Initialize the handler
 
- *  /Return Value/ - `{ok, NewState}` 
+ *  /Return Value/ - `{ok, NewState}`
 
 ##### `finish(Config, State)`
 
   Clean up the handler
 
  *  /Return Value/ - `{ok, NewState}`
-  
+
 ##### `first_request(ErrorType, Error, Stacktrace, Config, State)`
-  
+
   If the client's request was a "first request" (not a postback, comet,
   or websocket request), this will be called with the Error information.
 
@@ -160,7 +160,7 @@ body(Stacktrace) ->
       #h1{text="UH OH! Something went wrong!"},
       #panel{text=wf:f("Here's the contents of the error: ~p",[Stacktrace])}
     ].
-  
+
 
 postback_request(Type, Error, Stacktrace, _Config, _State) ->
     %% Print the error message to the Erlang console

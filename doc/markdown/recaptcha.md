@@ -23,7 +23,7 @@
  *  If the value is `ok` nothing is done.
  *  If the return value is `error`, the captcha gets refreshed.
  *  If the return value is `{error, Msg}`, the captcha gets
-        refreshed and the Msg is shown as the error message.
+	refreshed and the Msg is shown as the error message.
 
 ### Preparations
 
@@ -37,12 +37,12 @@
 ```erlang
 [
  {nitrogen, [
-             {recaptcha, 
-              [{public_key, "recaptcha_public_key"},
-               {private_key, "recaptcha_private_key"},
-               {challenge_url, "http://www.google.com/recaptcha/api/challenge"},
-               {verify_url, "http://www.google.com/recaptcha/api/verify"}]}
-               ...
+	     {recaptcha,
+	      [{public_key, "recaptcha_public_key"},
+	       {private_key, "recaptcha_private_key"},
+	       {challenge_url, "http://www.google.com/recaptcha/api/challenge"},
+	       {verify_url, "http://www.google.com/recaptcha/api/verify"}]}
+	       ...
  ]},
  ...
 ].
@@ -136,18 +136,18 @@ inner_body() ->
       #label{text="Enter your name"},
       #textbox{id=name},
       #recaptcha{
-         button_id=recaptcha_button,
-         id=recaptcha,
-         tag=my_recaptcha,
-         captcha_opts=[{theme,white}]
+	 button_id=recaptcha_button,
+	 id=recaptcha,
+	 tag=my_recaptcha,
+	 captcha_opts=[{theme,white}]
       }
    ].
 
 event_recaptcha(my_recaptcha, ok) ->
     case check_user_input() of
-        ok     -> wf:remove(recaptcha),
-                  ok;
-        error  -> {error, "FAIL!"}
+	ok     -> wf:remove(recaptcha),
+		  ok;
+	error  -> {error, "FAIL!"}
     end.
 
 check_user_input() ->

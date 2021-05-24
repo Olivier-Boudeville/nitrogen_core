@@ -14,20 +14,20 @@
 reflect() -> record_info(fields, validate).
 
 -spec render_action(#validate{}) -> script().
-render_action(Record) -> 
+render_action(Record) ->
     % Some values...
     TriggerPath = Record#validate.trigger,
     TargetPath = Record#validate.target,
     ValidationGroup = case Record#validate.group of
-        undefined -> TriggerPath;
-        Other -> Other
+	undefined -> TriggerPath;
+	Other -> Other
     end,
     ValidMessage = wf:js_escape(Record#validate.success_text),
     OnlyOnBlur = (Record#validate.on == blur),
-    OnlyOnSubmit = (Record#validate.on == submit),	
+    OnlyOnSubmit = (Record#validate.on == submit),
     InsertAfterNode = case Record#validate.attach_to of
-        undefined -> "";
-        Node -> wf:f(<<", insertAfterWhatNode : obj(\"~s\")">>, [Node])
+	undefined -> "";
+	Node -> wf:f(<<", insertAfterWhatNode : obj(\"~s\")">>, [Node])
     end,
 
     % Create the validator Javascript...
@@ -37,14 +37,14 @@ render_action(Record) ->
 
     % Update all child validators with TriggerPath and TargetPath...
     F = fun(X) ->
-        Base = wf_utils:get_validatorbase(X),
-        Base1 = Base#validatorbase { trigger = TriggerPath, target = TargetPath, attach_to = Record#validate.attach_to },
-        wf_utils:replace_with_base(Base1, X)
+	Base = wf_utils:get_validatorbase(X),
+	Base1 = Base#validatorbase { trigger = TriggerPath, target = TargetPath, attach_to = Record#validate.attach_to },
+	wf_utils:replace_with_base(Base1, X)
     end,
     Validators = lists:flatten([Record#validate.validators]),
     Validators1 = [F(X) || X <- Validators],
 
     % Use #script element to create the final javascript to send to the browser...
     [
-        ConstructorJS, TriggerJS, Validators1
-    ].	
+	ConstructorJS, TriggerJS, Validators1
+    ].

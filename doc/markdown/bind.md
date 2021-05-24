@@ -29,7 +29,7 @@
      tuples or missing tuples with no ill effects.
 
  *  Records :: If the data is in the form of a record, then each row must be
-     the same type of record, and the map must be a record.  
+     the same type of record, and the map must be a record.
 
   The bind element can be nested within itself.
 
@@ -58,10 +58,10 @@
 
    * `map` (erlang terms) - Specify how the data maps to the body of elements.
 
-   * `transform` (Function(DataRow, Acc) -> {DataRow1, Acc1, ExtraBindings}) - 
-   A transform function that is run on the data before binding. DataRow contains 
-   one row of data. Acc contains the accumulator set by the 'acc' attribute. 
-   The function can return a modified datarow, an updated accumulator, 
+   * `transform` (Function(DataRow, Acc) -> {DataRow1, Acc1, ExtraBindings}) -
+   A transform function that is run on the data before binding. DataRow contains
+   one row of data. Acc contains the accumulator set by the 'acc' attribute.
+   The function can return a modified datarow, an updated accumulator,
    and a list of extra bindings to apply. The extra bindings must be of the
    form `{element_id@attr, value}`.
 

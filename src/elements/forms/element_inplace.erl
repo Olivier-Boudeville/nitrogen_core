@@ -16,15 +16,15 @@ reflect() -> record_info(fields, inplace).
 
 -spec render_element(#inplace{}) -> body().
 render_element(#inplace{
-        text=Text,
-        tag=Tag,
-        delegate=Delegate,
-        edit=Edit,
+	text=Text,
+	tag=Tag,
+	delegate=Delegate,
+	edit=Edit,
 		view=View,
-        class=Class,
-        style=Style,
-        start_mode=StartMode,
-        data_fields=DataFields}) ->
+	class=Class,
+	style=Style,
+	start_mode=StartMode,
+	data_fields=DataFields}) ->
 
 	OKButtonID = wf:temp_id(),
 	CancelButtonID = wf:temp_id(),
@@ -95,18 +95,18 @@ render_element(#inplace{
 	% Create the main panel...
 
     #panel { class=[inplace, Class], data_fields=DataFields, style=Style, body=[
-        #panel { id=ViewPanelID, class="view", body=[ View3 ], actions = [
-            #event { type=click, actions=[
-                #hide { target=ViewPanelID },
-                #show { target=EditPanelID },
-                #script { script = wf:f("objs('~s').focus(); objs('~s').select();", [EditID, EditID]) }
-            ]}
-        ]},
-        #panel { id=EditPanelID, class="edit", body=[
-            Edit3,
-            #button { id=OKButtonID, text="OK", delegate=?MODULE, postback=OKPostback },
-            #button { id=CancelButtonID, text="Cancel", actions = [CancelEvent#event{ type=click }] }
-        ]}
+	#panel { id=ViewPanelID, class="view", body=[ View3 ], actions = [
+	    #event { type=click, actions=[
+		#hide { target=ViewPanelID },
+		#show { target=EditPanelID },
+		#script { script = wf:f("objs('~s').focus(); objs('~s').select();", [EditID, EditID]) }
+	    ]}
+	]},
+	#panel { id=EditPanelID, class="edit", body=[
+	    Edit3,
+	    #button { id=OKButtonID, text="OK", delegate=?MODULE, postback=OKPostback },
+	    #button { id=CancelButtonID, text="Cancel", actions = [CancelEvent#event{ type=click }] }
+	]}
     ]}.
 
 -spec event(any()) -> ok.
@@ -154,4 +154,3 @@ append_field_actions(Actions, Trigger, Fields, Rec) ->
 		OldActions -> modify_field_action(OldActions, Trigger)
 	end,
 	setelement(N, Rec, Actions ++ ModifiedOldActions).
-

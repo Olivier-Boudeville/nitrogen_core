@@ -7,7 +7,7 @@
   place.
 
   The user clicks on the label, and it is replaced with a textarea, an OK
-  button, and a Cancel button. 
+  button, and a Cancel button.
 
   If the user clicks OK, a callback is issued to the delegate module so that it
   can save the new text.
@@ -41,7 +41,7 @@
       value as necessary, and must return either the value itself, or a new value
       that will be sent back to the page and set as the value of the textarea.
 
-### See Also 
+### See Also
 
  *  [base element](./element_base.md)
 
@@ -50,5 +50,3 @@
  *  [inplace element](./inplace.md)
 
  *  [textarea element](./textarea.md)
-
- 

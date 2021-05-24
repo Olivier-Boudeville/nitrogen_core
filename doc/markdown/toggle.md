@@ -29,5 +29,3 @@
  *  [animate element](./animate.md)
 
  *  [effect element](./effect.md)
-
- 

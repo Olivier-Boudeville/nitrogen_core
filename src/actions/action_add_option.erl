@@ -10,7 +10,7 @@
 render_action(#add_option{target=Target, option=Option, location=Location}) ->
     OptionHtml = element_dropdown:create_option(Option),
     Type = case Location of
-        bottom -> insert_bottom;
-        top -> insert_top
+	bottom -> insert_bottom;
+	top -> insert_top
     end,
     #update{type=Type, target=Target, elements=OptionHtml}.

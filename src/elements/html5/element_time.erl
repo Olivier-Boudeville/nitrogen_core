@@ -16,11 +16,11 @@ reflect() -> record_info(fields, time).
 render_element(Record) ->
     Text = wf:html_encode(Record#time.text, Record#time.html_encode),
     wf_tags:emit_tag(time, [Text, Record#time.body], [
-        {id, Record#time.html_id},
-        {class, ["time", Record#time.class]},
-        {title, Record#time.title},
-        {style, Record#time.style},
-        {role, Record#time.role},
-        {data_fields, Record#time.data_fields},
-        ?WF_IF(Record#time.datetime, {datetime, Record#time.datetime})
+	{id, Record#time.html_id},
+	{class, ["time", Record#time.class]},
+	{title, Record#time.title},
+	{style, Record#time.style},
+	{role, Record#time.role},
+	{data_fields, Record#time.data_fields},
+	?WF_IF(Record#time.datetime, {datetime, Record#time.datetime})
     ]).

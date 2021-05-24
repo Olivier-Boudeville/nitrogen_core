@@ -20,10 +20,10 @@ render_element(Rec = #progress_bar{value=Value, color=Color, max=Max, label=Labe
     Class = create_class(Tempid, Label, Rec#progress_bar.class),
     wire_init(Tempid, Value, Max, Color),
     wf_tags:emit_tag('div', LabelElement, [
-        {style, Rec#progress_bar.style},
-        {title, Rec#progress_bar.title},
-        {id, Rec#progress_bar.html_id},
-        {class, Class}
+	{style, Rec#progress_bar.style},
+	{title, Rec#progress_bar.title},
+	{id, Rec#progress_bar.html_id},
+	{class, Class}
     ]).
 
 create_class(Tempid, Label, CurClass) ->
@@ -49,9 +49,9 @@ render_value(V) ->
 
 label_class(undefined) ->
     'progressbar-label-none';
-label_class(Atom) when is_atom(Atom) -> 
+label_class(Atom) when is_atom(Atom) ->
     wf:to_atom(wf:to_list(['progressbar-label-',Atom]));
-label_class(Str) when is_list(Str); is_binary(Str) -> 
+label_class(Str) when is_list(Str); is_binary(Str) ->
     'progressbar-label-string'.
 
 
@@ -61,7 +61,7 @@ render_label(undefined, _Val, _Max) ->
     [];
 render_label(percent, Val, Max) when Val=/=undefined ->
     #panel{class=['progressbar-label'], text=render_percent(Val, Max)};
-render_label(ratio, Val, Max) when Val=/=undefined -> 
+render_label(ratio, Val, Max) when Val=/=undefined ->
     #panel{class=['progressbar-label'], text=render_ratio(Val, Max)};
 render_label(both, Val, Max) when Val=/=undefined ->
     #panel{class=['progressbar-label'], text=render_both(Val, Max)};

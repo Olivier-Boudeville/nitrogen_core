@@ -19,9 +19,9 @@
 ```erlang
    autocomplete_enter_event(SearchTerm, Tag) ->
       _JsonString = some_search_function(SearchTerm),
-      
+
    autocomplete_select_event({struct, [{<<"id">>,ID }, {<<"value">>, Value}]}, Tag) ->
-      wf:flash(wf:f("Selected ~p:~p",[ID, Value])).  
+      wf:flash(wf:f("Selected ~p:~p",[ID, Value])).
 
 ```
 
@@ -51,4 +51,3 @@
  *  [option element](./option.md)
 
  *  [Textbox Autocomplete Demo](http://nitrogenproject.com/demos/textbox_autocomplete)
- 

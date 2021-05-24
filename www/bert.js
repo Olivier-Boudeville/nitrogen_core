@@ -162,7 +162,7 @@ BertClass.prototype.encode_unicode_string = function(Obj) {
 		s += this.encode_number(Obj.charCodeAt(i));
 	}
 	return s + this.NIL;
-};	
+};
 
 BertClass.prototype.encode_boolean = function (Obj) {
 	if (Obj) {

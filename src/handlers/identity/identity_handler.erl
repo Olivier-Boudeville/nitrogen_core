@@ -12,16 +12,16 @@
 ]).
 
 -callback init(         handler_config(),
-                        handler_state()) -> {ok, handler_state()}.
+			handler_state()) -> {ok, handler_state()}.
 -callback finish(       handler_config(),
-                        handler_state()) -> {ok, handler_state()}.
+			handler_state()) -> {ok, handler_state()}.
 -callback get_user(     handler_config(),
-                        handler_state()) -> User :: term().
+			handler_state()) -> User :: term().
 -callback set_user(     User :: term(),
-                        handler_config(),
-                        handler_state()) -> {ok, handler_state()}.
+			handler_config(),
+			handler_state()) -> {ok, handler_state()}.
 -callback clear(        handler_config(),
-                        handler_state()) -> {ok, handler_state()}.
+			handler_state()) -> {ok, handler_state()}.
 % get_user(State) -> User.
 % Retrieve an Erlang term representing the current user.
 get_user() ->

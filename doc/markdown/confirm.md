@@ -30,5 +30,3 @@
  *  [base element](./action_base.md)
 
  *  [alert element](./alert.md)
-
- 

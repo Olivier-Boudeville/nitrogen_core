@@ -7,21 +7,21 @@
   Overview of what this handler does
 
 ### Behavior Functions
- 
+
 ##### `init(Config, State)`
 
   Initialize the handler
 
- *  /Return Value/ - `{ok, NewState}` 
+ *  /Return Value/ - `{ok, NewState}`
 
 ##### `finish(Config, State)`
 
   Clean up the handler
 
  *  /Return Value/ - `{ok, NewState}`
-  
+
 ##### `function(Arg1, Arg2)`
-  
+
   Overview of this function
 
  *  `Arg1` - Description of Arg1

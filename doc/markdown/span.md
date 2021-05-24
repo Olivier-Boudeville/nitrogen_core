@@ -26,5 +26,3 @@
  *  [base element](./element_base.md)
 
  *  [panel element](./panel.md)
-
- 

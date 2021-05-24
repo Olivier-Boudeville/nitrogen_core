@@ -13,16 +13,16 @@
 
 reflect() -> record_info(fields, mobile_grid).
 
-render_element(Record) -> 
+render_element(Record) ->
     Columns = Record#mobile_grid.columns,
     GridClass = grid_class(Columns),
     #panel{
-        html_id=Record#mobile_grid.html_id,
-        class=[GridClass | Record#mobile_grid.class],
-        data_fields=Record#mobile_grid.data_fields,
-        body=format_blocks(Record#mobile_grid.blocks,Columns)
+	html_id=Record#mobile_grid.html_id,
+	class=[GridClass | Record#mobile_grid.class],
+	data_fields=Record#mobile_grid.data_fields,
+	body=format_blocks(Record#mobile_grid.blocks,Columns)
     }.
-        
+
 format_blocks(Blocks,Columns) ->
     format_blocks(lists:flatten(Blocks),1,Columns).
 
@@ -32,8 +32,8 @@ format_blocks([],_,_) ->
 %% (the Current Column is higher than the max columns), then let's reset the
 %% Current column to 1, which will start us at the first column again
 format_blocks([Block | Blocks],CurColumn,MaxColumns)
-        when    Block#mobile_grid_block.new_row==true
-        orelse  CurColumn > MaxColumns ->
+	when    Block#mobile_grid_block.new_row==true
+	orelse  CurColumn > MaxColumns ->
     format_blocks([Block#mobile_grid_block{new_row=false} | Blocks],1,MaxColumns);
 
 %% This will iterate through each block, and assign the proper grid block class
@@ -46,7 +46,7 @@ format_blocks([Block | Blocks],CurColumn,MaxColumns) ->
 format_block(Block,CurColumn) ->
     BlockClass = block_class(CurColumn),
     Block#mobile_grid_block{
-        class=[BlockClass | Block#mobile_grid_block.class]
+	class=[BlockClass | Block#mobile_grid_block.class]
     }.
 
 
@@ -56,7 +56,7 @@ grid_class(3) -> 'ui-grid-b';
 grid_class(4) -> 'ui-grid-c';
 grid_class(5) -> 'ui-grid-d';
 grid_class(C) -> throw({render_element,element_mobile_grid,{invalid_number_of_columns,C}}).
-    
+
 block_class(1) -> 'ui-block-a';
 block_class(2) -> 'ui-block-b';
 block_class(3) -> 'ui-block-c';

@@ -3,7 +3,7 @@
 
 ## Link Element - #link{}
 
-  The link element produces a clickable hyperlink. Depending on its settings,  
+  The link element produces a clickable hyperlink. Depending on its settings,
   the link can either function as a normal client-side hyperlink, or can
   cause a Nitrogen postback.
 
@@ -35,9 +35,9 @@
      a shortcut for making icon links.  Serves as a shortcut for the following:
 
 ```ERLANG
-         #link{url="/edit" body=[
-             #image{image="/path/to/some/image.gif"}
-         ]}
+	 #link{url="/edit" body=[
+	     #image{image="/path/to/some/image.gif"}
+	 ]}
 
 ```
 
@@ -51,12 +51,12 @@
 
    * `click` (Action/ or /List of Actions) - Wires the selected actons to
      the \"click\" events.  Due to the commonality of binding actions to the
-     click event, this is merely a shortcut for 
+     click event, this is merely a shortcut for
 
 ```ERLANG
-         #link{ text="Do Something", actions=[
-            #event{type=click,actions=ListOfActions}
-         ]}
+	 #link{ text="Do Something", actions=[
+	    #event{type=click,actions=ListOfActions}
+	 ]}
 
 ```
 

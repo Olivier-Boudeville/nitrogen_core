@@ -9,10 +9,10 @@
   Nitrogen Tutorial at the Erlang User Conference 2010 here.
 
 ## Is there a Nitrogen Book?
-  
+
   **Yes!** It's called [**Build it With Nitrogen**](http://builditwith.com/nitrogen)
   by Lloyd R. Prentice and Jesse Gumm (Nitrogen Project Lead)
-  
+
 ## How do I create a new Nitrogen application?
 
   Note: If you want to add Nitrogen to an existing application, see [this question](#200)
@@ -58,14 +58,14 @@
   wish to compile on Windows. Read about
   [Compiling
   Nitrogen on Windows](https://github.com/nitrogen/nitrogen/blob/master/rel/overlay/win/README.md)
- 
+
   There are also "slim release" versions that can be built. These take
   advantage of a new feature introduced in Erlang's R15B02 release, which
   packages up an application, but does not include a full Erlang distribution
   (instead, it assumes the target system has Erlang installed already).
 
   You can create these "slim releases" by typing:
-  
+
     make slim_cowboy
     make slim_inets
     make slim_mochiweb
@@ -110,13 +110,13 @@
   To start Nitrogen in the console
 
     bin/nitrogen console
-  
+
   then open [http://localhost:8000/](http://localhost:8000/) to see your site.
 
   To start Nitrogen, type
 
     bin/nitrogen start
-  
+
   then open [http://localhost:8000/](http://localhost:8000/) as above.
 
   To attach to a detached Nitrogen console
@@ -136,7 +136,7 @@
   Your entire site's code can be found in `site/`.
 
   Within there, you'll find:
-  
+
  *  `site/src` :: Your erlang code
 
  *  `site/static` :: Where static resources like CSS, Javascript, and images go
@@ -195,7 +195,7 @@
 
   The code is placed under `./site/src`, `./site/src/elements`, or
   `./site/src/actions` for pages, elements, and actions,
-  respectively. 
+  respectively.
 
 ## How do I make a mobile version?
 
@@ -226,7 +226,7 @@
 ## How do I upgrade to a new version of Nitrogen?
 
   **Upgrading to 2.3**
-    
+
   Following the instructions for upgrading to 2.2.2 will work except that
   websockets won't be available. For a more complete upgrade guide, see the
   [See the 2.3 upgrading guide](upgrade2.3.md)
@@ -248,7 +248,7 @@
   [Troubleshooting](troubleshooting.md) guide.
 
   **If you're running a version of Nitrogen pre 2.1 and want to upgrade to 2.1.0 and above:**
-  
+
  *  Build or download the new Nitrogen environment for your architecture and
     preferred web server. Unzip to a new directory.
 
@@ -260,10 +260,10 @@
     any files in `./site/static/nitrogen`.
 
     This will update the Erlang version, the dependencies files, and
-    all of the Javascript used by Nitrogen. 
-    
+    all of the Javascript used by Nitrogen.
+
     You will also need to update your code if there are any API level changes.
 
-## What do I do if I run into errors? How do I troubleshoot? 
+## What do I do if I run into errors? How do I troubleshoot?
 
   See our [Troubleshooting Guide](troubleshooting.md)

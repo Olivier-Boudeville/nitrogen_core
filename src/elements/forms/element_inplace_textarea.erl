@@ -15,7 +15,7 @@
 reflect() -> record_info(fields, inplace_textarea).
 
 -spec render_element(#inplace_textarea{}) -> body().
-render_element(Record) -> 
+render_element(Record) ->
     % Get vars...
     OKButtonID = wf:temp_id(),
     CancelButtonID = wf:temp_id(),
@@ -24,11 +24,11 @@ render_element(Record) ->
     LabelID = wf:temp_id(),
     MouseOverID = wf:temp_id(),
     TextBoxID = wf:temp_id(),
-    
+
     Tag = Record#inplace_textarea.tag,
     Delegate = Record#inplace_textarea.delegate,
     HTMLEncode = Record#inplace_textarea.html_encode,
-   
+
     % Record the encoding of the inplace textarea so we don't need to re-encode
     wf:state({inplace_textarea_encode,LabelID},HTMLEncode),
 
@@ -40,53 +40,53 @@ render_element(Record) ->
 
     % Create the view...
     Text = Record#inplace_textarea.text,
-    Terms = #panel { 
-        html_id=Record#inplace_textarea.html_id,
-        class=[inplace_textbox, Record#inplace_textarea.class],
-        title=Record#inplace_textarea.title,
-        data_fields=Record#inplace_textarea.data_fields,
-        style=Record#inplace_textarea.style,
-        body = [
-            #panel { 
-				id=ViewPanelID, 
-				class="view", 
+    Terms = #panel {
+	html_id=Record#inplace_textarea.html_id,
+	class=[inplace_textbox, Record#inplace_textarea.class],
+	title=Record#inplace_textarea.title,
+	data_fields=Record#inplace_textarea.data_fields,
+	style=Record#inplace_textarea.style,
+	body = [
+	    #panel {
+				id=ViewPanelID,
+				class="view",
 				style = ?WF_IF(StartMode==edit,"diplay:none"),
 				body=[
-                #span { id=LabelID, class="inplace_textarea", text=Text, html_encode=HTMLEncode, actions=[
-                    #buttonize { target=ViewPanelID }
-                ]},
-                #span { id=MouseOverID, class="instructions", text="Click to edit", style="display:none" }
-            ], actions = [
-                    #event { type=click, actions=[
-                        #hide { target=ViewPanelID },
-                        #show { target=EditPanelID },
-                        #script { script = wf:f("obj('~s').focus(); obj('~s').select();", [TextBoxID, TextBoxID]) }
-                    ]},
-                    #event { type=mouseover, target=MouseOverID, actions=#show{} },
-                    #event { type=mouseout, target=MouseOverID, actions=#hide{} }
-            ]},
-            #panel { 
-				id=EditPanelID, 
-				class="edit", 
+		#span { id=LabelID, class="inplace_textarea", text=Text, html_encode=HTMLEncode, actions=[
+		    #buttonize { target=ViewPanelID }
+		]},
+		#span { id=MouseOverID, class="instructions", text="Click to edit", style="display:none" }
+	    ], actions = [
+		    #event { type=click, actions=[
+			#hide { target=ViewPanelID },
+			#show { target=EditPanelID },
+			#script { script = wf:f("obj('~s').focus(); obj('~s').select();", [TextBoxID, TextBoxID]) }
+		    ]},
+		    #event { type=mouseover, target=MouseOverID, actions=#show{} },
+		    #event { type=mouseout, target=MouseOverID, actions=#hide{} }
+	    ]},
+	    #panel {
+				id=EditPanelID,
+				class="edit",
 				style = ?WF_IF(StartMode==view,"display:none"),
 				body=[
 					#textarea { id=TextBoxID, text=Text },
 					#button { id=OKButtonID, class=inplace_ok, text="OK"},
 					#button { id=CancelButtonID, class=inplace_cancel, text="Cancel", click=[
-                        #hide{ target=EditPanelID },
-                        #show{ target=ViewPanelID },
-                        #script{ script=wf:f("obj('~s').value=obj('~s').defaultValue;",[TextBoxID, TextBoxID]) }
-                    ]}
-            	]
+			#hide{ target=EditPanelID },
+			#show{ target=ViewPanelID },
+			#script{ script=wf:f("obj('~s').value=obj('~s').defaultValue;",[TextBoxID, TextBoxID]) }
+		    ]}
+		]
 			}
-        ]
+	]
     },
 
     case StartMode of
-        view -> ok; %% do nothing, as we already hide above in the style element
-        edit -> 
-            Script = #script { script="obj('me').focus(); obj('me').select();" },
-            wf:wire(TextBoxID, Script)
+	view -> ok; %% do nothing, as we already hide above in the style element
+	edit ->
+	    Script = #script { script="obj('me').focus(); obj('me').select();" },
+	    wf:wire(TextBoxID, Script)
     end,
 
     wf:wire(OKButtonID, OKEvent#event{type=click }),
@@ -96,7 +96,7 @@ render_element(Record) ->
     element_panel:render_element(Terms).
 
 -spec event(any()) -> ok.
-event({ok, Delegate, {ViewPanelID, LabelID, EditPanelID, TextBoxID}, Tag}) -> 
+event({ok, Delegate, {ViewPanelID, LabelID, EditPanelID, TextBoxID}, Tag}) ->
     Value = wf:q(TextBoxID),
     Module = wf:coalesce([Delegate, wf:page_module()]),
     Value1 = Module:inplace_textarea_event(Tag, Value),

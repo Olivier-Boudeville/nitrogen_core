@@ -11,10 +11,10 @@
 ]).
 
 %% #upload allows a user to upload a file.
-%% 
+%%
 %% How it works: - This element creates an <input type=file ...> HTML element
 %% on the page, wrapped in a <form>, with all of the required parameters
-%% necessary to fake the system into believing it is a real postback call. 
+%% necessary to fake the system into believing it is a real postback call.
 %%
 %% - When the user clicks the upload button, first the 'upload_started' event
 %% gets fired, calling start_upload_event(Tag) on the Module or Page.
@@ -38,7 +38,7 @@
 reflect() -> record_info(fields, upload).
 
 -spec overall_progress(OverallProgress :: boolean() | undefined | auto,
-                       Multiple :: boolean()) -> boolean().
+		       Multiple :: boolean()) -> boolean().
 overall_progress(OverallProgress, _Multiple) when is_boolean(OverallProgress) ->
     OverallProgress;
 overall_progress(undefined, Multiple) ->
@@ -48,21 +48,21 @@ overall_progress(auto, Multiple) ->
 
 -spec render_element(#upload{}) -> body().
 render_element(Record = #upload{
-        id=ID,
-        class=Class,
-        anchor=Anchor,
-        multiple=Multiple,
-        overall_progress=OverallProgress0,
-        droppable=Droppable,
-        droppable_text=DroppableText,
-        file_text=FileInputText,
-        show_button=ShowButton,
-        button_text=ButtonText,
-        button_class=ButtonClass,
-        data_fields=DataFields}) ->
-    
+	id=ID,
+	class=Class,
+	anchor=Anchor,
+	multiple=Multiple,
+	overall_progress=OverallProgress0,
+	droppable=Droppable,
+	droppable_text=DroppableText,
+	file_text=FileInputText,
+	show_button=ShowButton,
+	button_text=ButtonText,
+	button_class=ButtonClass,
+	data_fields=DataFields}) ->
+
     StartedTag = {upload_started, Record},
-    FinishedTag = {upload_finished, Record}, 
+    FinishedTag = {upload_finished, Record},
     FormID = wf:temp_id(),
     IFrameID = wf:temp_id(),
     ButtonID = wf:temp_id(),
@@ -73,8 +73,8 @@ render_element(Record = #upload{
 	Param = [
 		{droppable,Droppable},
 		{autoupload,not(ShowButton)},
-        {multiple, Multiple},
-        {overall_progress, overall_progress(OverallProgress0, Multiple)}
+	{multiple, Multiple},
+	{overall_progress, overall_progress(OverallProgress0, Multiple)}
 	],
 
 	JSONParam = nitro_mochijson2:encode({struct,Param}),
@@ -85,12 +85,12 @@ render_element(Record = #upload{
 
     % Create a postback that is called when the user first starts the upload...
     case ShowButton of
-        true ->
-            wf:wire(ButtonID, #event {type=click, delegate=?MODULE, postback=StartedTag }),
-            wf:wire(ButtonID, #event {type=click, actions=SubmitJS });
-        false ->
-            % If the button is invisible, then start uploading when the user selects a file.
-            wf:wire(Anchor, #event {type=change, delegate=?MODULE, postback=StartedTag })
+	true ->
+	    wf:wire(ButtonID, #event {type=click, delegate=?MODULE, postback=StartedTag }),
+	    wf:wire(ButtonID, #event {type=click, actions=SubmitJS });
+	false ->
+	    % If the button is invisible, then start uploading when the user selects a file.
+	    wf:wire(Anchor, #event {type=change, delegate=?MODULE, postback=StartedTag })
     end,
 
     wf:wire(UploadJS),
@@ -104,84 +104,84 @@ render_element(Record = #upload{
     wf:defer(wf:f("Nitrogen.$recalculate_upload_dimensions($('form~s'));", [ID])),
 
     WrapperContent = [
-        wf_tags:emit_tag(input, [
-            {type, button},
-            {class, ['upload-button']},
-            {value, FileInputText}
-        ]),
-        wf_tags:emit_tag(input, [
-            {name, file},
-            {data_fields, DataFields},
-            {class, [no_postback, 'upload-input', FileInputID|Anchor]},
-            {id, FileInputID},
-            {type, file},
-            ?WF_IF(Multiple,multiple,[])
-        ])
+	wf_tags:emit_tag(input, [
+	    {type, button},
+	    {class, ['upload-button']},
+	    {value, FileInputText}
+	]),
+	wf_tags:emit_tag(input, [
+	    {name, file},
+	    {data_fields, DataFields},
+	    {class, [no_postback, 'upload-input', FileInputID|Anchor]},
+	    {id, FileInputID},
+	    {type, file},
+	    ?WF_IF(Multiple,multiple,[])
+	])
     ],
 
     % Render the controls and hidden iframe...
     FormContent = [
-        %% IE9 does not support the droppable option, so let's just hide the drop field
-        "<!--[if lte IE 9]>
-            <style type='text/css'> .upload_drop {display: none} </style>
-        <![endif]-->",
+	%% IE9 does not support the droppable option, so let's just hide the drop field
+	"<!--[if lte IE 9]>
+	    <style type='text/css'> .upload_drop {display: none} </style>
+	<![endif]-->",
 
-        #panel{
-            show_if=Droppable,
-            id=DropID,
-            class=[upload_drop,'dropzone-container'],
-            body=[
-                #panel{
-                    class=[dropzone,'ui-corner-all'],
-                    text=DroppableText
-                }
-            ]
-        },
-        #panel{
-            style="display:none",
-            class=upload_overall_progress
-        },
-        #list{
-            id=DropListingID,
-            class=upload_droplist
-        },
+	#panel{
+	    show_if=Droppable,
+	    id=DropID,
+	    class=[upload_drop,'dropzone-container'],
+	    body=[
+		#panel{
+		    class=[dropzone,'ui-corner-all'],
+		    text=DroppableText
+		}
+	    ]
+	},
+	#panel{
+	    style="display:none",
+	    class=upload_overall_progress
+	},
+	#list{
+	    id=DropListingID,
+	    class=upload_droplist
+	},
 
-        wf_tags:emit_tag('div', WrapperContent, [
-            {class, 'upload-content'}
-        ]),
+	wf_tags:emit_tag('div', WrapperContent, [
+	    {class, 'upload-content'}
+	]),
 
-        wf_tags:emit_tag(input, [
-            {name, eventContext},
-            {type, hidden},
-            {class, no_postback},
-            {value, PostbackInfo}
-        ]),
+	wf_tags:emit_tag(input, [
+	    {name, eventContext},
+	    {type, hidden},
+	    {class, no_postback},
+	    {value, PostbackInfo}
+	]),
 
-        wf_tags:emit_tag(input, [
-            {name, pageContext},
-            {type, hidden},
-            {class, no_postback},
-            {value, ""}
-        ]),
+	wf_tags:emit_tag(input, [
+	    {name, pageContext},
+	    {type, hidden},
+	    {class, no_postback},
+	    {value, ""}
+	]),
 
-        wf_tags:emit_tag(input, [
-            {type, hidden},
-            {class, no_postback},
-            {value, ""}
-        ]),
+	wf_tags:emit_tag(input, [
+	    {type, hidden},
+	    {class, no_postback},
+	    {value, ""}
+	]),
 
-        #button { id=ButtonID, show_if=ShowButton, text=ButtonText, class=ButtonClass}
+	#button { id=ButtonID, show_if=ShowButton, text=ButtonText, class=ButtonClass}
     ],
 
     [
-        wf_tags:emit_tag(form, FormContent, [
-            {id, FormID},
-            {name, upload}, 
-            {method, 'POST'},
-            {enctype, "multipart/form-data"},
-            {class, [no_postback, Class]},
-            {target, IFrameID}
-        ])
+	wf_tags:emit_tag(form, FormContent, [
+	    {id, FormID},
+	    {name, upload},
+	    {method, 'POST'},
+	    {enctype, "multipart/form-data"},
+	    {class, [no_postback, Class]},
+	    {target, IFrameID}
+	])
     ].
 
 
@@ -194,19 +194,19 @@ event({upload_started, Record}) ->
 
 % This event is called once the upload post happens behind the scenes.
 % It happens somewhat outside of Nitrogen, so the next thing we do
-% is trigger a postback that happens inside of Nitrogen. 
+% is trigger a postback that happens inside of Nitrogen.
 event({upload_finished, Record}) ->
     wf_context:type(first_request),
     Req = wf_context:bridge(),
 
     % % Create the postback...
     {Filename,NewTag} = case sbw:post_files(Req) of
-        [] -> 
-            {undefined,{upload_event, Record, undefined, undefined, undefined}};
-        [UploadedFile | _] ->
-            OriginalName = sb_uploaded_file:original_name(UploadedFile),
-            TempFile = sb_uploaded_file:temp_file(UploadedFile),
-            {OriginalName,{upload_event, Record, OriginalName, TempFile, node()}}
+	[] ->
+	    {undefined,{upload_event, Record, undefined, undefined, undefined}};
+	[UploadedFile | _] ->
+	    OriginalName = sb_uploaded_file:original_name(UploadedFile),
+	    TempFile = sb_uploaded_file:temp_file(UploadedFile),
+	    {OriginalName,{upload_event, Record, OriginalName, TempFile, node()}}
     end,
 
     % Make the tag...
@@ -217,8 +217,8 @@ event({upload_finished, Record}) ->
 
     % Set the response...
     wf_context:data([
-        "Nitrogen.$upload_finished(\"",wf:js_escape(Filename),"\");",
-        Postback
+	"Nitrogen.$upload_finished(\"",wf:js_escape(Filename),"\");",
+	Postback
     ]);
 
 % This event is fired by the upload_finished event, it calls

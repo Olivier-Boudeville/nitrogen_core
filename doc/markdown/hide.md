@@ -5,7 +5,7 @@
 ## Hide Action - #hide{}
 
   If an effect is specified, then call JQuery UI's [hide(effect, options, speed)](http://docs.jquery.com/UI/Effects/hide).
-	
+
   Otherwise, just hide the target element.
 
 ### Usage
@@ -28,5 +28,3 @@
  *  [base element](./action_base.md)
 
  *  [show element](./show.md)
-
- 

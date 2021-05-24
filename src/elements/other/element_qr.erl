@@ -15,8 +15,8 @@ reflect() -> record_info(fields, qr).
 
 -spec transform_element(#qr{}) -> body().
 transform_element(#qr{data=Empty} = QR) when Empty =:= undefined;
-                                          Empty =:= <<"">>;
-                                          Empty =:= "" ->
+					  Empty =:= <<"">>;
+					  Empty =:= "" ->
     transform_element(QR#qr{data=wf:url()});
 transform_element(#qr{data=Data, size=Size, class=Class, id=Id, title=Title}) ->
     BSize = wf:to_binary(Size),
@@ -32,11 +32,11 @@ transform_element(#qr{data=Data, size=Size, class=Class, id=Id, title=Title}) ->
 
     Path = "http://chart.apis.google.com/chart?",
     QS = wf:to_qs([
-        {cht, Cht},
-        {chs, Chs},
-        {choe, Choe},
-        {chld, Chld},
-        {chl, Chl}
+	{cht, Cht},
+	{chs, Chs},
+	{choe, Choe},
+	{chld, Chld},
+	{chl, Chl}
     ]),
     #image{
        id=Id,

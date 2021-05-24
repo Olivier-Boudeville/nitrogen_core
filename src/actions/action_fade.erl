@@ -9,7 +9,7 @@
 
 render_action(Record) ->
     #jquery_effect {
-        type=fade,
-        speed = Record#fade.speed,
-        actions = Record#fade.actions
+	type=fade,
+	speed = Record#fade.speed,
+	actions = Record#fade.actions
     }.

@@ -42,8 +42,8 @@
       An example of `setcap` being run on your Erlang app:
 
 ```bash
-        sudo setcap cap_net_bind_service+ep ./erts-5.9.2/bin/beam
-        sudo setcap cap_net_bind_service+ep ./erts-5.9.2/bin/beam.smp
+	sudo setcap cap_net_bind_service+ep ./erts-5.9.2/bin/beam
+	sudo setcap cap_net_bind_service+ep ./erts-5.9.2/bin/beam.smp
 
 ```
 
@@ -74,21 +74,21 @@
 ```erlang
   [
       {cowboy,[
-          {bind_address,"0.0.0.0"},
-          {port,8000},
-          {server_name,nitrogen},
-          {document_root,"./site/static"},
-          {static_paths, ["js/","images/","css/","nitrogen/"]}
+	  {bind_address,"0.0.0.0"},
+	  {port,8000},
+	  {server_name,nitrogen},
+	  {document_root,"./site/static"},
+	  {static_paths, ["js/","images/","css/","nitrogen/"]}
       ]}
   ].
 
 ```
 
- *  `static_paths` - (*List of Strings*) 
+ *  `static_paths` - (*List of Strings*)
 
     This setting will be used to determine if a requested resource should be
     handled by Nitrogen and simple_bridge, or if it should just be immediately
-    served directly by the Cowboy server. 
+    served directly by the Cowboy server.
     (Default: `["js/","images/","css/","nitrogen/"]`)
 
      **Note 1:** This is relative to the `document_root` above. So requests for `js/`
@@ -121,9 +121,9 @@
 ```erlang
   [{inets, [
       {services, [
-          {httpd, [
-              {proplist_file, "./etc/inets_httpd.erlenv"}
-          ]}
+	  {httpd, [
+	      {proplist_file, "./etc/inets_httpd.erlenv"}
+	  ]}
       ]}
   ]}].
 
@@ -147,9 +147,9 @@
       {modules, [nitrogen_inets]},
 
       {mime_types, [
-          {"css", "text/css"},
-          {"js", "text/javascript"},
-          {"html", "text/html"}
+	  {"css", "text/css"},
+	  {"js", "text/javascript"},
+	  {"html", "text/html"}
       ]}
   ].
 
@@ -242,7 +242,7 @@
   [Yaws](yaws.hyber.md) is a high performance webserver created by
   [Claes Wikstrom](https://github.com/klacke) and is a unique addition to the
   Nitrogen's supported webserver line-up because it's one of the few that uses
-  Apache-style configuration instead of the more usual Erlang proplist config 
+  Apache-style configuration instead of the more usual Erlang proplist config
   files.
 
 ##### etc/yaws.config
@@ -287,18 +287,18 @@
   description of the default one provided by Nitrogen.
 
  *  `logdir` :: tells where to store the Yaws log files
-    
+
  *  `<server mydomain.org> [...] </server>` :: Defines a virtual server. For use
       with Nitrogen, we recommend only specifying one. `mydomain.org` in our example
       is simply the name of the virtual server, and is not used for anything beyond
       a naming scheme.
-    
+
  *  `port` :: The port to listen on.
-    
+
  *  `listen` :: Which IP address to listen on.
-    
+
  *  `docroot` :: The location of the static files relative to the Nitrogen installation
-    
+
  *  `appmods ` </, nitrogen_yaws exclude_paths images nitrogen css js>= :: While
       quite long and dense with information, this configuration setting tells Yaws to
       send all requests to the Erlang module `nitrogen_yaws`, except for any requests

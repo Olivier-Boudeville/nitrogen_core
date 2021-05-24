@@ -45,24 +45,24 @@
 %% This is a macro to placate syntax highlighters..
 -define(Q, $\").
 -define(ADV_COL(S, N), S#decoder{offset=N+S#decoder.offset,
-                                 column=N+S#decoder.column}).
+				 column=N+S#decoder.column}).
 -define(INC_COL(S), S#decoder{offset=1+S#decoder.offset,
-                              column=1+S#decoder.column}).
+			      column=1+S#decoder.column}).
 -define(INC_LINE(S), S#decoder{offset=1+S#decoder.offset,
-                               column=1,
-                               line=1+S#decoder.line}).
+			       column=1,
+			       line=1+S#decoder.line}).
 -define(INC_CHAR(S, C),
-        case C of
-            $\n ->
-                S#decoder{column=1,
-                          line=1+S#decoder.line,
-                          offset=1+S#decoder.offset};
-            _ ->
-                S#decoder{column=1+S#decoder.column,
-                          offset=1+S#decoder.offset}
-        end).
+	case C of
+	    $\n ->
+		S#decoder{column=1,
+			  line=1+S#decoder.line,
+			  offset=1+S#decoder.offset};
+	    _ ->
+		S#decoder{column=1+S#decoder.column,
+			  offset=1+S#decoder.offset}
+	end).
 -define(IS_WHITESPACE(C),
-        (C =:= $\s orelse C =:= $\t orelse C =:= $\r orelse C =:= $\n)).
+	(C =:= $\s orelse C =:= $\t orelse C =:= $\r orelse C =:= $\n)).
 
 %% @type json_string() = atom | binary()
 %% @type json_number() = integer() | float()
@@ -74,13 +74,13 @@
 %%                     json_object() | json_eep18_object() | json_iolist()
 
 -record(encoder, {handler=null,
-                  utf8=false}).
+		  utf8=false}).
 
 -record(decoder, {object_hook=null,
-                  offset=0,
-                  line=1,
-                  column=1,
-                  state=null}).
+		  offset=0,
+		  line=1,
+		  column=1,
+		  state=null}).
 
 %% @spec encoder([encoder_option()]) -> function()
 %% @doc Create an encoder/1 with the given options.
@@ -144,8 +144,8 @@ json_encode(F, _State) when is_float(F) ->
 json_encode(S, State) when is_binary(S); is_atom(S) ->
     json_encode_string(S, State);
 json_encode([{K, _}|_] = Props, State) when (K =/= struct andalso
-                                             K =/= array andalso
-                                             K =/= json) ->
+					     K =/= array andalso
+					     K =/= json) ->
     json_encode_proplist(Props, State);
 json_encode({struct, Props}, State) when is_list(Props) ->
     json_encode_proplist(Props, State);
@@ -168,8 +168,8 @@ json_encode_array([], _State) ->
     <<"[]">>;
 json_encode_array(L, State) ->
     F = fun (O, Acc) ->
-                [$,, json_encode(O, State) | Acc]
-        end,
+		[$,, json_encode(O, State) | Acc]
+	end,
     [$, | Acc1] = lists:foldl(F, "[", L),
     lists:reverse([$\] | Acc1]).
 
@@ -177,127 +177,127 @@ json_encode_proplist([], _State) ->
     <<"{}">>;
 json_encode_proplist(Props, State) ->
     F = fun ({K, V}, Acc) ->
-                KS = json_encode_string(K, State),
-                VS = json_encode(V, State),
-                [$,, VS, $:, KS | Acc]
-        end,
+		KS = json_encode_string(K, State),
+		VS = json_encode(V, State),
+		[$,, VS, $:, KS | Acc]
+	end,
     [$, | Acc1] = lists:foldl(F, "{", Props),
     lists:reverse([$\} | Acc1]).
 
 json_encode_string(A, State) when is_atom(A) ->
     L = atom_to_list(A),
     case json_string_is_safe(L) of
-        true ->
-            [?Q, L, ?Q];
-        false ->
-            json_encode_string_unicode(xmerl_ucs:from_utf8(L), State, [?Q])
+	true ->
+	    [?Q, L, ?Q];
+	false ->
+	    json_encode_string_unicode(xmerl_ucs:from_utf8(L), State, [?Q])
     end;
 json_encode_string(B, State) when is_binary(B) ->
     case json_bin_is_safe(B) of
-        true ->
-            [?Q, B, ?Q];
-        false ->
-            json_encode_string_unicode(xmerl_ucs:from_utf8(B), State, [?Q])
+	true ->
+	    [?Q, B, ?Q];
+	false ->
+	    json_encode_string_unicode(xmerl_ucs:from_utf8(B), State, [?Q])
     end;
 json_encode_string(I, _State) when is_integer(I) ->
     [?Q, integer_to_list(I), ?Q];
 json_encode_string(L, State) when is_list(L) ->
     case json_string_is_safe(L) of
-        true ->
-            [?Q, L, ?Q];
-        false ->
-            json_encode_string_unicode(L, State, [?Q])
+	true ->
+	    [?Q, L, ?Q];
+	false ->
+	    json_encode_string_unicode(L, State, [?Q])
     end.
 
 json_string_is_safe([]) ->
     true;
 json_string_is_safe([C | Rest]) ->
     case C of
-        ?Q ->
-            false;
-        $\\ ->
-            false;
-        $\b ->
-            false;
-        $\f ->
-            false;
-        $\n ->
-            false;
-        $\r ->
-            false;
-        $\t ->
-            false;
-        C when C >= 0, C < $\s; C >= 16#7f, C =< 16#10FFFF ->
-            false;
-        C when C < 16#7f ->
-            json_string_is_safe(Rest);
-        _ ->
-            false
+	?Q ->
+	    false;
+	$\\ ->
+	    false;
+	$\b ->
+	    false;
+	$\f ->
+	    false;
+	$\n ->
+	    false;
+	$\r ->
+	    false;
+	$\t ->
+	    false;
+	C when C >= 0, C < $\s; C >= 16#7f, C =< 16#10FFFF ->
+	    false;
+	C when C < 16#7f ->
+	    json_string_is_safe(Rest);
+	_ ->
+	    false
     end.
 
 json_bin_is_safe(<<>>) ->
     true;
 json_bin_is_safe(<<C, Rest/binary>>) ->
     case C of
-        ?Q ->
-            false;
-        $\\ ->
-            false;
-        $\b ->
-            false;
-        $\f ->
-            false;
-        $\n ->
-            false;
-        $\r ->
-            false;
-        $\t ->
-            false;
-        C when C >= 0, C < $\s; C >= 16#7f ->
-            false;
-        C when C < 16#7f ->
-            json_bin_is_safe(Rest)
+	?Q ->
+	    false;
+	$\\ ->
+	    false;
+	$\b ->
+	    false;
+	$\f ->
+	    false;
+	$\n ->
+	    false;
+	$\r ->
+	    false;
+	$\t ->
+	    false;
+	C when C >= 0, C < $\s; C >= 16#7f ->
+	    false;
+	C when C < 16#7f ->
+	    json_bin_is_safe(Rest)
     end.
 
 json_encode_string_unicode([], _State, Acc) ->
     lists:reverse([$\" | Acc]);
 json_encode_string_unicode([C | Cs], State, Acc) ->
     Acc1 = case C of
-               ?Q ->
-                   [?Q, $\\ | Acc];
-               %% Escaping solidus is only useful when trying to protect
-               %% against "</script>" injection attacks which are only
-               %% possible when JSON is inserted into a HTML document
-               %% in-line. mochijson2 does not protect you from this, so
-               %% if you do insert directly into HTML then you need to
-               %% uncomment the following case or escape the output of encode.
-               %%
-               %% $/ ->
-               %%    [$/, $\\ | Acc];
-               %%
-               $\\ ->
-                   [$\\, $\\ | Acc];
-               $\b ->
-                   [$b, $\\ | Acc];
-               $\f ->
-                   [$f, $\\ | Acc];
-               $\n ->
-                   [$n, $\\ | Acc];
-               $\r ->
-                   [$r, $\\ | Acc];
-               $\t ->
-                   [$t, $\\ | Acc];
-               C when C >= 0, C < $\s ->
-                   [unihex(C) | Acc];
-               C when C >= 16#7f, C =< 16#10FFFF, State#encoder.utf8 ->
-                   [xmerl_ucs:to_utf8(C) | Acc];
-               C when  C >= 16#7f, C =< 16#10FFFF, not State#encoder.utf8 ->
-                   [unihex(C) | Acc];
-               C when C < 16#7f ->
-                   [C | Acc];
-               _ ->
-                   exit({json_encode, {bad_char, C}})
-           end,
+	       ?Q ->
+		   [?Q, $\\ | Acc];
+	       %% Escaping solidus is only useful when trying to protect
+	       %% against "</script>" injection attacks which are only
+	       %% possible when JSON is inserted into a HTML document
+	       %% in-line. mochijson2 does not protect you from this, so
+	       %% if you do insert directly into HTML then you need to
+	       %% uncomment the following case or escape the output of encode.
+	       %%
+	       %% $/ ->
+	       %%    [$/, $\\ | Acc];
+	       %%
+	       $\\ ->
+		   [$\\, $\\ | Acc];
+	       $\b ->
+		   [$b, $\\ | Acc];
+	       $\f ->
+		   [$f, $\\ | Acc];
+	       $\n ->
+		   [$n, $\\ | Acc];
+	       $\r ->
+		   [$r, $\\ | Acc];
+	       $\t ->
+		   [$t, $\\ | Acc];
+	       C when C >= 0, C < $\s ->
+		   [unihex(C) | Acc];
+	       C when C >= 16#7f, C =< 16#10FFFF, State#encoder.utf8 ->
+		   [xmerl_ucs:to_utf8(C) | Acc];
+	       C when  C >= 16#7f, C =< 16#10FFFF, not State#encoder.utf8 ->
+		   [unihex(C) | Acc];
+	       C when C < 16#7f ->
+		   [C | Acc];
+	       _ ->
+		   exit({json_encode, {bad_char, C}})
+	   end,
     json_encode_string_unicode(Cs, State, Acc1).
 
 hexdigit(C) when C >= 0, C =< 9 ->
@@ -324,12 +324,12 @@ json_decode(B, S) ->
 
 decode1(B, S=#decoder{state=null}) ->
     case tokenize(B, S#decoder{state=any}) of
-        {{const, C}, S1} ->
-            {C, S1};
-        {start_array, S1} ->
-            decode_array(B, S1);
-        {start_object, S1} ->
-            decode_object(B, S1)
+	{{const, C}, S1} ->
+	    {C, S1};
+	{start_array, S1} ->
+	    decode_array(B, S1);
+	{start_object, S1} ->
+	    decode_object(B, S1)
     end.
 
 make_object(V, #decoder{object_hook=N}) when N =:= null orelse N =:= struct ->
@@ -346,21 +346,21 @@ decode_object(B, S) ->
 
 decode_object(B, S=#decoder{state=key}, Acc) ->
     case tokenize(B, S) of
-        {end_object, S1} ->
-            V = make_object({struct, lists:reverse(Acc)}, S1),
-            {V, S1#decoder{state=null}};
-        {{const, K}, S1} ->
-            {colon, S2} = tokenize(B, S1),
-            {V, S3} = decode1(B, S2#decoder{state=null}),
-            decode_object(B, S3#decoder{state=comma}, [{K, V} | Acc])
+	{end_object, S1} ->
+	    V = make_object({struct, lists:reverse(Acc)}, S1),
+	    {V, S1#decoder{state=null}};
+	{{const, K}, S1} ->
+	    {colon, S2} = tokenize(B, S1),
+	    {V, S3} = decode1(B, S2#decoder{state=null}),
+	    decode_object(B, S3#decoder{state=comma}, [{K, V} | Acc])
     end;
 decode_object(B, S=#decoder{state=comma}, Acc) ->
     case tokenize(B, S) of
-        {end_object, S1} ->
-            V = make_object({struct, lists:reverse(Acc)}, S1),
-            {V, S1#decoder{state=null}};
-        {comma, S1} ->
-            decode_object(B, S1#decoder{state=key}, Acc)
+	{end_object, S1} ->
+	    V = make_object({struct, lists:reverse(Acc)}, S1),
+	    {V, S1#decoder{state=null}};
+	{comma, S1} ->
+	    decode_object(B, S1#decoder{state=key}, Acc)
     end.
 
 decode_array(B, S) ->
@@ -368,211 +368,211 @@ decode_array(B, S) ->
 
 decode_array(B, S=#decoder{state=any}, Acc) ->
     case tokenize(B, S) of
-        {end_array, S1} ->
-            {lists:reverse(Acc), S1#decoder{state=null}};
-        {start_array, S1} ->
-            {Array, S2} = decode_array(B, S1),
-            decode_array(B, S2#decoder{state=comma}, [Array | Acc]);
-        {start_object, S1} ->
-            {Array, S2} = decode_object(B, S1),
-            decode_array(B, S2#decoder{state=comma}, [Array | Acc]);
-        {{const, Const}, S1} ->
-            decode_array(B, S1#decoder{state=comma}, [Const | Acc])
+	{end_array, S1} ->
+	    {lists:reverse(Acc), S1#decoder{state=null}};
+	{start_array, S1} ->
+	    {Array, S2} = decode_array(B, S1),
+	    decode_array(B, S2#decoder{state=comma}, [Array | Acc]);
+	{start_object, S1} ->
+	    {Array, S2} = decode_object(B, S1),
+	    decode_array(B, S2#decoder{state=comma}, [Array | Acc]);
+	{{const, Const}, S1} ->
+	    decode_array(B, S1#decoder{state=comma}, [Const | Acc])
     end;
 decode_array(B, S=#decoder{state=comma}, Acc) ->
     case tokenize(B, S) of
-        {end_array, S1} ->
-            {lists:reverse(Acc), S1#decoder{state=null}};
-        {comma, S1} ->
-            decode_array(B, S1#decoder{state=any}, Acc)
+	{end_array, S1} ->
+	    {lists:reverse(Acc), S1#decoder{state=null}};
+	{comma, S1} ->
+	    decode_array(B, S1#decoder{state=any}, Acc)
     end.
 
 tokenize_string(B, S=#decoder{offset=O}) ->
     case tokenize_string_fast(B, O) of
-        {escape, O1} ->
-            Length = O1 - O,
-            S1 = ?ADV_COL(S, Length),
-            <<_:O/binary, Head:Length/binary, _/binary>> = B,
-            tokenize_string(B, S1, lists:reverse(binary_to_list(Head)));
-        O1 ->
-            Length = O1 - O,
-            <<_:O/binary, String:Length/binary, ?Q, _/binary>> = B,
-            {{const, String}, ?ADV_COL(S, Length + 1)}
+	{escape, O1} ->
+	    Length = O1 - O,
+	    S1 = ?ADV_COL(S, Length),
+	    <<_:O/binary, Head:Length/binary, _/binary>> = B,
+	    tokenize_string(B, S1, lists:reverse(binary_to_list(Head)));
+	O1 ->
+	    Length = O1 - O,
+	    <<_:O/binary, String:Length/binary, ?Q, _/binary>> = B,
+	    {{const, String}, ?ADV_COL(S, Length + 1)}
     end.
 
 tokenize_string_fast(B, O) ->
     case B of
-        <<_:O/binary, ?Q, _/binary>> ->
-            O;
-        <<_:O/binary, $\\, _/binary>> ->
-            {escape, O};
-        <<_:O/binary, C1, _/binary>> when C1 < 128 ->
-            tokenize_string_fast(B, 1 + O);
-        <<_:O/binary, C1, C2, _/binary>> when C1 >= 194, C1 =< 223,
-                C2 >= 128, C2 =< 191 ->
-            tokenize_string_fast(B, 2 + O);
-        <<_:O/binary, C1, C2, C3, _/binary>> when C1 >= 224, C1 =< 239,
-                C2 >= 128, C2 =< 191,
-                C3 >= 128, C3 =< 191 ->
-            tokenize_string_fast(B, 3 + O);
-        <<_:O/binary, C1, C2, C3, C4, _/binary>> when C1 >= 240, C1 =< 244,
-                C2 >= 128, C2 =< 191,
-                C3 >= 128, C3 =< 191,
-                C4 >= 128, C4 =< 191 ->
-            tokenize_string_fast(B, 4 + O);
-        _ ->
-            throw(invalid_utf8)
+	<<_:O/binary, ?Q, _/binary>> ->
+	    O;
+	<<_:O/binary, $\\, _/binary>> ->
+	    {escape, O};
+	<<_:O/binary, C1, _/binary>> when C1 < 128 ->
+	    tokenize_string_fast(B, 1 + O);
+	<<_:O/binary, C1, C2, _/binary>> when C1 >= 194, C1 =< 223,
+		C2 >= 128, C2 =< 191 ->
+	    tokenize_string_fast(B, 2 + O);
+	<<_:O/binary, C1, C2, C3, _/binary>> when C1 >= 224, C1 =< 239,
+		C2 >= 128, C2 =< 191,
+		C3 >= 128, C3 =< 191 ->
+	    tokenize_string_fast(B, 3 + O);
+	<<_:O/binary, C1, C2, C3, C4, _/binary>> when C1 >= 240, C1 =< 244,
+		C2 >= 128, C2 =< 191,
+		C3 >= 128, C3 =< 191,
+		C4 >= 128, C4 =< 191 ->
+	    tokenize_string_fast(B, 4 + O);
+	_ ->
+	    throw(invalid_utf8)
     end.
 
 tokenize_string(B, S=#decoder{offset=O}, Acc) ->
     case B of
-        <<_:O/binary, ?Q, _/binary>> ->
-            {{const, iolist_to_binary(lists:reverse(Acc))}, ?INC_COL(S)};
-        <<_:O/binary, "\\\"", _/binary>> ->
-            tokenize_string(B, ?ADV_COL(S, 2), [$\" | Acc]);
-        <<_:O/binary, "\\\\", _/binary>> ->
-            tokenize_string(B, ?ADV_COL(S, 2), [$\\ | Acc]);
-        <<_:O/binary, "\\/", _/binary>> ->
-            tokenize_string(B, ?ADV_COL(S, 2), [$/ | Acc]);
-        <<_:O/binary, "\\b", _/binary>> ->
-            tokenize_string(B, ?ADV_COL(S, 2), [$\b | Acc]);
-        <<_:O/binary, "\\f", _/binary>> ->
-            tokenize_string(B, ?ADV_COL(S, 2), [$\f | Acc]);
-        <<_:O/binary, "\\n", _/binary>> ->
-            tokenize_string(B, ?ADV_COL(S, 2), [$\n | Acc]);
-        <<_:O/binary, "\\r", _/binary>> ->
-            tokenize_string(B, ?ADV_COL(S, 2), [$\r | Acc]);
-        <<_:O/binary, "\\t", _/binary>> ->
-            tokenize_string(B, ?ADV_COL(S, 2), [$\t | Acc]);
-        <<_:O/binary, "\\u", C3, C2, C1, C0, Rest/binary>> ->
-            C = erlang:list_to_integer([C3, C2, C1, C0], 16),
-            if C > 16#D7FF, C < 16#DC00 ->
-                %% coalesce UTF-16 surrogate pair
-                <<"\\u", D3, D2, D1, D0, _/binary>> = Rest,
-                D = erlang:list_to_integer([D3,D2,D1,D0], 16),
-                [CodePoint] = xmerl_ucs:from_utf16be(<<C:16/big-unsigned-integer,
-                    D:16/big-unsigned-integer>>),
-                Acc1 = lists:reverse(xmerl_ucs:to_utf8(CodePoint), Acc),
-                tokenize_string(B, ?ADV_COL(S, 12), Acc1);
-            true ->
-                Acc1 = lists:reverse(xmerl_ucs:to_utf8(C), Acc),
-                tokenize_string(B, ?ADV_COL(S, 6), Acc1)
-            end;
-        <<_:O/binary, C1, _/binary>> when C1 < 128 ->
-            tokenize_string(B, ?INC_CHAR(S, C1), [C1 | Acc]);
-        <<_:O/binary, C1, C2, _/binary>> when C1 >= 194, C1 =< 223,
-                C2 >= 128, C2 =< 191 ->
-            tokenize_string(B, ?ADV_COL(S, 2), [C2, C1 | Acc]);
-        <<_:O/binary, C1, C2, C3, _/binary>> when C1 >= 224, C1 =< 239,
-                C2 >= 128, C2 =< 191,
-                C3 >= 128, C3 =< 191 ->
-            tokenize_string(B, ?ADV_COL(S, 3), [C3, C2, C1 | Acc]);
-        <<_:O/binary, C1, C2, C3, C4, _/binary>> when C1 >= 240, C1 =< 244,
-                C2 >= 128, C2 =< 191,
-                C3 >= 128, C3 =< 191,
-                C4 >= 128, C4 =< 191 ->
-            tokenize_string(B, ?ADV_COL(S, 4), [C4, C3, C2, C1 | Acc]);
-        _ ->
-            throw(invalid_utf8)
+	<<_:O/binary, ?Q, _/binary>> ->
+	    {{const, iolist_to_binary(lists:reverse(Acc))}, ?INC_COL(S)};
+	<<_:O/binary, "\\\"", _/binary>> ->
+	    tokenize_string(B, ?ADV_COL(S, 2), [$\" | Acc]);
+	<<_:O/binary, "\\\\", _/binary>> ->
+	    tokenize_string(B, ?ADV_COL(S, 2), [$\\ | Acc]);
+	<<_:O/binary, "\\/", _/binary>> ->
+	    tokenize_string(B, ?ADV_COL(S, 2), [$/ | Acc]);
+	<<_:O/binary, "\\b", _/binary>> ->
+	    tokenize_string(B, ?ADV_COL(S, 2), [$\b | Acc]);
+	<<_:O/binary, "\\f", _/binary>> ->
+	    tokenize_string(B, ?ADV_COL(S, 2), [$\f | Acc]);
+	<<_:O/binary, "\\n", _/binary>> ->
+	    tokenize_string(B, ?ADV_COL(S, 2), [$\n | Acc]);
+	<<_:O/binary, "\\r", _/binary>> ->
+	    tokenize_string(B, ?ADV_COL(S, 2), [$\r | Acc]);
+	<<_:O/binary, "\\t", _/binary>> ->
+	    tokenize_string(B, ?ADV_COL(S, 2), [$\t | Acc]);
+	<<_:O/binary, "\\u", C3, C2, C1, C0, Rest/binary>> ->
+	    C = erlang:list_to_integer([C3, C2, C1, C0], 16),
+	    if C > 16#D7FF, C < 16#DC00 ->
+		%% coalesce UTF-16 surrogate pair
+		<<"\\u", D3, D2, D1, D0, _/binary>> = Rest,
+		D = erlang:list_to_integer([D3,D2,D1,D0], 16),
+		[CodePoint] = xmerl_ucs:from_utf16be(<<C:16/big-unsigned-integer,
+		    D:16/big-unsigned-integer>>),
+		Acc1 = lists:reverse(xmerl_ucs:to_utf8(CodePoint), Acc),
+		tokenize_string(B, ?ADV_COL(S, 12), Acc1);
+	    true ->
+		Acc1 = lists:reverse(xmerl_ucs:to_utf8(C), Acc),
+		tokenize_string(B, ?ADV_COL(S, 6), Acc1)
+	    end;
+	<<_:O/binary, C1, _/binary>> when C1 < 128 ->
+	    tokenize_string(B, ?INC_CHAR(S, C1), [C1 | Acc]);
+	<<_:O/binary, C1, C2, _/binary>> when C1 >= 194, C1 =< 223,
+		C2 >= 128, C2 =< 191 ->
+	    tokenize_string(B, ?ADV_COL(S, 2), [C2, C1 | Acc]);
+	<<_:O/binary, C1, C2, C3, _/binary>> when C1 >= 224, C1 =< 239,
+		C2 >= 128, C2 =< 191,
+		C3 >= 128, C3 =< 191 ->
+	    tokenize_string(B, ?ADV_COL(S, 3), [C3, C2, C1 | Acc]);
+	<<_:O/binary, C1, C2, C3, C4, _/binary>> when C1 >= 240, C1 =< 244,
+		C2 >= 128, C2 =< 191,
+		C3 >= 128, C3 =< 191,
+		C4 >= 128, C4 =< 191 ->
+	    tokenize_string(B, ?ADV_COL(S, 4), [C4, C3, C2, C1 | Acc]);
+	_ ->
+	    throw(invalid_utf8)
     end.
 
 tokenize_number(B, S) ->
     case tokenize_number(B, sign, S, []) of
-        {{int, Int}, S1} ->
-            {{const, list_to_integer(Int)}, S1};
-        {{float, Float}, S1} ->
-            {{const, list_to_float(Float)}, S1}
+	{{int, Int}, S1} ->
+	    {{const, list_to_integer(Int)}, S1};
+	{{float, Float}, S1} ->
+	    {{const, list_to_float(Float)}, S1}
     end.
 
 tokenize_number(B, sign, S=#decoder{offset=O}, []) ->
     case B of
-        <<_:O/binary, $-, _/binary>> ->
-            tokenize_number(B, int, ?INC_COL(S), [$-]);
-        _ ->
-            tokenize_number(B, int, S, [])
+	<<_:O/binary, $-, _/binary>> ->
+	    tokenize_number(B, int, ?INC_COL(S), [$-]);
+	_ ->
+	    tokenize_number(B, int, S, [])
     end;
 tokenize_number(B, int, S=#decoder{offset=O}, Acc) ->
     case B of
-        <<_:O/binary, $0, _/binary>> ->
-            tokenize_number(B, frac, ?INC_COL(S), [$0 | Acc]);
-        <<_:O/binary, C, _/binary>> when C >= $1 andalso C =< $9 ->
-            tokenize_number(B, int1, ?INC_COL(S), [C | Acc])
+	<<_:O/binary, $0, _/binary>> ->
+	    tokenize_number(B, frac, ?INC_COL(S), [$0 | Acc]);
+	<<_:O/binary, C, _/binary>> when C >= $1 andalso C =< $9 ->
+	    tokenize_number(B, int1, ?INC_COL(S), [C | Acc])
     end;
 tokenize_number(B, int1, S=#decoder{offset=O}, Acc) ->
     case B of
-        <<_:O/binary, C, _/binary>> when C >= $0 andalso C =< $9 ->
-            tokenize_number(B, int1, ?INC_COL(S), [C | Acc]);
-        _ ->
-            tokenize_number(B, frac, S, Acc)
+	<<_:O/binary, C, _/binary>> when C >= $0 andalso C =< $9 ->
+	    tokenize_number(B, int1, ?INC_COL(S), [C | Acc]);
+	_ ->
+	    tokenize_number(B, frac, S, Acc)
     end;
 tokenize_number(B, frac, S=#decoder{offset=O}, Acc) ->
     case B of
-        <<_:O/binary, $., C, _/binary>> when C >= $0, C =< $9 ->
-            tokenize_number(B, frac1, ?ADV_COL(S, 2), [C, $. | Acc]);
-        <<_:O/binary, E, _/binary>> when E =:= $e orelse E =:= $E ->
-            tokenize_number(B, esign, ?INC_COL(S), [$e, $0, $. | Acc]);
-        _ ->
-            {{int, lists:reverse(Acc)}, S}
+	<<_:O/binary, $., C, _/binary>> when C >= $0, C =< $9 ->
+	    tokenize_number(B, frac1, ?ADV_COL(S, 2), [C, $. | Acc]);
+	<<_:O/binary, E, _/binary>> when E =:= $e orelse E =:= $E ->
+	    tokenize_number(B, esign, ?INC_COL(S), [$e, $0, $. | Acc]);
+	_ ->
+	    {{int, lists:reverse(Acc)}, S}
     end;
 tokenize_number(B, frac1, S=#decoder{offset=O}, Acc) ->
     case B of
-        <<_:O/binary, C, _/binary>> when C >= $0 andalso C =< $9 ->
-            tokenize_number(B, frac1, ?INC_COL(S), [C | Acc]);
-        <<_:O/binary, E, _/binary>> when E =:= $e orelse E =:= $E ->
-            tokenize_number(B, esign, ?INC_COL(S), [$e | Acc]);
-        _ ->
-            {{float, lists:reverse(Acc)}, S}
+	<<_:O/binary, C, _/binary>> when C >= $0 andalso C =< $9 ->
+	    tokenize_number(B, frac1, ?INC_COL(S), [C | Acc]);
+	<<_:O/binary, E, _/binary>> when E =:= $e orelse E =:= $E ->
+	    tokenize_number(B, esign, ?INC_COL(S), [$e | Acc]);
+	_ ->
+	    {{float, lists:reverse(Acc)}, S}
     end;
 tokenize_number(B, esign, S=#decoder{offset=O}, Acc) ->
     case B of
-        <<_:O/binary, C, _/binary>> when C =:= $- orelse C=:= $+ ->
-            tokenize_number(B, eint, ?INC_COL(S), [C | Acc]);
-        _ ->
-            tokenize_number(B, eint, S, Acc)
+	<<_:O/binary, C, _/binary>> when C =:= $- orelse C=:= $+ ->
+	    tokenize_number(B, eint, ?INC_COL(S), [C | Acc]);
+	_ ->
+	    tokenize_number(B, eint, S, Acc)
     end;
 tokenize_number(B, eint, S=#decoder{offset=O}, Acc) ->
     case B of
-        <<_:O/binary, C, _/binary>> when C >= $0 andalso C =< $9 ->
-            tokenize_number(B, eint1, ?INC_COL(S), [C | Acc])
+	<<_:O/binary, C, _/binary>> when C >= $0 andalso C =< $9 ->
+	    tokenize_number(B, eint1, ?INC_COL(S), [C | Acc])
     end;
 tokenize_number(B, eint1, S=#decoder{offset=O}, Acc) ->
     case B of
-        <<_:O/binary, C, _/binary>> when C >= $0 andalso C =< $9 ->
-            tokenize_number(B, eint1, ?INC_COL(S), [C | Acc]);
-        _ ->
-            {{float, lists:reverse(Acc)}, S}
+	<<_:O/binary, C, _/binary>> when C >= $0 andalso C =< $9 ->
+	    tokenize_number(B, eint1, ?INC_COL(S), [C | Acc]);
+	_ ->
+	    {{float, lists:reverse(Acc)}, S}
     end.
 
 tokenize(B, S=#decoder{offset=O}) ->
     case B of
-        <<_:O/binary, C, _/binary>> when ?IS_WHITESPACE(C) ->
-            tokenize(B, ?INC_CHAR(S, C));
-        <<_:O/binary, "{", _/binary>> ->
-            {start_object, ?INC_COL(S)};
-        <<_:O/binary, "}", _/binary>> ->
-            {end_object, ?INC_COL(S)};
-        <<_:O/binary, "[", _/binary>> ->
-            {start_array, ?INC_COL(S)};
-        <<_:O/binary, "]", _/binary>> ->
-            {end_array, ?INC_COL(S)};
-        <<_:O/binary, ",", _/binary>> ->
-            {comma, ?INC_COL(S)};
-        <<_:O/binary, ":", _/binary>> ->
-            {colon, ?INC_COL(S)};
-        <<_:O/binary, "null", _/binary>> ->
-            {{const, null}, ?ADV_COL(S, 4)};
-        <<_:O/binary, "true", _/binary>> ->
-            {{const, true}, ?ADV_COL(S, 4)};
-        <<_:O/binary, "false", _/binary>> ->
-            {{const, false}, ?ADV_COL(S, 5)};
-        <<_:O/binary, "\"", _/binary>> ->
-            tokenize_string(B, ?INC_COL(S));
-        <<_:O/binary, C, _/binary>> when (C >= $0 andalso C =< $9)
-                                         orelse C =:= $- ->
-            tokenize_number(B, S);
-        <<_:O/binary>> ->
-            trim = S#decoder.state,
-            {eof, S}
+	<<_:O/binary, C, _/binary>> when ?IS_WHITESPACE(C) ->
+	    tokenize(B, ?INC_CHAR(S, C));
+	<<_:O/binary, "{", _/binary>> ->
+	    {start_object, ?INC_COL(S)};
+	<<_:O/binary, "}", _/binary>> ->
+	    {end_object, ?INC_COL(S)};
+	<<_:O/binary, "[", _/binary>> ->
+	    {start_array, ?INC_COL(S)};
+	<<_:O/binary, "]", _/binary>> ->
+	    {end_array, ?INC_COL(S)};
+	<<_:O/binary, ",", _/binary>> ->
+	    {comma, ?INC_COL(S)};
+	<<_:O/binary, ":", _/binary>> ->
+	    {colon, ?INC_COL(S)};
+	<<_:O/binary, "null", _/binary>> ->
+	    {{const, null}, ?ADV_COL(S, 4)};
+	<<_:O/binary, "true", _/binary>> ->
+	    {{const, true}, ?ADV_COL(S, 4)};
+	<<_:O/binary, "false", _/binary>> ->
+	    {{const, false}, ?ADV_COL(S, 5)};
+	<<_:O/binary, "\"", _/binary>> ->
+	    tokenize_string(B, ?INC_COL(S));
+	<<_:O/binary, C, _/binary>> when (C >= $0 andalso C =< $9)
+					 orelse C =:= $- ->
+	    tokenize_number(B, S);
+	<<_:O/binary>> ->
+	    trim = S#decoder.state,
+	    {eof, S}
     end.
 %%
 %% Tests
@@ -618,8 +618,8 @@ equiv_object(Props1, Props2) ->
     L2 = lists:keysort(1, Props2),
     Pairs = lists:zip(L1, L2),
     true = lists:all(fun({{K1, V1}, {K2, V2}}) ->
-                             equiv(K1, K2) and equiv(V1, V2)
-                     end, Pairs).
+			     equiv(K1, K2) and equiv(V1, V2)
+		     end, Pairs).
 
 %% Recursively compare tuple elements for equivalence.
 
@@ -679,8 +679,8 @@ e2j_test_vec(utf8) ->
 
      %% fold evaluation order
      {obj_from_list([{<<"foo">>, []},
-                     {<<"bar">>, obj_from_list([{<<"baz">>, true}])},
-                     {<<"alice">>, <<"bob">>}]),
+		     {<<"bar">>, obj_from_list([{<<"baz">>, true}])},
+		     {<<"alice">>, <<"bob">>}]),
       "{\"foo\":[],\"bar\":{\"baz\":true},\"alice\":\"bob\"}"},
 
      %% json object in a json array
@@ -692,52 +692,52 @@ e2j_test_vec(utf8) ->
 encoder_utf8_test() ->
     %% safe conversion case (default)
     [34,"\\u0001","\\u0442","\\u0435","\\u0441","\\u0442",34] =
-        encode(<<1,"\321\202\320\265\321\201\321\202">>),
+	encode(<<1,"\321\202\320\265\321\201\321\202">>),
 
     %% raw utf8 output (optional)
     Enc = ?MODULE:encoder([{utf8, true}]),
     [34,"\\u0001",[209,130],[208,181],[209,129],[209,130],34] =
-        Enc(<<1,"\321\202\320\265\321\201\321\202">>).
+	Enc(<<1,"\321\202\320\265\321\201\321\202">>).
 
 input_validation_test() ->
     Good = [
-        {16#00A3, <<?Q, 16#C2, 16#A3, ?Q>>}, %% pound
-        {16#20AC, <<?Q, 16#E2, 16#82, 16#AC, ?Q>>}, %% euro
-        {16#10196, <<?Q, 16#F0, 16#90, 16#86, 16#96, ?Q>>} %% denarius
+	{16#00A3, <<?Q, 16#C2, 16#A3, ?Q>>}, %% pound
+	{16#20AC, <<?Q, 16#E2, 16#82, 16#AC, ?Q>>}, %% euro
+	{16#10196, <<?Q, 16#F0, 16#90, 16#86, 16#96, ?Q>>} %% denarius
     ],
     lists:foreach(fun({CodePoint, UTF8}) ->
-        Expect = list_to_binary(xmerl_ucs:to_utf8(CodePoint)),
-        Expect = decode(UTF8)
+	Expect = list_to_binary(xmerl_ucs:to_utf8(CodePoint)),
+	Expect = decode(UTF8)
     end, Good),
 
     Bad = [
-        %% 2nd, 3rd, or 4th byte of a multi-byte sequence w/o leading byte
-        <<?Q, 16#80, ?Q>>,
-        %% missing continuations, last byte in each should be 80-BF
-        <<?Q, 16#C2, 16#7F, ?Q>>,
-        <<?Q, 16#E0, 16#80,16#7F, ?Q>>,
-        <<?Q, 16#F0, 16#80, 16#80, 16#7F, ?Q>>,
-        %% we don't support code points > 10FFFF per RFC 3629
-        <<?Q, 16#F5, 16#80, 16#80, 16#80, ?Q>>,
-        %% escape characters trigger a different code path
-        <<?Q, $\\, $\n, 16#80, ?Q>>
+	%% 2nd, 3rd, or 4th byte of a multi-byte sequence w/o leading byte
+	<<?Q, 16#80, ?Q>>,
+	%% missing continuations, last byte in each should be 80-BF
+	<<?Q, 16#C2, 16#7F, ?Q>>,
+	<<?Q, 16#E0, 16#80,16#7F, ?Q>>,
+	<<?Q, 16#F0, 16#80, 16#80, 16#7F, ?Q>>,
+	%% we don't support code points > 10FFFF per RFC 3629
+	<<?Q, 16#F5, 16#80, 16#80, 16#80, ?Q>>,
+	%% escape characters trigger a different code path
+	<<?Q, $\\, $\n, 16#80, ?Q>>
     ],
     lists:foreach(
       fun(X) ->
-              ok = try decode(X) catch invalid_utf8 -> ok end,
-              %% could be {ucs,{bad_utf8_character_code}} or
-              %%          {json_encode,{bad_char,_}}
-              {'EXIT', _} = (catch encode(X))
+	      ok = try decode(X) catch invalid_utf8 -> ok end,
+	      %% could be {ucs,{bad_utf8_character_code}} or
+	      %%          {json_encode,{bad_char,_}}
+	      {'EXIT', _} = (catch encode(X))
       end, Bad).
 
 inline_json_test() ->
     ?assertEqual(<<"\"iodata iodata\"">>,
-                 iolist_to_binary(
-                   encode({json, [<<"\"iodata">>, " iodata\""]}))),
+		 iolist_to_binary(
+		   encode({json, [<<"\"iodata">>, " iodata\""]}))),
     ?assertEqual({struct, [{<<"key">>, <<"iodata iodata">>}]},
-                 decode(
-                   encode({struct,
-                           [{key, {json, [<<"\"iodata">>, " iodata\""]}}]}))),
+		 decode(
+		   encode({struct,
+			   [{key, {json, [<<"\"iodata">>, " iodata\""]}}]}))),
     ok.
 
 big_unicode_test() ->
@@ -763,9 +763,9 @@ custom_decoder_test() ->
 atom_test() ->
     %% JSON native atoms
     [begin
-         ?assertEqual(A, decode(atom_to_list(A))),
-         ?assertEqual(iolist_to_binary(atom_to_list(A)),
-                      iolist_to_binary(encode(A)))
+	 ?assertEqual(A, decode(atom_to_list(A))),
+	 ?assertEqual(iolist_to_binary(atom_to_list(A)),
+		      iolist_to_binary(encode(A)))
      end || A <- [true, false, null]],
     %% Atom to string
     ?assertEqual(
@@ -800,7 +800,7 @@ key_encode_test() ->
     ?assertEqual(
        <<"{\"\\ud834\\udd20\":1}">>,
        iolist_to_binary(
-         encode({struct, [{[16#0001d120], 1}]}))),
+	 encode({struct, [{[16#0001d120], 1}]}))),
     ?assertEqual(
        <<"{\"1\":1}">>,
        iolist_to_binary(encode({struct, [{1, 1}]}))),
@@ -809,9 +809,9 @@ key_encode_test() ->
 unsafe_chars_test() ->
     Chars = "\"\\\b\f\n\r\t",
     [begin
-         ?assertEqual(false, json_string_is_safe([C])),
-         ?assertEqual(false, json_bin_is_safe(<<C>>)),
-         ?assertEqual(<<C>>, decode(encode(<<C>>)))
+	 ?assertEqual(false, json_string_is_safe([C])),
+	 ?assertEqual(false, json_bin_is_safe(<<C>>)),
+	 ?assertEqual(<<C>>, decode(encode(<<C>>)))
      end || C <- Chars],
     ?assertEqual(
        false,
@@ -822,8 +822,8 @@ unsafe_chars_test() ->
     ?assertEqual(
        [16#0001d120],
        xmerl_ucs:from_utf8(
-         binary_to_list(
-           decode(encode(list_to_atom(xmerl_ucs:to_utf8(16#0001d120))))))),
+	 binary_to_list(
+	   decode(encode(list_to_atom(xmerl_ucs:to_utf8(16#0001d120))))))),
     ?assertEqual(
        false,
        json_string_is_safe([16#110000])),
@@ -844,9 +844,9 @@ int_test() ->
 
 large_int_test() ->
     ?assertEqual(<<"-2147483649214748364921474836492147483649">>,
-        iolist_to_binary(encode(-2147483649214748364921474836492147483649))),
+	iolist_to_binary(encode(-2147483649214748364921474836492147483649))),
     ?assertEqual(<<"2147483649214748364921474836492147483649">>,
-        iolist_to_binary(encode(2147483649214748364921474836492147483649))),
+	iolist_to_binary(encode(2147483649214748364921474836492147483649))),
     ok.
 
 float_test() ->
@@ -867,8 +867,8 @@ handler_test() ->
 encode_empty_test_() ->
     [{A, ?_assertEqual(<<"{}">>, iolist_to_binary(encode(B)))}
      || {A, B} <- [{"eep18 {}", {}},
-                   {"eep18 {[]}", {[]}},
-                   {"{struct, []}", {struct, []}}]].
+		   {"eep18 {[]}", {[]}},
+		   {"{struct, []}", {struct, []}}]].
 
 encode_test_() ->
     P = [{<<"k">>, <<"v">>}],
@@ -883,7 +883,7 @@ format_test_() ->
     [{atom_to_list(F),
       ?_assertEqual(A, decode(JSON, [{format, F}]))}
      || {F, A} <- [{struct, {struct, P}},
-                   {eep18, {P}},
-                   {proplist, P}]].
+		   {eep18, {P}},
+		   {proplist, P}]].
 
 -endif.

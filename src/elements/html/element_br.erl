@@ -14,14 +14,11 @@
 reflect() -> record_info(fields, br).
 
 -spec render_element(#br{}) -> body().
-render_element(Record) -> 
+render_element(Record) ->
     wf_tags:emit_tag(br, [
-        {id, Record#br.html_id},
-        {class, [br, Record#br.class]},
-        {title, Record#br.title},
-        {style, Record#br.style},
-        {data_fields, Record#br.data_fields}
+	{id, Record#br.html_id},
+	{class, [br, Record#br.class]},
+	{title, Record#br.title},
+	{style, Record#br.style},
+	{data_fields, Record#br.data_fields}
     ]).
-
-
-

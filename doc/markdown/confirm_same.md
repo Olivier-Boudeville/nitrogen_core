@@ -13,7 +13,7 @@
    wf:wire(button, email, #validate { validators=[
      #confirm_same { text="Emails do not match", confirm_id=confirm_email }
    ]}),
-   
+
    #label{text="Email Address"},
    #textbox{id=email},
 

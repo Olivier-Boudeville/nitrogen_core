@@ -38,10 +38,10 @@ event/1 callback if the postback tag matches `{_, exception}`.
 -behaviour(postback_handler).
 -include_lib("wf.hrl").
 -export([
-          init/2
-        , finish/2
-        , postback_request/2
-        ]).
+	  init/2
+	, finish/2
+	, postback_request/2
+	]).
 
 init(_Config, State) ->
     {ok, State}.

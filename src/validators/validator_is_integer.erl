@@ -20,12 +20,12 @@ render_action(Record) ->
     ValidationFun = fun(_, Value) -> validate(AllowBlank, Value, Min, Max) end,
 
     CustomValidatorAction =  #custom {
-        trigger=TriggerPath,
-        target=TargetPath,
-        function=ValidationFun,
-        text = Text,
-        tag=Record,
-        attach_to=Record#is_integer.attach_to
+	trigger=TriggerPath,
+	target=TargetPath,
+	function=ValidationFun,
+	text = Text,
+	tag=Record,
+	attach_to=Record#is_integer.attach_to
     },
 
     %% A little silly that we have to set both notAnInteger and notANumber
@@ -39,9 +39,9 @@ validate(_AllowBlank=true, "", _Min, _Max) ->
     true;
 validate(_AllowBlank, Value, Min, Max) ->
     try
-        validate_range(wf:to_integer(Value), Min, Max)
-    catch 
-        _ : _ -> false
+	validate_range(wf:to_integer(Value), Min, Max)
+    catch
+	_ : _ -> false
     end.
 
 validate_range(_Int, undefined, undefined) ->

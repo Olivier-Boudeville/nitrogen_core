@@ -14,16 +14,16 @@
 reflect() -> record_info(fields, label).
 
 -spec render_element(#label{}) -> body().
-render_element(Record) -> 
+render_element(Record) ->
     Body = [
-        wf:html_encode(Record#label.text, Record#label.html_encode),
-        Record#label.body
+	wf:html_encode(Record#label.text, Record#label.html_encode),
+	Record#label.body
     ],
     wf_tags:emit_tag(label, Body, [
-        {id, Record#label.html_id},
-        {class, [nitrogen_label, Record#label.class]},
-        {title, Record#label.title},
-        {style, Record#label.style},
-        {for, Record#label.for},
-        {data_fields, Record#label.data_fields}
+	{id, Record#label.html_id},
+	{class, [nitrogen_label, Record#label.class]},
+	{title, Record#label.title},
+	{style, Record#label.style},
+	{for, Record#label.for},
+	{data_fields, Record#label.data_fields}
     ]).

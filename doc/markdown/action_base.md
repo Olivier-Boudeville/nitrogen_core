@@ -10,7 +10,7 @@
 
 ### Attributes
 
-   * `module` (atom) - The module containing the logic for this action. Set 
+   * `module` (atom) - The module containing the logic for this action. Set
     automatically.
 
    * `trigger` (atom) - The id of the Nitrogen element that will trigger

@@ -7,7 +7,7 @@
   The inplace element creates a view element that the user can edit in place.
 
   The user clicks on the view element, and it is replaced with an edit
-  element, an OK button, and a Cancel button. 
+  element, an OK button, and a Cancel button.
 
   If the user clicks OK, a callback is issued to the delegate module
   so that it can save the new value.
@@ -20,8 +20,8 @@
    #inplace { id=textbox2, text="", view=#image{}, edit=#textbox{} }.
 
    Dropdown = #dropdown{options=[#option{value="option1", text="Option 1"},
-                                 #option{value="option2", text="Option 2"},
-                                 #option{value="option3", text="Option 3"} ]},
+				 #option{value="option2", text="Option 2"},
+				 #option{value="option3", text="Option 3"} ]},
    #inplace { id=textbox3, text="option2", view=Dropdown#dropdown{actions=#disable{}}, edit=Dropdown }.
 
 ```

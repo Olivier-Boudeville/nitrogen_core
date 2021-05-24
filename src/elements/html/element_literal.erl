@@ -14,5 +14,5 @@
 reflect() -> record_info(fields, literal).
 
 -spec render_element(#literal{}) -> body().
-render_element(Record) -> 
+render_element(Record) ->
     wf:html_encode(Record#literal.text, Record#literal.html_encode).

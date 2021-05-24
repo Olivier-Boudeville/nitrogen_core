@@ -8,7 +8,7 @@ This element produces a list item formatted for jQuery Mobile list item for jQue
 ### Usage
 
 ```erlang
-   #mobile_listitem { 
+   #mobile_listitem {
       theme=c,
       text="Fruits"
    }
@@ -16,7 +16,7 @@ This element produces a list item formatted for jQuery Mobile list item for jQue
 ```
 
 ### Attributes
- 
+
    * `text` (string) - Set the text of the list item.
 
    * `body` (Nitrogen Element or Elements) - Set the element or elements that will be rendered in this list item

@@ -3,14 +3,14 @@
 
 -define(wf_test_manual(Name, SetupAssertion),
 	wf_test:test_manual(Name, SetupAssertion)).
--define(wf_test_manual(Name, Setup, Assertion), 
+-define(wf_test_manual(Name, Setup, Assertion),
 	wf_test:test_manual(Name, Setup, Assertion)).
--define(wf_test_manual(Name, Setup, Assertion, Options), 
+-define(wf_test_manual(Name, Setup, Assertion, Options),
 	wf_test:test_manual(Name, Setup, Assertion, Options)).
 
 -define(wf_test_auto(Name, SetupAssertion),
 	wf_test:test_auto(Name, SetupAssertion)).
--define(wf_test_auto(Name, Setup, Assertion), 
+-define(wf_test_auto(Name, Setup, Assertion),
 	wf_test:test_auto(Name, Setup, Assertion)).
 -define(wf_test_auto(Name, Setup, Assertion, Options),
 	wf_test:test_auto(Name, Setup, Assertion, Options)).

@@ -12,7 +12,7 @@
 
 reflect() -> record_info(fields, textbox).
 
-render_element(Record) -> 
+render_element(Record) ->
     ID = Record#textbox.id,
     Anchor = Record#textbox.anchor,
     Delegate = Record#textbox.delegate,
@@ -29,20 +29,20 @@ render_element(Record) ->
     Placeholder  = wf:html_encode(Record#textbox.placeholder, true),
 
     Attributes = [
-        {id, Record#textbox.html_id},
-        {type, Record#textbox.type}, 
+	{id, Record#textbox.html_id},
+	{type, Record#textbox.type},
 	{autocomplete,Record#textbox.autocomplete},
-        {class, [textbox, Record#textbox.class]},
-        {title, Record#textbox.title},
-        {maxlength, Record#textbox.maxlength},
-        {size, Record#textbox.size},
-        {style, Record#textbox.style},
-        {name, Record#textbox.html_name},
-        {placeholder, Placeholder},
-        ?WF_IF(Disabled,disabled,undefined),
-        ?WF_IF(Readonly,readonly,undefined),
-        {value, Value},
-        {data_fields, Record#textbox.data_fields}
+	{class, [textbox, Record#textbox.class]},
+	{title, Record#textbox.title},
+	{maxlength, Record#textbox.maxlength},
+	{size, Record#textbox.size},
+	{style, Record#textbox.style},
+	{name, Record#textbox.html_name},
+	{placeholder, Placeholder},
+	?WF_IF(Disabled,disabled,undefined),
+	?WF_IF(Readonly,readonly,undefined),
+	{value, Value},
+	{data_fields, Record#textbox.data_fields}
     ],
 
     wf_tags:emit_tag(input, Attributes).
@@ -51,10 +51,10 @@ wire_postback(_, _, _, _, _, undefined) ->
     do_nothing;
 wire_postback(Anchor, ID, HandleInvalid, OnInvalid, Delegate, Postback) ->
     wf:wire(Anchor, #event {
-        type=enterkey,
-        postback=Postback,
-        validation_group=ID,
-        handle_invalid=HandleInvalid,
-        on_invalid=OnInvalid,
-        delegate=Delegate
+	type=enterkey,
+	postback=Postback,
+	validation_group=ID,
+	handle_invalid=HandleInvalid,
+	on_invalid=OnInvalid,
+	delegate=Delegate
     }).

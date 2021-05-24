@@ -3,7 +3,7 @@
 
 
 ## Literal Element - #literal {}
-  
+
   The literal element simply passes the supplied text on the browser.
 
 ### Usage
@@ -23,5 +23,3 @@
 ### See Also
 
 *  [base element](./element_base.md)
-
- 

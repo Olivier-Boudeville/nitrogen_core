@@ -16,7 +16,7 @@
 ```erlang
    #restful_upload { iname = upload},
 
-   %% later on return 
+   %% later on return
    Bridge = wf_context:bridge(),
    UploadedFiles = sbw:post_files(Bridge),
    %% ...
@@ -24,7 +24,7 @@
 
 ### Attributes
 
-   * `html_name` (string) - The name attribute of the `restful_upload` 
+   * `html_name` (string) - The name attribute of the `restful_upload`
 
 ### See Also
 

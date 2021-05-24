@@ -15,10 +15,10 @@ reflect() -> record_info(fields, main).
 -spec render_element(#main{}) -> body().
 render_element(Record) ->
     wf_tags:emit_tag(main, Record#main.body, [
-        {id, Record#main.html_id},
-        {class, ["main", Record#main.class]},
-        {title, Record#main.title},
-        {style, Record#main.style},
-        {role, Record#main.role},                                              
-        {data_fields, Record#main.data_fields}
+	{id, Record#main.html_id},
+	{class, ["main", Record#main.class]},
+	{title, Record#main.title},
+	{style, Record#main.style},
+	{role, Record#main.role},
+	{data_fields, Record#main.data_fields}
     ]).

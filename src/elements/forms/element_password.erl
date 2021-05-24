@@ -14,9 +14,9 @@
 reflect() -> record_info(fields, password).
 
 -spec transform_element(#password{}) -> nitrogen_element().
-transform_element(Record) -> 
+transform_element(Record) ->
     Textbox = wf_utils:copy_fields(Record, #textbox{}),
     Textbox#textbox{
-        class=[password,Record#password.class],
-        type=password
+	class=[password,Record#password.class],
+	type=password
     }.

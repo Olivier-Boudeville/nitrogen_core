@@ -19,5 +19,3 @@
 ### See Also
 
  *  [base element](./element_base.md)
-
-     

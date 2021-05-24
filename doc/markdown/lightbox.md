@@ -4,7 +4,7 @@
 
 ## Lightbox Element - #lightbox {}
 
-The lightbox element provides the basics for a Web 2.0 lightbox. 
+The lightbox element provides the basics for a Web 2.0 lightbox.
 
 To use, create a lightbox element on your Nitrogen page, and set
 the body attribute.
@@ -32,5 +32,3 @@ and the elements specified in the body are placed in the center of the browser.
 ### See Also
 
 *  [base element](./element_base.md)
-
- 

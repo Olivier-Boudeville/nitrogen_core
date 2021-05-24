@@ -14,7 +14,7 @@
     serialize_event_context/5
 ]).
 
-% This module looks at the incoming request for 'eventContext' and 'pageContext' params. 
+% This module looks at the incoming request for 'eventContext' and 'pageContext' params.
 % If found, then it updates the current context, putting values into event_context
 % and page_context, respectively.
 %
@@ -40,9 +40,9 @@ update_context_with_event(SerializedEvent) ->
     PageModule = wf_context:page_module(),
     IsPostback = is_record(Event, event_context),
     case {PageModule, IsPostback} of
-        {static_file, _} -> update_context_for_static_file();
-        {_, false}       -> update_context_for_first_request();
-        {_, true}        -> update_context_for_postback_request(Event)
+	{static_file, _} -> update_context_for_static_file();
+	{_, false}       -> update_context_for_first_request();
+	{_, true}        -> update_context_for_postback_request(Event)
     end.
 
 update_context_for_static_file() ->
@@ -71,13 +71,13 @@ generate_postback_script(undefined, _Anchor, _ValidationGroup, _HandleInvalid, _
 generate_postback_script(Postback, Anchor, ValidationGroup, HandleInvalid, OnInvalid, Delegate, ExtraParam) ->
     PickledPostbackInfo = serialize_event_context(Postback, Anchor, ValidationGroup, HandleInvalid, Delegate),
     OnInvalidScript = case OnInvalid of
-        undefined -> "null";
-        _         -> ["function(){", OnInvalid, "}"]
+	undefined -> "null";
+	_         -> ["function(){", OnInvalid, "}"]
     end,
     [
-        wf:f("Nitrogen.$queue_event('~s', ", [ValidationGroup]),
-        OnInvalidScript,
-        wf:f(", '~s', ~s);", [PickledPostbackInfo, ExtraParam])
+	wf:f("Nitrogen.$queue_event('~s', ", [ValidationGroup]),
+	OnInvalidScript,
+	wf:f(", '~s', ~s);", [PickledPostbackInfo, ExtraParam])
     ].
 
 generate_system_postback_script(undefined, _Anchor, _ValidationGroup, _HandleInvalid, _Delegate) -> [];
@@ -89,10 +89,10 @@ serialize_event_context(Tag, Anchor, ValidationGroup, HandleInvalid, Delegate) -
     PageModule = wf_context:page_module(),
     EventModule = wf:coalesce([Delegate, PageModule]),
     Event = #event_context {
-        module = EventModule,
-        tag = Tag,
-        handle_invalid = HandleInvalid,
-        anchor = Anchor,
-        validation_group = ValidationGroup
+	module = EventModule,
+	tag = Tag,
+	handle_invalid = HandleInvalid,
+	anchor = Anchor,
+	validation_group = ValidationGroup
     },
     wf_pickle:pickle(Event).

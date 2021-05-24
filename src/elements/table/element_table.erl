@@ -14,7 +14,7 @@
 reflect() -> record_info(fields, table).
 
 -spec render_element(#table{}) -> body().
-render_element(Record) -> 
+render_element(Record) ->
 
     Header = case Record#table.header of
       [] -> "";
@@ -30,10 +30,10 @@ render_element(Record) ->
     Content = [Header, Footer, Body ],
 
     wf_tags:emit_tag( table, Content, [
-        {id, Record#table.html_id},
-        {border,Record#table.border},
-        {class, [table, Record#table.class]},
-        {title, Record#table.title},
-        {style, Record#table.style},
-        {data_fields, Record#table.data_fields}
+	{id, Record#table.html_id},
+	{border,Record#table.border},
+	{class, [table, Record#table.class]},
+	{title, Record#table.title},
+	{style, Record#table.style},
+	{data_fields, Record#table.data_fields}
     ]).

@@ -10,22 +10,22 @@ to share session state between nodes, and uses a cookie to identify the user
 with the associated session.
 
 ### Behavior Functions
- 
+
 ##### `init(Config, State)`
 
   Initialize the handler
 
- *  /Return Value/ - `{ok, NewState}` 
+ *  /Return Value/ - `{ok, NewState}`
 
 ##### `finish(Config, State)`
 
   Clean up the handler
 
  *  /Return Value/ - `{ok, NewState}`
-  
+
 ##### `get_value(Key, DefaultValue, Config, State)`
 
-Retrieves the value of session variable associated with `Key`  
+Retrieves the value of session variable associated with `Key`
 
  *  `Key` - The key to retrieve
 
@@ -80,8 +80,8 @@ init(_Config, _State) ->
     % Get the session cookie and node...
     Cookie = wf:cookie(get_cookie_name()),
     State = case wf:depickle(Cookie) of
-        undefined -> new_state();
-        Other -> Other
+	undefined -> new_state();
+	Other -> Other
     end,
     {ok, State}.
 
@@ -96,8 +96,8 @@ get_value(Key, DefaultValue, Config, State) ->
     Ref = make_ref(),
     Pid!{get_value, Key, self(), Ref},
     Value = receive
-        {ok, undefined, Ref} -> DefaultValue;
-        {ok, Other, Ref} -> Other
+	{ok, undefined, Ref} -> DefaultValue;
+	{ok, Other, Ref} -> Other
     end,
     {ok, Value, State}.
 
@@ -133,33 +133,33 @@ get_session_pid(_Config, State) ->
 session_loop(Session, Timeout) ->
     %% Timeout in 10 if the session is empty...
     TimeoutMS = case Session == [] of
-        true  -> 10 * 1000;
-        false -> Timeout * 60 * 1000
+	true  -> 10 * 1000;
+	false -> Timeout * 60 * 1000
     end,
     receive
-        {get_value, Key, Pid, Ref} ->
-            Value = case lists:keysearch(Key, 1, Session) of
-                {value, {Key, V}} -> V;
-                false -> undefined
-            end,
-            Pid!{ok, Value, Ref},
-            session_loop(Session, Timeout);
+	{get_value, Key, Pid, Ref} ->
+	    Value = case lists:keysearch(Key, 1, Session) of
+		{value, {Key, V}} -> V;
+		false -> undefined
+	    end,
+	    Pid!{ok, Value, Ref},
+	    session_loop(Session, Timeout);
 
-        {set_value, Key, Value, Pid, Ref} ->
-            OldValue = case lists:keysearch(Key, 1, Session) of
-                {value, {Key, V}} -> V;
-                false -> undefined
-            end,
-            Session1 = lists:keystore(Key, 1, Session, {Key, Value}),
-            Pid!{ok, OldValue, Ref},
-            session_loop(Session1, Timeout);
+	{set_value, Key, Value, Pid, Ref} ->
+	    OldValue = case lists:keysearch(Key, 1, Session) of
+		{value, {Key, V}} -> V;
+		false -> undefined
+	    end,
+	    Session1 = lists:keystore(Key, 1, Session, {Key, Value}),
+	    Pid!{ok, OldValue, Ref},
+	    session_loop(Session1, Timeout);
 
-        {clear_all, Pid, Ref} ->
-            Pid!{ok, Ref},
-            session_loop([], Timeout)
+	{clear_all, Pid, Ref} ->
+	    Pid!{ok, Ref},
+	    session_loop([], Timeout)
 
     after TimeoutMS ->
-        exit(timed_out)
+	exit(timed_out)
     end.
 
 new_state() ->

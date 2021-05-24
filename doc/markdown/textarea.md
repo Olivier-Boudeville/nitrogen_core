@@ -39,7 +39,7 @@
       HTML5 placeholder attribute, which is only supported in newer browsers.
       To add support for older-browsers, you will need to link a placeholder
       script in your template. You can do this by adding the following to your
-      template inside the `<head>` section after loading jQuery. 
+      template inside the `<head>` section after loading jQuery.
 
 ```html
    <script src='/nitrogen/jquery.placeholder.js' type='text/javascript'></script>

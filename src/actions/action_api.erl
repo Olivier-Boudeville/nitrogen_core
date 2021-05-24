@@ -15,10 +15,10 @@ render_action(Record) ->
     Name = Record#api.name,
     Tag = {api_event, Record},
     [
-        wf:f("obj('~s').~s = function() {", [Anchor, Name]),
-        "var s = Nitrogen.$encode_arguments_object(arguments);",
-        #event { postback=Tag, delegate=?MODULE, extra_param="s" },
-        "};"
+	wf:f("obj('~s').~s = function() {", [Anchor, Name]),
+	"var s = Nitrogen.$encode_arguments_object(arguments);",
+	#event { postback=Tag, delegate=?MODULE, extra_param="s" },
+	"};"
     ].
 
 event({api_event, Record}) ->
@@ -32,5 +32,3 @@ event({api_event, Record}) ->
 %% and play it safe.
 decode_args(Args) ->
     binary_to_term(base64:decode(Args), [safe]).
-
-            

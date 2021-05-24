@@ -9,19 +9,19 @@ approach is to simply store the user information into a specific session
 variable.
 
 ### Behavior Functions
- 
+
 ##### `init(Config, State)`
 
   Initialize the handler
 
- *  /Return Value/ - `{ok, NewState}` 
+ *  /Return Value/ - `{ok, NewState}`
 
 ##### `finish(Config, State)`
 
   Clean up the handler
 
  *  /Return Value/ - `{ok, NewState}`
-  
+
 ##### `get_user(Config, State)`
 
   Retrieve the previously stored user information.
@@ -33,12 +33,12 @@ variable.
   Set the user information
 
  *  `User` - Free-form user information. Can be any erlang term: a username,
-             user ID, tuple, proplist, Erlang record, etc..
+	     user ID, tuple, proplist, Erlang record, etc..
 
  *  /Return Value/ - {ok, NewState}
 
 ##### `clear(Config, State)`
-  
+
   Clear the user information.
 
  *  /Return Value/ - {ok, NewState}

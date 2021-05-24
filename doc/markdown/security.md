@@ -11,7 +11,7 @@
   log in a returning user.
 
 ### Behavior Functions
- 
+
 ##### `init(Config, State)`
 
   Initialize the Security Handler.  Like the [Route Handler](./route.md),
@@ -21,7 +21,7 @@
   It's typical to check for headers, cookies, or other settings here, and for
   possibly loading paths and their required settings.
 
- *  /Return Value/ - `{ok, NewState}` 
+ *  /Return Value/ - `{ok, NewState}`
 
 ##### `finish(Config, State)`
 
@@ -60,7 +60,7 @@ finish(_Config, State) ->
 As an example, you could automatically log in a user based on a cookie inside
 the security handler. This example assumes you'll check an authentication
 cookie stored with your login table within a database, providing a `db_login`
-module for interacting with the user table. It assumes the existance of a 
+module for interacting with the user table. It assumes the existance of a
 `db_login:loginid_from_cookie/1` function which takes an a `Cookie` and returns
 a `Loginid` or `undefined`.
 
@@ -96,32 +96,32 @@ attempt_cookie_login(session) ->
     %% If so, then skip it
     %% If not, let's try to authenticate with the cookie
     case wf:session_default(cookie_login_attempted,false) of
-        false -> attempt_cookie_login(cookie);
-        _ -> do_nothing
+	false -> attempt_cookie_login(cookie);
+	_ -> do_nothing
     end;
 attempt_cookie_login(cookie) ->
     %% Let's read the authentication token from our "quicklogin" cookie
     case wf:cookie(quicklogin) of
-        undefined ->
-            %% The cookie is undefined, so obviously there's nothing to log in
-            do_nothing;
-        Cookie ->
-            %% Let's check our database to see if we have a user that's
-            %% associated with our authentication cookie
-            case db_login:loginid_from_cookie(Cookie) of
-                undefined -> 
-                  %% No user associated with that token, so let's just do nothing
-                  do_nothing;
-                Loginid -> 
-                  %% Yes! We have a login associated with that cookie, so let's
-                  %% Set use the Nitrogen user handler to set the loginid
-                  wf:user(Loginid)
-            end,
-            
-            %% Finally, we've now attempted to do a cookie login, so let's set
-            %% a session variable so we don't try doing the cookie login again
-            %% for this session
-            wf:session(cookie_login_attempted,true)
+	undefined ->
+	    %% The cookie is undefined, so obviously there's nothing to log in
+	    do_nothing;
+	Cookie ->
+	    %% Let's check our database to see if we have a user that's
+	    %% associated with our authentication cookie
+	    case db_login:loginid_from_cookie(Cookie) of
+		undefined ->
+		  %% No user associated with that token, so let's just do nothing
+		  do_nothing;
+		Loginid ->
+		  %% Yes! We have a login associated with that cookie, so let's
+		  %% Set use the Nitrogen user handler to set the loginid
+		  wf:user(Loginid)
+	    end,
+
+	    %% Finally, we've now attempted to do a cookie login, so let's set
+	    %% a session variable so we don't try doing the cookie login again
+	    %% for this session
+	    wf:session(cookie_login_attempted,true)
     end.
 
 ```

@@ -4,7 +4,7 @@
 
 ## Fieldset Element - #fieldset {}
 
-  The fieldset element produces an HTML fieldset element containing the expected legend 
+  The fieldset element produces an HTML fieldset element containing the expected legend
   element. This is used for grouping related elements together in a coherent way.
 
 ### Usage
@@ -31,4 +31,3 @@
 ### See Also
 
  *  [base element](./element_base.md)
-

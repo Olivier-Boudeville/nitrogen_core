@@ -13,7 +13,7 @@
   Machine.
 
 ### Behavior Functions
- 
+
 ##### `init(Config, State)`
 
   Initialize the request.  Unlike most handlers, this is basically where most
@@ -26,7 +26,7 @@
   It's not exactly the "functional style" because it's highly dependent on side
   effects in the code (the `wf_context` calls).
 
- *  /Return Value/ - `{ok, NewState}` 
+ *  /Return Value/ - `{ok, NewState}`
 
 ##### `finish(Config, State)`
 
@@ -128,29 +128,29 @@ route("/") ->
 route(Path) ->
     IsStatic = (filename:extension(Path) /= []),
     case IsStatic of
-        true ->
-            % Serve this up as a static file.
-            {static_file, Path};
+	true ->
+	    % Serve this up as a static file.
+	    {static_file, Path};
 
-        false ->
-            Path1 = string:strip(Path, both, $/),
-            Tokens = string:tokens(Path1, "/"),
-            % Check for a loaded module. If not found, then try to load it.
-            case try_load_module(Tokens) of
-                {Module, PathInfo} ->
-                    {Module, PathInfo};
-                undefined ->
-                    {web_404, Path1}
-            end
+	false ->
+	    Path1 = string:strip(Path, both, $/),
+	    Tokens = string:tokens(Path1, "/"),
+	    % Check for a loaded module. If not found, then try to load it.
+	    case try_load_module(Tokens) of
+		{Module, PathInfo} ->
+		    {Module, PathInfo};
+		undefined ->
+		    {web_404, Path1}
+	    end
     end.
 
 module_name(Tokens) ->
     ModulePrefix = wf:config_default(module_prefix, ""),
-        AllTokens = case ModulePrefix of
-            "" -> Tokens;
-            _ -> [ ModulePrefix | Tokens ]
-        end,
-        _ModuleName = string:join(AllTokens, "_").
+	AllTokens = case ModulePrefix of
+	    "" -> Tokens;
+	    _ -> [ ModulePrefix | Tokens ]
+	end,
+	_ModuleName = string:join(AllTokens, "_").
 
 try_load_module(Tokens) -> try_load_module(Tokens, []).
 try_load_module([], _ExtraTokens) -> undefined;
@@ -158,22 +158,22 @@ try_load_module(Tokens, ExtraTokens) ->
     %% Get the module name...
     ModuleName = module_name(Tokens),
     Module = try
-        list_to_existing_atom(ModuleName)
+	list_to_existing_atom(ModuleName)
     catch _:_ ->
-        case erl_prim_loader:get_file(ModuleName ++ ".beam") of
-            {ok, _, _} -> list_to_atom(ModuleName);
-            _ -> list_to_atom("$not_found")
-        end
+	case erl_prim_loader:get_file(ModuleName ++ ".beam") of
+	    {ok, _, _} -> list_to_atom(ModuleName);
+	    _ -> list_to_atom("$not_found")
+	end
     end,
 
     %% Load the module, check if it exports the right method...
     code:ensure_loaded(Module),
     case erlang:function_exported(Module, main, 0) of
-        true ->
-            PathInfo = string:join(ExtraTokens, "/"),
-            {Module, PathInfo};
-        false ->
-            next_try_load_module(Tokens, ExtraTokens)
+	true ->
+	    PathInfo = string:join(ExtraTokens, "/"),
+	    {Module, PathInfo};
+	false ->
+	    next_try_load_module(Tokens, ExtraTokens)
     end.
 
 
@@ -190,12 +190,12 @@ check_for_404(Module, PathInfo, Path) ->
     % is not, then try to load the web_404 page. If that
     % is not available, then default to the 'file_not_found_page' module.
     case code:ensure_loaded(Module) of
-        {module, Module} -> {Module, PathInfo};
-        _ ->
-            case code:ensure_loaded(web_404) of
-                {module, web_404} -> {web_404, Path};
-                _ -> {file_not_found_page, Path}
-            end
+	{module, Module} -> {Module, PathInfo};
+	_ ->
+	    case code:ensure_loaded(web_404) of
+		{module, web_404} -> {web_404, Path};
+		_ -> {file_not_found_page, Path}
+	    end
     end.
 
 

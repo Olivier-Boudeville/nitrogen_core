@@ -30,5 +30,5 @@
  *  [Base element](./element_base.md)
 
  *  [Article element](article.md)
-   
+
  *  [About the Section HTML Element](http://html5doctor.com/http://html5doctor.com/the-section-element//)

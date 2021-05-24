@@ -3,7 +3,7 @@
 
 # Automated Testing with Nitrogen
 
-## Overview 
+## Overview
 
   Nitrogen has a simple unit testing framework which runs on the server and in
   the browser, and can be used for testing the functionality of your
@@ -33,9 +33,9 @@
 
 ```erlang
       tests() ->
-        SetupFun = fun() -> wf:set(my_textbox, "Value") end,
-        AssertionFun = fun() -> wf:q(my_textbox) == "Value" end,
-        ?wf_test_manual(set_textbox, SetupFun, AssertionFun).
+	SetupFun = fun() -> wf:set(my_textbox, "Value") end,
+	AssertionFun = fun() -> wf:q(my_textbox) == "Value" end,
+	?wf_test_manual(set_textbox, SetupFun, AssertionFun).
 
 ```
 
@@ -53,16 +53,16 @@
 
 ```erlang
       tests() ->
-        SetupFun = fun() -> wf:wire(my_button, #click{}) end,
-        AssertionFun = undefined,
-        ?wf_test_manual(button_works, SetupFun, AssertionFun)
+	SetupFun = fun() -> wf:wire(my_button, #click{}) end,
+	AssertionFun = undefined,
+	?wf_test_manual(button_works, SetupFun, AssertionFun)
 
 ```
 
       And in the `event/1` function that `my_button` posts back to, you would add:
 
 ```erlang
-        ?wf_test_event(button_works)
+	?wf_test_event(button_works)
 
 ```
 
@@ -76,22 +76,22 @@
       arguments are **very** similar, except for a few changes.
 
  *  `SetupFun` is exactly the same as in `?wf_test_manual` in that you do
-        not need to execute a postback in it.
+	not need to execute a postback in it.
  *  `JS` is a Javascript string that returns a value (the last call should
-        be actuall have a `return` statement, as it's executed inside a javascript
-        function). This value will be passed to the `AssertionFun` function.
+	be actuall have a `return` statement, as it's executed inside a javascript
+	function). This value will be passed to the `AssertionFun` function.
  *  `AssertionFun` is expected to be a function of arity 1, with the only
-        argument being a list containing the return value(s) from `JS`.
+	argument being a list containing the return value(s) from `JS`.
 
       Here's an example to illustrate the usage.  Here we will add a `#panel`
       (which is just an HTML `div`), then verify that its width is greater than
       zero:
 
 ```erlang
-        SetupFun = fun() -> wf:insert_top(my_wrapper, #panel{id=my_new_panel, text="Hi Mom!"} end,
-        JS = "return objs('my_wrapper').width()",
-        AssertFun = fun([Width]) -> is_integer(Width) andalso Width > 0 end,
-        ?wf_test_js(element_added, SetupFun, JS, AssertFun).
+	SetupFun = fun() -> wf:insert_top(my_wrapper, #panel{id=my_new_panel, text="Hi Mom!"} end,
+	JS = "return objs('my_wrapper').width()",
+	AssertFun = fun([Width]) -> is_integer(Width) andalso Width > 0 end,
+	?wf_test_js(element_added, SetupFun, JS, AssertFun).
 
 ```
 
@@ -134,7 +134,7 @@
  *  `?wf_test_js(TestName, SetupFun, JS, AssertionFun, Options)`
  *  `?wf_test_js(TestName, {SetupFun, JS, AssertionFun})`
  *  `?wf_test_js(TestName, {SetupFun, JS, AssertionFun, Options})`
-     
+
      The reasoning for the alternative options of having the second argument be
      a tuple will be more obvious in the next section.
 
@@ -146,7 +146,7 @@
      of the application at the time of the postback).
 
 #### 2. Test Pages
-  
+
     A test page allows for a collection of tests to be run, and the results of
     each test gets aggregated on a per-page basis.
 
@@ -158,38 +158,38 @@
 
      A simple example would be to call `wf_test:start/1` in your page module's
      `main()` function.
- 
+
 ```erlang
-       main() -> 
-         wf_test:start(fun tests/0),
-         #template{file="mytemplate.html"}.
- 
+       main() ->
+	 wf_test:start(fun tests/0),
+	 #template{file="mytemplate.html"}.
+
        ...
- 
+
        event(my_test_manual) ->
-         ?wf_test_event(my_test_manual).
-       
+	 ?wf_test_event(my_test_manual).
+
        tests() ->
-         ?wf_test_auto(my_test, my_test()),
-         ?wf_test_manual(my_other_test, my_manual_test()).
- 
+	 ?wf_test_auto(my_test, my_test()),
+	 ?wf_test_manual(my_other_test, my_manual_test()).
+
        my_test() ->
-         {
-           fun() -> wf:set(textbox, "NewVal") end,
-           fun() -> wf:q(textbox) == "NewVal"
-         }.
- 
+	 {
+	   fun() -> wf:set(textbox, "NewVal") end,
+	   fun() -> wf:q(textbox) == "NewVal"
+	 }.
+
        my_test_manual() ->
-         {
-           fun() ->
-             wf:insert_after(textbox, #button{postback=my_test_manual, id=mybutton}),
-             wf:wire(mybutton, #click{})
-           end,
-           undefined %% We just want to verify that the postback worked.
-         }.
+	 {
+	   fun() ->
+	     wf:insert_after(textbox, #button{postback=my_test_manual, id=mybutton}),
+	     wf:wire(mybutton, #click{})
+	   end,
+	   undefined %% We just want to verify that the postback worked.
+	 }.
 
 ```
-    
+
 ##### Adding Tests to an existing page
 
      If you have an existing page on which you would like to conduct tests
@@ -207,21 +207,21 @@
       main() -> wf_test:start_other(my_module, fun tests/0).
 
       tests() ->
-        ?wf_test_js(fill_form, fill_form()).
+	?wf_test_js(fill_form, fill_form()).
 
       fill_form() ->
-        {
-          fun() ->
-            wf:set(first_name, "Jesse"),
-            wf:set(last_name, "Gumm"),
-            wf:wire(button, #click{})
-          end,
-          "return objs('confirmation').text()",
-          fun([Text]) ->
-            Text == "Thank you for your submission"
-          end,
-          [{delay, 500}]
-        }.
+	{
+	  fun() ->
+	    wf:set(first_name, "Jesse"),
+	    wf:set(last_name, "Gumm"),
+	    wf:wire(button, #click{})
+	  end,
+	  "return objs('confirmation').text()",
+	  fun([Text]) ->
+	    Text == "Thank you for your submission"
+	  end,
+	  [{delay, 500}]
+	}.
 
 ```
 
@@ -240,12 +240,12 @@
 
 ```erlang
       {test_browsers, [
-        "google-chrome",
-        "firefox"
+	"google-chrome",
+	"firefox"
       ]},
       {tests, [
-        "/path/to/test",
-        "/path/to/other_test"
+	"/path/to/test",
+	"/path/to/other_test"
       ]},
 
 ```

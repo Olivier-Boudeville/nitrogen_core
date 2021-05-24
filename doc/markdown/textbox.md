@@ -38,7 +38,7 @@
       HTML5 placeholder attribute, which is only supported in newer browsers.
       To add support for older-browsers, you will need to link a placeholder
       script in your template. You can do this by adding the following to your
-      template inside the `<head>` section after loading jQuery. 
+      template inside the `<head>` section after loading jQuery.
 
 ```html
    <script src='/nitrogen/jquery.placeholder.js' type='text/javascript'></script>
@@ -54,11 +54,11 @@
 
       [About HTML5 Input Types](http://html5doctor.com/html5-forms-input-types/)
 
-   * `next` (atom) - 
-      If set with a valid control ID, pressing the enter key in the 
+   * `next` (atom) -
+      If set with a valid control ID, pressing the enter key in the
       textbox will automatically move focus to the specified control.
 
-   * `postback` (Erlang term) - 
+   * `postback` (Erlang term) -
       If set, pressing the enter key in the textbox will automatically
       initiate a Nitrogen postback with the supplied term.
 
@@ -83,4 +83,3 @@
  *  [jQuery Placeholder Readme](https://github.com/mathiasbynens/jquery-placeholder)
 
 	*  [Simple Controls Demos](http://nitrogenproject.com/demos/simplecontrols)
- 

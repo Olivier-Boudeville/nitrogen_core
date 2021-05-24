@@ -50,11 +50,11 @@ transform_element(Record) ->
 
     Postback = build_postback(Yid, Mid, Did, ValTempid),
     MaybeRemoveValidation = #event{type=focus, actions=[
-        wf:f("objs('~s')
-                .removeClass('LV_invalid_field')
-                .siblings('.LV_validation_message')
-                .remove();",
-                [Id])
+	wf:f("objs('~s')
+		.removeClass('LV_invalid_field')
+		.siblings('.LV_validation_message')
+		.remove();",
+		[Id])
     ]},
     BaseDD = #dropdown{delegate=?MODULE, actions=MaybeRemoveValidation, postback=Postback},
 
@@ -63,8 +63,8 @@ transform_element(Record) ->
     DDD = BaseDD#dropdown{id=Did, value=D, options=DayOpts},
 
     #panel{id=Wrapperid, class=Class, style=Style, actions=Actions, body=[
-        build_format(Format, YDD, MDD, DDD),
-        Hidden
+	build_format(Format, YDD, MDD, DDD),
+	Hidden
     ]}.
 
 maybe_add_blank(false, Opts) ->
@@ -97,22 +97,22 @@ event({update, Yid, Mid, Did, ValTempid}) ->
     M = blank_or_int(M0),
     D = blank_or_int(D0),
     NumDays = try calendar:last_day_of_the_month(Y, M)
-              catch _:_ -> 31
-              end,
+	      catch _:_ -> 31
+	      end,
     ChoppingBlock = [29,30,31],
     lists:foreach(fun(Day) ->
-        wf:wire(#remove_option{target=Did, value=Day}),
-        ?WF_IF(Day =< NumDays, wf:wire(#add_option{target=Did, option={Day, Day}}))
+	wf:wire(#remove_option{target=Did, value=Day}),
+	?WF_IF(Day =< NumDays, wf:wire(#add_option{target=Did, option={Day, Day}}))
     end, ChoppingBlock),
     IsValid = try calendar:valid_date({Y,M,D})
-              catch _:_ -> false
-              end,
+	      catch _:_ -> false
+	      end,
     case IsValid of
-        true -> 
-            wf:set(Did, D),
-            wf:set(ValTempid, date_to_string({Y,M,D}));
-        false ->
-            wf:set(ValTempid, "")
+	true ->
+	    wf:set(Did, D),
+	    wf:set(ValTempid, date_to_string({Y,M,D}));
+	false ->
+	    wf:set(ValTempid, "")
     end.
 
 date_to_string({"", "", ""}) ->
@@ -124,7 +124,7 @@ format_m_or_d(X) when X =< 9 ->
     "0" ++ wf:to_list(X);
 format_m_or_d(X) ->
     wf:to_list(X).
-    
+
 handle_min(undefined) ->
     {Y, _, _} = erlang:date(),
     Y - 100;
@@ -149,12 +149,12 @@ to_date(AllowBlank, RawVal) ->
     %% We're going to be really forgiving of bad date values, so we trap it in
     %% a try/catch block
     try qdate:to_date(RawVal) of
-        {Date, _Time} -> Date
+	{Date, _Time} -> Date
     catch _:_ ->
-        case AllowBlank of
-            true -> {"", "", ""};
-            false -> erlang:date()
-        end
+	case AllowBlank of
+	    true -> {"", "", ""};
+	    false -> erlang:date()
+	end
     end.
 
 num_opts(Nums) ->

@@ -15,14 +15,14 @@
     clear_all/2
 ]).
 
-init(_Config, State) -> 
+init(_Config, State) ->
     % Deserialize the state from domState.
     {ok, State}.
 
 finish(_Config, State) ->
     {ok, State}.
 
-get_state(Key, DefaultValue, _Config, State) -> 
+get_state(Key, DefaultValue, _Config, State) ->
     _Value = proplists:get_value(Key, State, DefaultValue).
 
 set_state(Key, Value, _Config, State) ->

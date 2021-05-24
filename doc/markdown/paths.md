@@ -7,7 +7,7 @@
 
   Nitrogen 2.x allows you to reference element paths using jQuery
   selectors. These selectors can be used in three contexts:
- 
+
  *  As the target (first parameter) of `wf:wire/2`,
     `wf:update/2`, `wf:insert_top/2`,
     `wf:insert_bottom/2`, etc.
@@ -27,13 +27,13 @@
   reference those elements in predictable ways.
 
 ## How Are Paths Matched?
-  
+
   The `objs(Path, Anchor)` function is used to match selectors on the
   client. This is defined in /nitrogen.js/, and returns a jQuery
   object containing all of the elements that match the selector
   provided under `Path`, potentially in close proximity to the
   selector provided under `Anchor`. If `Anchor` is not provided, then
-  the anchor set by `Nitrogen.$anchor(Anchor, Target)` is used. 
+  the anchor set by `Nitrogen.$anchor(Anchor, Target)` is used.
 
   `Nitrogen.$anchor/2` is automatically called by Nitrogen before each
   action is rendered. The `Anchor` value is set to the uniquely
@@ -51,7 +51,7 @@
   is actually getting matched.
 
 ### Steps To Match a Path
-   
+
    Here are the steps that the `objs()` function takes when matching a
    path.
 

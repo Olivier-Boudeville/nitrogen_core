@@ -14,12 +14,12 @@
 reflect() -> record_info(fields, tablerow).
 
 -spec render_element(#tablerow{}) -> body().
-render_element(Record) -> 
+render_element(Record) ->
     Cells = Record#tablerow.cells,
     wf_tags:emit_tag(tr, Cells, [
-        {id, Record#tablerow.html_id},
-        {class, [tablerow, Record#tablerow.class]},
-        {title, Record#tablerow.title},
-        {style, Record#tablerow.style},
-        {data_fields, Record#tablerow.data_fields}
+	{id, Record#tablerow.html_id},
+	{class, [tablerow, Record#tablerow.class]},
+	{title, Record#tablerow.title},
+	{style, Record#tablerow.style},
+	{data_fields, Record#tablerow.data_fields}
     ]).

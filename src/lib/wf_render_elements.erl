@@ -19,8 +19,8 @@ render_and_trap_actions(Elements) ->
     OldActionQueue = wf_context:action_queue(),
     wf_context:clear_action_queue(),
     {ok, Html} = case is_function(Elements) of
-        true -> render_elements(Elements());
-        false -> render_elements(Elements)
+	true -> render_elements(Elements());
+	false -> render_elements(Elements)
     end,
     {ok, JS} = wf_render_actions:render_action_queue(),
     wf_context:action_queue(OldActionQueue),
@@ -70,27 +70,22 @@ verify_and_render(_, Element) ->
 inner_render_element(#elementbase{show_if=false}, _Element) ->
     [];
 inner_render_element(Base = #elementbase{show_if=true}, Element) ->
-    Module = Base#elementbase.module, 
-    case code:ensure_loaded(Module) of
-        {module, Module} ->
-            prepare_and_render_or_transform(Module, Base, Element);
-        Response ->
-            ElementName = element(1, Element),
-            exit({failed_to_ensure_module_loaded, [{element, ElementName}, {'response_from code:ensure_loaded', Response}, {module, Module}, {record, Element}]})
-    end.
+    Module = Base#elementbase.module,
+    {module, Module} = code:ensure_loaded(Module),
+    prepare_and_render_or_transform(Module, Base, Element).
 
 -spec prepare_and_render_or_transform(Module :: atom(), #elementbase{}, nitrogen_element()) -> html().
 prepare_and_render_or_transform(Module, Base, Element) ->
     case erlang:function_exported(Module,transform_element,1) of
-        true ->
-            %% Module:transform_element is a special shortcut mechanism
-            %% of rendering elements without any of the overhead of
-            %% the pre-rendering that goes on with each element. This
-            %% should be used for custom elements that are simply
-            %% defined in terms of other Nitrogen elements.
-            _Html = call_element_render(transform_element, Module, Element);
-        false ->
-            prepare_and_render(Module, Base, Element)
+	true ->
+	    %% Module:transform_element is a special shortcut mechanism
+	    %% of rendering elements without any of the overhead of
+	    %% the pre-rendering that goes on with each element. This
+	    %% should be used for custom elements that are simply
+	    %% defined in terms of other Nitrogen elements.
+	    _Html = call_element_render(transform_element, Module, Element);
+	false ->
+	    prepare_and_render(Module, Base, Element)
     end.
 
 -spec prepare_and_render(Module :: atom(), #elementbase{}, nitrogen_element()) -> html().
@@ -109,7 +104,7 @@ prepare_and_render(Module, Base, Element) ->
     %     for each element
     %   + Lightens the page size since every element won't have
     %     an unnecessary 'tempABCXYZ' class.
-        
+
     % Get the anchor, ID, and Class, or create a new ones if not defined...
     Anchor = extract_anchor(Base),
     ID = extract_id(Base, Anchor),
@@ -119,7 +114,7 @@ prepare_and_render(Module, Base, Element) ->
     Base1 = Base#elementbase { id=ID, anchor=Anchor, class=Class },
     Element1 = wf_utils:replace_with_base(Base1, Element),
 
-    % Wire the actions...           
+    % Wire the actions...
     wf_context:anchor(Anchor),
     wf:wire(Base1#elementbase.actions),
 
@@ -151,8 +146,8 @@ extract_class(#elementbase{class=Class}, ID, Anchor) ->
 % the render_element/3 function of an element to turn an element record into
 % HTML.
 -spec call_element_render(RenderOrTransform :: render_element | transform_element,
-                          Module :: module(),
-                          Element :: nitrogen_element() ) -> html().
+			  Module :: module(),
+			  Element :: nitrogen_element() ) -> html().
 call_element_render(RenderOrTransform, Module, Element) ->
     %{Time, NewElements} = timer:tc(Module, RenderOrTransform, [Element]),
     NewElements = Module:RenderOrTransform(Element),
@@ -160,19 +155,19 @@ call_element_render(RenderOrTransform, Module, Element) ->
     inner_render_elements(NewElements).
 
 -spec normalize_id(list()) -> string().
-normalize_id(ID) -> 
+normalize_id(ID) ->
     case wf:to_string_list(ID) of
-        [".wfid_" ++ _] = [NormalizedID] -> NormalizedID;
-        ["page"] -> "page";
-        [NewID]  -> ".wfid_" ++ NewID
+	[".wfid_" ++ _] = [NormalizedID] -> NormalizedID;
+	["page"] -> "page";
+	[NewID]  -> ".wfid_" ++ NewID
     end.
 
 -spec temp_id() -> string().
 temp_id() ->
     Num = ?WF_UNIQUE,  %% For Erlang 18+, is erlang:unique_integer,
-                       %% For Erlang <18, is parts of erlang:now()
-                       %% see compat.escript, and include/compat.hrl for the
-                       %% definition.
+		       %% For Erlang <18, is parts of erlang:now()
+		       %% see compat.escript, and include/compat.hrl for the
+		       %% definition.
     "temp" ++ integer_to_list(Num).
 
 
@@ -180,26 +175,21 @@ recurse_body(Fun, List) when is_list(List) ->
     [recurse_body(Fun, X) || X <- List];
 recurse_body(Fun, Rec0) when is_tuple(Rec0), element(2, Rec0)==is_element ->
     try
-        Rec = Fun(Rec0),
-        Mod = element(3, Rec),
-        Fields = Mod:reflect(),
-        case lists:member(body, Fields) of
-            true ->
-                Idx = wf_utils:indexof(body, Fields),
-                Body = element(Idx, Rec),
-                Body2 = recurse_body(Fun, Body),
-                setelement(Idx, Rec, Body2);
-            false ->
-                Rec
-        end
+	Rec = Fun(Rec0),
+	Mod = element(3, Rec),
+	Fields = Mod:reflect(),
+	case lists:member(body, Fields) of
+	    true ->
+		Idx = wf_utils:indexof(body, Fields),
+		Body = element(Idx, Rec),
+		Body2 = recurse_body(Fun, Body),
+		setelement(Idx, Rec, Body2);
+	    false ->
+		Rec
+	end
     catch E:T ->
-        error_logger:warning_msg("Error trying to apply function to an element tuple: ~p~nError: ~p: ~p.~nStacktrace: ~p",[Rec0, E, T, erlang:get_stacktrace()]),
-        Rec0
+	error_logger:warning_msg("Error trying to apply function to an element tuple: ~p~nError: ~p: ~p.~nStacktrace: ~p",[Rec0, E, T, erlang:get_stacktrace()]),
+	Rec0
     end;
 recurse_body(_Fun, X) ->
     X.
-
-            
-
-    
-    

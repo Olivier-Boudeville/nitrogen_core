@@ -3,16 +3,16 @@
 -include("wf.hrl").
 
 -export([
-          generate/0
-        , nonce/0
-        ]).
+	  generate/0
+	, nonce/0
+	]).
 
 generate() ->
     case wf:config_default(content_security_policy, []) of
-        [] ->
-            undefined;
-        Spec ->
-            build_csp(Spec)
+	[] ->
+	    undefined;
+	Spec ->
+	    build_csp(Spec)
     end.
 
 build_csp(Spec) when is_list(Spec) ->
@@ -30,7 +30,7 @@ nonce() ->
     Length = length(Chars),
     lists:foldl(
       fun(_, Acc) ->
-              [lists:nth(rand:uniform(Length), Chars)] ++ Acc
+	      [lists:nth(rand:uniform(Length), Chars)] ++ Acc
       end, [], lists:seq(1, 12)).
 
 

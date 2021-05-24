@@ -20,11 +20,11 @@
       #h1{text="My Favorite Fruit"},
       "Apples, Oranges, and Bananas are my favorite",
       #html5_footer{body=[
-         "Published ",
-         #time{text="Last Week", datetime="2013-08-20"},
-         #br{},
-         "Last Modifed ",
-         #time{text="Yesterday", datetime="2013-08-27"}
+	 "Published ",
+	 #time{text="Last Week", datetime="2013-08-20"},
+	 #br{},
+	 "Last Modifed ",
+	 #time{text="Yesterday", datetime="2013-08-27"}
       ]}
    ]}
 
@@ -63,7 +63,7 @@
    element, but for now, you'll have to work with the `#time` element's more
    rudimentary form.
 
-### See Also 
+### See Also
 
  *  [Base element](./element_base.md)
 

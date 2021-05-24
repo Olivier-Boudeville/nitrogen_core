@@ -13,25 +13,25 @@
   Bear in mind that the state is not a **secure** store. That is, page-state gets
   pickled and sent to the client, so anything that needs to be hidden from the
   client is not recommended to be stored in the state.
- 
+
   The default implementation of the page-state is as a simple Erlang proplist.
 
 ### Behavior Functions
- 
+
 ##### `init(Config, State)`
 
   Initialize the state handler
 
- *  /Return Value/ - `{ok, NewState}` 
+ *  /Return Value/ - `{ok, NewState}`
 
 ##### `finish(Config, State)`
 
   Clean up the handler
 
  *  /Return Value/ - `{ok, NewState}`
-  
+
 ##### `get_state(Key, DefaultValue, Config, State)`
-  
+
   Retrieves the current value of the state variable with the identifier `Key`
 
  *  `Key` - The identifier to search for

@@ -52,14 +52,14 @@ to_unicode_list(L) when is_list(L) ->
     lists:flatten(SubLists);
 to_unicode_list(B) when is_binary(B) -> unicode:characters_to_list(B);
 to_unicode_list(A) -> inner_to_list(A).
-    
+
 characters_to_list(L) ->
     case unicode:characters_to_list(L) of
-        {error, _, _} ->
-            %% Failed because text includes UTF-16 characters.
-	        characters_to_list(L, <<>>);
+	{error, _, _} ->
+	    %% Failed because text includes UTF-16 characters.
+		characters_to_list(L, <<>>);
 	    Result ->
-	        Result
+		Result
     end.
 
 %% Convert UTF-16 characters to unicode list.
@@ -74,7 +74,7 @@ characters_to_list([Value|Rest], Acc) ->
 inner_to_list(A) when is_atom(A) -> atom_to_list(A);
 inner_to_list(B) when is_binary(B) -> binary_to_list(B);
 inner_to_list(I) when is_integer(I) -> integer_to_list(I);
-inner_to_list(F) when is_float(F) -> 
+inner_to_list(F) when is_float(F) ->
 	case F == round(F) of
 		true -> inner_to_list(round(F));
 		false -> nitro_mochinum:digits(F)
@@ -103,11 +103,11 @@ to_binary(L) when is_list(L) -> list_to_binary(to_list(L)).
 
 -spec to_unicode_binary(term()) -> binary().
 to_unicode_binary(V) when is_atom(V);
-                          is_integer(V);
-                          is_float(V) ->
+			  is_integer(V);
+			  is_float(V) ->
     to_binary(V);
 to_unicode_binary(V) when is_binary(V);
-                          is_list(V) ->
+			  is_list(V) ->
     unicode:characters_to_binary(V).
 
 
@@ -122,8 +122,8 @@ to_integer(F) when is_float(F) -> round(F).
 to_float(F) when is_float(F) -> F;
 to_float(I) when is_integer(I) -> float(I);
 to_float(T) when is_list(T);
-                 is_binary(T);
-                 is_atom(T) -> safe_to_float(wf:to_list(T)).
+		 is_binary(T);
+		 is_atom(T) -> safe_to_float(wf:to_list(T)).
 
 safe_to_float(L) when is_list(L) ->
     try list_to_float(L)
@@ -134,7 +134,7 @@ safe_to_float(L) when is_list(L) ->
 
 %% @doc
 %% Convert the following forms into a list of strings...
-%% 	- atom
+%%	- atom
 %%  - [atom, atom, ...]
 %%  - "String"
 %%  - "String, String, ..."
@@ -155,7 +155,7 @@ to_string_list([H|T], Acc) ->
 
 %%% HTML ENCODE %%%
 -spec html_encode(L :: term()) -> binary() | iolist().
-html_encode(L) -> 
+html_encode(L) ->
     html_encode(L, normal).
 
 -spec html_encode(L :: term(), EncType :: fun() | boolean() | whites | normal) -> binary() | iolist().
@@ -194,8 +194,8 @@ ihe([$\s,$\s|T],whites)                 -> " &nbsp;" ++ ihe(T, whites);
 ihe([$\t|T],whites)                     -> "&nbsp; &nbsp; &nbsp;" ++ ihe(T, whites);
 ihe([$\n|T],whites)                     -> "<br>"    ++ ihe(T,whites);
 ihe([BigNum|T], ET) when is_integer(BigNum)
-                         andalso BigNum > 255
-                                        -> [$&,$# | integer_to_list(BigNum)] ++ ";" ++ ihe(T, ET);
+			 andalso BigNum > 255
+					-> [$&,$# | integer_to_list(BigNum)] ++ ";" ++ ihe(T, ET);
 ihe(<<">", T/binary>>, ET)              -> <<"&gt;",   (ihe(T, ET))/binary>>;
 ihe(<<"<", T/binary>>, ET)              -> <<"&lt;",   (ihe(T, ET))/binary>>;
 ihe(<<"\"",T/binary>>, ET)              -> <<"&quot;", (ihe(T, ET))/binary>>;
@@ -207,9 +207,9 @@ ihe(<<"\n",T/binary>>, whites)          -> <<"<br>",   (ihe(T,whites))/binary>>;
 ihe(<<H:8, T/binary>>, ET)              -> <<H,(ihe(T,ET))/binary>>;
 ihe([H|T], ET)                          -> [ihe(H, ET)|ihe(T, ET)];
 ihe(U, ET) when is_tuple(U);
-                is_pid(U);
-                is_reference(U);
-                is_port(U)              -> ihe(io_lib:format("~p", [U]), ET);
+		is_pid(U);
+		is_reference(U);
+		is_port(U)              -> ihe(io_lib:format("~p", [U]), ET);
 ihe(Other, _ET)                         -> Other.
 
 html_decode(B) when is_binary(B) -> html_decode(binary_to_list(B));
@@ -231,11 +231,11 @@ html_numeric_decode(Orig, [H|T],Acc) when H =:= $; ->
     Num = list_to_integer(lists:reverse(Acc)),
 
     case unicode:characters_to_list([Num]) of
-        %% the number code doesn't translate to %% valid unicode codepoint, so we just
-        %% return the html code that triggered the numeric decode and the
-        %% original rest ofthe string, and continue
-        {error, _, _} -> {"&#", Orig}; 
-        CharString -> {CharString, T}
+	%% the number code doesn't translate to %% valid unicode codepoint, so we just
+	%% return the html code that triggered the numeric decode and the
+	%% original rest ofthe string, and continue
+	{error, _, _} -> {"&#", Orig};
+	CharString -> {CharString, T}
     end;
 html_numeric_decode(Orig, _, _) ->
     %% if we encounter *anything else*, then it's not a valid thing, and we
@@ -250,11 +250,11 @@ hex_decode(Data) -> decode(Data, 16).
 encode(Data, Base) when is_binary(Data) -> encode(binary_to_list(Data), Base);
 encode(Data, Base) when is_list(Data) ->
     F = fun(C) when is_integer(C) ->
-        case erlang:integer_to_list(C, Base) of
-            [C1, C2] -> <<C1, C2>>;
-            [C1]     -> <<$0, C1>>;
-            _        -> throw("Could not hex_encode the string.")
-        end
+	case erlang:integer_to_list(C, Base) of
+	    [C1, C2] -> <<C1, C2>>;
+	    [C1]     -> <<$0, C1>>;
+	    _        -> throw("Could not hex_encode the string.")
+	end
     end,
     {ok, list_to_binary([F(I) || I <- Data])}.
 
@@ -264,15 +264,15 @@ decode(Data, Base) when is_list(Data) ->
 
 inner_decode(Data, Base) when is_list(Data) ->
     case Data of
-        [C1, C2|Rest] ->
-            I = erlang:list_to_integer([C1, C2], Base),
-            [I|inner_decode(Rest, Base)];
+	[C1, C2|Rest] ->
+	    I = erlang:list_to_integer([C1, C2], Base),
+	    [I|inner_decode(Rest, Base)];
 
-        [] ->
-            [];
+	[] ->
+	    [];
 
-        _  ->
-            throw("Could not hex_decode the string.")
+	_  ->
+	    throw("Could not hex_decode the string.")
     end.
 
 %%% URL ENCODE/DECODE %%%
@@ -286,8 +286,8 @@ url_decode(S) -> unquote(S).
 -spec to_qs(proplist()) -> list().
 %% @doc Builds a safely-encoded querystring out of a proplist.
 %% Example: build_qs([{a, something}, {b, 123}]),
-%% Returns: "a=something&b=123" 
-to_qs(undefined) -> [];  
+%% Returns: "a=something&b=123"
+to_qs(undefined) -> [];
 to_qs([]) -> [];
 to_qs([{Key, Val}]) ->
     [url_encode(Key),"=",url_encode(Val)];
@@ -367,7 +367,7 @@ join([Item|Items],Delim) ->
     (C >= $A andalso C =< $Z) orelse
     (C >= $0 andalso C =< $9) orelse
     (C =:= ?FULLSTOP orelse C =:= $- orelse C =:= $~ orelse
-        C =:= $_))).
+	C =:= $_))).
 
 
 hexdigit(C) when C < 10 -> $0 + C;
@@ -503,7 +503,7 @@ html_encode_test() ->
     ?assertEqual(<<"{a}">>, iolist_to_binary(html_encode({a}))),
 
     % Decode
-    
+
     ?assertEqual("'", html_decode(html_encode("'"))),
     ?assertEqual("ドラゴンは私になります", html_decode(html_encode("ドラゴンは私になります"))),
 

@@ -39,7 +39,7 @@
 
  *  **yaws** - HTTP Server (Optional)
     - Homepage: https://yaws.hyber.org
-    - Git Repo: https://github.com/erlyaws/yaws 
+    - Git Repo: https://github.com/erlyaws/yaws
 
  *  **Sync** - Automatically recompile changed Erlang modules.
     - Git Repo: https://github.com/rustyio/sync

@@ -7,5 +7,5 @@
 -include_lib ("wf.hrl").
 -compile(export_all).
 
-render_action(_Record) -> 
+render_action(_Record) ->
     "Nitrogen.$disable_selection(obj('me'));".

@@ -26,7 +26,7 @@ The table element allows you to build an HTML table in Nitrogen.
      #tablerow { cells=[
        #tablecell { text="Martin" },
        #tablecell { text="Germany" }
-     ]}	
+     ]}
    ]}
 
 ```

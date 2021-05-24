@@ -45,13 +45,13 @@ set_cookie_inner(_Type, Cookie, Value, Options) ->
 
 set_websocket_cookie(Cookie, Value, Options) ->
     SetCookie = #set_cookie{
-        cookie=Cookie,
-        value=Value,
-        path=proplists:get_value(path, Options, "/"),
-        domain=proplists:get_value(path, Options, undefined),
-        minutes_to_live=proplists:get_value(minutes_to_live, Options, 20),
-        secure=proplists:get_value(secure, Options, false),
-        http_only=proplists:get_value(http_only, Options, false)
+	cookie=Cookie,
+	value=Value,
+	path=proplists:get_value(path, Options, "/"),
+	domain=proplists:get_value(path, Options, undefined),
+	minutes_to_live=proplists:get_value(minutes_to_live, Options, 20),
+	secure=proplists:get_value(secure, Options, false),
+	http_only=proplists:get_value(http_only, Options, false)
     },
     wf:wire(SetCookie).
 

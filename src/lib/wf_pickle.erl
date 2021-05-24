@@ -12,7 +12,7 @@
 
 -export ([
     pickle/1,
-    depickle/1, 
+    depickle/1,
     depickle/2
 ]).
 
@@ -38,11 +38,11 @@ depickle(PickledData) ->
 -spec depickle(PickledData :: pickled(), TTLSeconds :: infinity | integer() | float()) -> undefined | term().
 depickle(PickledData, TTLSeconds) ->
     try
-        {Data, PickledTime} = inner_depickle(PickledData),
-        case verify_depickle_time(PickledTime, TTLSeconds) of
-            true -> Data;
-            false -> undefined
-        end
+	{Data, PickledTime} = inner_depickle(PickledData),
+	case verify_depickle_time(PickledTime, TTLSeconds) of
+	    true -> Data;
+	    false -> undefined
+	end
     catch _:_ -> undefined
     end.
 
@@ -74,14 +74,14 @@ signkey() ->
     %% the right order, we don't need to call nitro_cache directly.
     %nitro_cache:get(nitrogen, 1000, signkey, fun() ->
     wf:cache(signkey, 1000, fun() ->
-        case config_handler:get_value(signkey) of
-            undefined ->
-                erlang:md5(wf:to_list(erlang:get_cookie()));
-            Key when byte_size(Key)==16 -> 
-                Key;
-            Key ->
-                erlang:md5(wf:to_list(Key))
-        end
+	case config_handler:get_value(signkey) of
+	    undefined ->
+		erlang:md5(wf:to_list(erlang:get_cookie()));
+	    Key when byte_size(Key)==16 ->
+		Key;
+	    Key ->
+		erlang:md5(wf:to_list(Key))
+	end
     end).
 
 -spec modified_base64_encode(binary()) -> binary().

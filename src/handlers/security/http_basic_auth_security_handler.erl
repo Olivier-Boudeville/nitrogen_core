@@ -6,7 +6,7 @@
 -module (http_basic_auth_security_handler).
 -behaviour (security_handler).
 -export ([
-    init/2, 
+    init/2,
     finish/2,
     main/0
 ]).
@@ -17,21 +17,21 @@
 %% @doc
 %%
 %% Basic usage:
-%% 
+%%
 %% In the module that dispatches a request to Nitrogen, add a call to
-%% nitrogen:handler(http_basic_auth_security_handler, CallbackMod) 
-%% after nitrogen:init_request/2 but before nitrogen:run/0. 
+%% nitrogen:handler(http_basic_auth_security_handler, CallbackMod)
+%% after nitrogen:init_request/2 but before nitrogen:run/0.
 %%
 %% This will tell Nitrogen to use the http_basic_auth_security_handler
 %% security handler.
 %%
 %% CallbackMod is an Erlang module that exports the following functions:
 %%
-%% -spec realm() -> string().    
+%% -spec realm() -> string().
 %%
 %% realm/0 - simply return the authentication realm as a string.
 %%
-%% 
+%%
 %% -spec is_authenticated(atom(), string()) -> bool().
 %%
 %% is_authenticated/2 - makes it possible to e.g timeout a session and thus
@@ -76,9 +76,9 @@ init(CallbackMod, State) ->
     case CallbackMod:is_protected(PageModule) of
 	true ->
 	    case wf:header(authorization) of
-		AuthHeader when AuthHeader /= undefined ->           
+		AuthHeader when AuthHeader /= undefined ->
 		    check_auth_header(PageModule, CallbackMod, AuthHeader);
-		_ -> 
+		_ ->
 		    prompt_for_authentication(CallbackMod)
 	    end;
 	_ ->
@@ -86,40 +86,40 @@ init(CallbackMod, State) ->
     end,
     {ok, State}.
 
-finish(_Config, State) -> 
+finish(_Config, State) ->
     {ok, State}.
 
 
 check_auth_header(Module, CallbackMod, AuthHeader) ->
     case string:tokens(AuthHeader, " ") of
-        ["Basic", Digest] ->
-            decode_digest(Module, CallbackMod, Digest);
-        _ ->
-            prompt_for_authentication(CallbackMod)
+	["Basic", Digest] ->
+	    decode_digest(Module, CallbackMod, Digest);
+	_ ->
+	    prompt_for_authentication(CallbackMod)
     end.
 
 decode_digest(Module, CallbackMod, Digest) ->
     case string:tokens(base64:decode_to_string(Digest), ":") of
-        [User, Password] ->
-            check_is_authenticated(Module, CallbackMod, User, Password);
-        _ ->
-            prompt_for_authentication(CallbackMod)
+	[User, Password] ->
+	    check_is_authenticated(Module, CallbackMod, User, Password);
+	_ ->
+	    prompt_for_authentication(CallbackMod)
     end.
 
 check_is_authenticated(Module, CallbackMod, User, Password) ->
     case CallbackMod:is_authenticated(Module, User) of
-        false ->
-            authenticate_user(Module, CallbackMod, User, Password);
-        _ ->
-            ok
-    end. 
+	false ->
+	    authenticate_user(Module, CallbackMod, User, Password);
+	_ ->
+	    ok
+    end.
 
 authenticate_user(Module, CallbackMod, User, Password) ->
     case CallbackMod:authenticate(Module, User, Password) of
-        true  -> 
-            ok;
-        _ ->
-            prompt_for_authentication(CallbackMod)
+	true  ->
+	    ok;
+	_ ->
+	    prompt_for_authentication(CallbackMod)
     end.
 
 prompt_for_authentication(CallbackMod) ->

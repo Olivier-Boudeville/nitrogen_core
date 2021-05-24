@@ -11,34 +11,33 @@
 ]).
 
 -callback init(         handler_config(),
-                        handler_state()) -> {ok, handler_state()}.
+			handler_state()) -> {ok, handler_state()}.
 -callback finish(       handler_config(),
-                        handler_state()) -> {ok, handler_state()}.
+			handler_state()) -> {ok, handler_state()}.
 -callback get_value(    Key :: term(),
-                        DefaultValue :: term(),
-                        handler_config(),
-                        handler_state()) -> term().
+			DefaultValue :: term(),
+			handler_config(),
+			handler_state()) -> term().
 -callback get_values(   Key :: term(),
-                        DefaultValue :: term(),
-                        handler_config(),
-                        handler_state()) -> [term()].
+			DefaultValue :: term(),
+			handler_config(),
+			handler_state()) -> [term()].
 
 % Retrieve a configuration value.
 -spec get_value(Key :: term()) -> term().
-get_value(Key) -> 
+get_value(Key) ->
     _Value = get_value(Key, undefined).
 
 -spec get_value(Key :: term(), DefaultValue :: term()) -> term().
-get_value(Key, DefaultValue) -> 
+get_value(Key, DefaultValue) ->
     _Value = wf_handler:call_readonly(config_handler, get_value, [Key, DefaultValue]).
 
 % get_values(Application, Module, Key, DefaultValue, State) -> Value.
 % Retrieve a list of configuration values.
 -spec get_values(Key :: term()) -> [term()].
- get_values(Key) -> 
+ get_values(Key) ->
     _Value = get_values(Key, undefined).
 
 -spec get_values(Key :: term(), DefaultValue :: term()) -> [term()].
-get_values(Key, DefaultValue) -> 
+get_values(Key, DefaultValue) ->
     _Value = wf_handler:call_readonly(config_handler, get_values, [Key, DefaultValue]).
-

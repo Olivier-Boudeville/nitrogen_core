@@ -24,17 +24,17 @@
 
 %% The return value of restful function can either be {StatusCode, Body} or
 %% just a Body. If just Body is returned, then the status code will be 200, if
-%% no other status code is specified, otherwise it will use 
+%% no other status code is specified, otherwise it will use
 -type restful_return() :: body() | {StatusCode :: integer(), Body :: body()}.
 
--callback get(    	PathInfo :: string()) -> restful_return().
--callback post(   	PathInfo :: string()) -> restful_return().
--callback put(    	PathInfo :: string()) -> restful_return().
--callback delete( 	PathInfo :: string()) -> restful_return().
+-callback get(		PathInfo :: string()) -> restful_return().
+-callback post(		PathInfo :: string()) -> restful_return().
+-callback put(		PathInfo :: string()) -> restful_return().
+-callback delete(	PathInfo :: string()) -> restful_return().
 %% Less commonly used methods, not sure if they should be included in the
 %% behaviour because their lack generates warnings
 %%-callback connect(	PathInfo :: string()) -> restful_return().
-%%-callback trace(  	PathInfo :: string()) -> restful_return().
+%%-callback trace(	PathInfo :: string()) -> restful_return().
 %%-callback options(	PathInfo :: string()) -> restful_return().
 
 

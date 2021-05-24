@@ -21,11 +21,11 @@ finish(_Config, _State) ->
 
 get_value(Key, DefaultValue, Config, State) ->
     case get_values(Key, [DefaultValue], Config, State) of
-        [Value] ->
-            Value;
-        Values ->
-            error_logger:error_msg("Too many matching config values for key: ~p~n", [Key]),
-            throw({nitrogen_error, too_many_matching_values, Key, Values})
+	[Value] ->
+	    Value;
+	Values ->
+	    error_logger:error_msg("Too many matching config values for key: ~p~n", [Key]),
+	    throw({nitrogen_error, too_many_matching_values, Key, Values})
     end.
 
 get_values(Key, DefaultValue, Config, State) ->
@@ -33,30 +33,30 @@ get_values(Key, DefaultValue, Config, State) ->
     %% for backwards compatibility, also check for the nitrogen app.
     DefaultApps = [nitrogen_core, nitrogen],
     Apps = case application:get_env(nitrogen_core, application_config_key, []) of
-               App when is_list(App) ->
-                   App ++ DefaultApps;
-               App ->
-                   [App] ++ DefaultApps
-           end,
+	       App when is_list(App) ->
+		   App ++ DefaultApps;
+	       App ->
+		   [App] ++ DefaultApps
+	   end,
     %% If a nitrogen_core configuration key application_config_fn
     %% exists and is a function of arity 2, dispatch to that function.
     %%
     %% config_fn(Key, DefaultValue) -> {true, Value} | any().
     case configuration_function(Key, DefaultValue) of
-        {ok, Value} ->
-            [Value];
-        _ ->
-            get_values(Apps, Key, DefaultValue, Config, State)
+	{ok, Value} ->
+	    [Value];
+	_ ->
+	    get_values(Apps, Key, DefaultValue, Config, State)
     end.
 
 get_values([], _Key, DefaultValue, _Config, _State) ->
     DefaultValue;
 get_values([App|Apps], Key, DefaultValue, _Config, _State) ->
     case application:get_env(App, Key) of
-        {ok, Value} ->
-            [Value];
-        undefined ->
-            get_values(Apps, Key, DefaultValue, _Config, _State)
+	{ok, Value} ->
+	    [Value];
+	undefined ->
+	    get_values(Apps, Key, DefaultValue, _Config, _State)
     end.
 
 configuration_function(Key, DefaultValue) ->
@@ -73,8 +73,8 @@ configuration_function({true, Fn}, Key, DefaultValue) ->
 
 configuration_function_defined() ->
     case application:get_env(nitrogen_core, application_config_fn, []) of
-        [] ->
-            {false, undefined};
-        Fn ->
-            {is_function(Fn, 2), Fn}
+	[] ->
+	    {false, undefined};
+	Fn ->
+	    {is_function(Fn, 2), Fn}
     end.

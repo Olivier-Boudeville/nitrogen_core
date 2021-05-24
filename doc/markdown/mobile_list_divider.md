@@ -8,7 +8,7 @@ This element produces a [jQuery Mobile List Divider](http://jquerymobile.com/tes
 ### Usage
 
 ```erlang
-   #mobile_list_divider { 
+   #mobile_list_divider {
       theme=c,
       text="Fruits"
    }
@@ -16,7 +16,7 @@ This element produces a [jQuery Mobile List Divider](http://jquerymobile.com/tes
 ```
 
 ### Attributes
- 
+
    * `text` (string) - The text of the divider.
 
 ### See Also
