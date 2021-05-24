@@ -12,12 +12,6 @@
 -include("wf.hrl").
 
 
-% Corresponding to the base content root of the Nitrogen-based website
-% corresponding to this cache instance:
-%
--type cache_state() :: file_utils:bin_directory_path().
-
-
 -export ([
 	init/2,
 	finish/2,
@@ -26,6 +20,16 @@
 	clear/3,
 	clear_all/2
 ]).
+
+
+
+% Corresponding to the base content root of the Nitrogen-based website
+% corresponding to this cache instance:
+%
+-type cache_state() :: file_utils:bin_directory_path().
+
+-export_type([ cache_state/0 ]).
+
 
 
 init( Config, InitialCacheState ) ->
