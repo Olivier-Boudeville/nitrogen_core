@@ -5,6 +5,7 @@
 -module (cache_handler).
 -include("wf.hrl").
 -export ([
+	init/2,
 	get_cached/3,
 	set_cached/3,
 	clear/1,
