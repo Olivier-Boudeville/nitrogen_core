@@ -32,14 +32,19 @@
 
 call_main_handler_ws_init() ->
 	case erlang:function_exported(nitrogen_main_handler, ws_init, 0) of
-		true -> nitrogen_main_handler:ws_init();
-		false -> ok
+		true ->
+			nitrogen_main_handler:ws_init();
+
+		false ->
+			ok
+
 	end.
 
 
 %% init_request/2 kept for backwards compatibility, but is no longer needed
 init_request(Bridge, _) ->
 	init_request(Bridge).
+
 
 init_request(Bridge) ->
 
@@ -120,6 +125,8 @@ ws_terminate(_Reason, _Bridge, _State) ->
 	ok.
 
 
-%% Deprecated, kept for backwards compatibility. Use nitrogen:run/1 with simple_bridge
+% Deprecated, kept for backwards compatibility. Use nitrogen:run/1 with
+% simple_bridge.
+%
 run() ->
 	wf_core:run().

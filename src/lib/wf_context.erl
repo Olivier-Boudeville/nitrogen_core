@@ -5,6 +5,10 @@
 -module (wf_context).
 -include("wf.hrl").
 
+% For the sbw record:
+-include_lib("simple_bridge/include/simple_bridge.hrl").
+
+
 -export([
 		bridge/0,
 		bridge/1,
@@ -94,7 +98,7 @@
 		restore_handler/1,
 
 		init_context/1,
-		make_handler/2,
+		make_handler/2, make_handler/3,
 
 		context/0,
 		context/1,
@@ -219,7 +223,8 @@ content_type() ->
 
 download_as(Filename0) ->
 	Filename = wf_convert:url_encode(Filename0),
-	header("Content-Disposition", "attachment; filename=\"" ++ Filename ++ "\"").
+	header("Content-Disposition",
+		   "attachment; filename=\"" ++ Filename ++ "\"").
 
 headers() ->
 	sbw:headers(?BRIDGE).
@@ -381,7 +386,10 @@ type() ->
 	Context = context(),
 	Context#context.type.
 
-type(Type) -> % either first_request, postback_request, postback_websocket, comet, or static_file
+% Either first_request, postback_request, postback_websocket, comet, or
+% static_file:
+%
+type(Type) ->
 	Context = context(),
 	context(Context#context { type = Type }).
 
@@ -427,7 +435,7 @@ handlers() ->
 
 handlers(Handlers) ->
 	Context = context(),
-	context(Context#context { handler_list = Handlers }).
+	context(Context#context { handler_list=Handlers }).
 
 handler(HandlerName) ->
 	Handlers = handlers(),
@@ -441,7 +449,8 @@ restore_handler(NewHandler) ->
 	NewHandlers = [maybe_restore_handler(H, NewHandler) || H <- Handlers],
 	handlers(NewHandlers).
 
-maybe_restore_handler(Orig = #handler_context{name=Name}, New = #handler_context{name=Name}) ->
+maybe_restore_handler( Orig=#handler_context{name=Name},
+					   New=#handler_context{name=Name}) ->
 	New#handler_context{config=Orig#handler_context.config};
 maybe_restore_handler(Orig, _New) ->
 	Orig.
@@ -463,10 +472,12 @@ init_context(Bridge) ->
 	trace_utils:debug_fmt( "Initialising context from following bridge:~n  ~p",
 						   [ Bridge ] ),
 
+	BinContentRoot = Bridge#sbw.content_root,
+
 	% Create the new context using the default handlers.
 	Context = #context {
 		bridge = Bridge,
-		page_context = #page_context { series_id = wf:temp_id() },
+		page_context = #page_context{ series_id = wf:temp_id() },
 		event_context = #event_context {},
 		action_queue = new_action_queue(),
 		script_nonce = wf_security_policy:nonce(),
@@ -475,7 +486,11 @@ init_context(Bridge) ->
 			make_handler(config_handler, default_config_handler),
 			make_handler(log_handler, default_log_handler),
 			make_handler(process_registry_handler, nprocreg_registry_handler),
-			make_handler(cache_handler, default_cache_handler),
+
+			%make_handler(cache_handler, default_cache_handler),
+			make_handler(cache_handler, default_cache_handler,
+						 _InitialState=BinContentRoot),
+
 			make_handler(query_handler, default_query_handler),
 			make_handler(crash_handler, default_crash_handler),
 
@@ -501,6 +516,13 @@ make_handler(Name, Module) ->
 		state=[]
 	}.
 
+make_handler(Name, Module, InitialState) ->
+	#handler_context {
+		name=Name,
+		module=Module,
+		state=InitialState
+	}.
+
 
 caching() ->
 	Context = context(),
@@ -517,11 +539,12 @@ caching(Caching) ->
 
 % Yes, the context is stored in the process dictionary. It makes the Nitrogen
 % code much cleaner. Trust me.
+%
 context() ->
-	get( context ).
+	get( nitrogen_context ).
 
 context( Context ) ->
-	put( context, Context ).
+	put( nitrogen_context, Context ).
 
 
 

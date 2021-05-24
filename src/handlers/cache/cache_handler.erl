@@ -64,13 +64,17 @@ get_cached(Key, Function, TTL) ->
 		%% capture existing caching state before evaluating
 		Caching = wf_context:caching(),
 
-		%% let us know we're caching
+		%trace_utils:debug_fmt( "Caching: ~p", [ Caching ] ),
+
+		% Let us know we are caching:
 		wf_context:caching(true),
 
 		%% Process the caching function
 		Result = Function(),
 
-		%% Restore the caching status to its previous state (and if the state is unchanged, save some cycles by skipping it
+		% Restores the caching status to its previous state (and if the state is
+		% unchanged, save some cycles by skipping it):
+		%
 		?WF_IF(Caching, wf_context:caching(Caching)),
 
 		%% Return the result

@@ -32,10 +32,14 @@ call(Name, FunctionName, Args) when is_atom(Name) ->
 	Handler = get_handler(Name),
 	call(Handler, FunctionName, Args);
 
-call(#handler_context{ name=Name, module=Module, config=Config, state=State }, FunctionName, Args) ->
+call(#handler_context{ name=Name, module=Module, config=Config, state=State },
+	 FunctionName, Args) ->
+
 	Result = erlang:apply(Module, FunctionName, Args ++ [Config, State]),
 
-	% Result will be {ok, State}, {ok, Value1, State}, or {ok, Value1, Value2, State}.
+	% Result will be {ok, State}, {ok, Value1, State}, or {ok, Value1, Value2,
+	% State}.
+
 	% Update the context with the new state.
 	case Result of
 		{ok, NewState} ->
@@ -51,12 +55,14 @@ call(#handler_context{ name=Name, module=Module, config=Config, state=State }, F
 			{ok, Value1, Value2}
 	end.
 
-call_readonly(Name, FunctionName) -> call_readonly(Name, FunctionName, []).
+
+call_readonly(Name, FunctionName) ->
+	call_readonly(Name, FunctionName, []).
 
 call_readonly(Name, FunctionName, Args) ->
 	% Get the handler and state from the context. Then, call
 	% the function, passing in the Args with State appended.
-	#handler_context { module=Module, config=Config, state=State } = get_handler(Name),
+	#handler_context{ module=Module, config=Config, state=State } = get_handler(Name),
 	erlang:apply(Module, FunctionName, Args ++ [Config, State]).
 
 set_handler(Module, Config) ->

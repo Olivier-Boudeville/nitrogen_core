@@ -1,11 +1,17 @@
-% vim: sw=4 ts=4 et ft=erlang
 % Nitrogen Web Framework for Erlang
 % Copyright (c) 2008-2013 Rusty Klophaus
 % Copyright (c) 2014-2020 Jesse Gumm
 % See MIT-LICENSE for licensing information.
 
 -module (element_template).
+
 -include("wf.hrl").
+
+
+% For the sbw record:
+-include_lib("simple_bridge/include/simple_bridge.hrl").
+
+
 -export([
 	reflect/0,
 	render_element/1,
@@ -22,17 +28,20 @@ reflect() -> record_info(fields, template).
 
 -spec render_element(#template{}) -> body().
 render_element(Record) ->
-	% Parse the template file or supplied text
+
+	% Parse the template file or supplied text:
 	Template = case Record#template.text of
-				 [] ->
+
+				 "" ->
 				   File = wf:to_binary(Record#template.file),
 				   get_cached_template(File, Record);
+
 				 Text ->
-				   parse_template({content, wf:to_binary(Text)},
-								  Record#template.from_type,
-								  Record#template.to_type,
-								  Record#template.callouts,
-								  Record#template.options)
+				   parse_template( {content, wf:to_binary(Text)},
+								   Record#template.from_type,
+								   Record#template.to_type,
+								   Record#template.callouts,
+								   Record#template.options)
 			   end,
 
 
@@ -49,25 +58,66 @@ render_element(Record) ->
 	Body = eval(Template, Fixed_bindings_record, ModuleAliases),
 	Body.
 
-get_cached_template(File0, #template{from_type=FromType, to_type=ToType, options=Options, callouts=Callouts}) ->
-	File = wf:to_binary(File0),
-	FileKey = {File, FromType, ToType, Options},
 
-	case is_time_to_recache(File, FileKey) of
+get_cached_template( FilePath0,
+					 #template{from_type=FromType, to_type=ToType,
+							   options=Options, callouts=Callouts}) ->
+
+	BinContentRoot = case wf_context:context() of
+
+		undefined ->
+			trace_utils:error_fmt( "No context found from ~w.", [ self() ] ),
+			throw( no_context );
+
+		Context ->
+			case Context#context.bridge of
+
+				undefined ->
+					trace_utils:error_fmt(
+						"No bridge in context found from ~w.", [ self() ] ),
+					throw( no_bridge_in_context );
+
+				Bridge ->
+					case Bridge#sbw.content_root of
+
+						undefined ->
+							trace_utils:error_fmt( "No content root set in "
+								"bridge, in context found from ~w.",
+								[ self() ] ),
+							throw( no_content_root_in_context_bridge );
+
+						BinCtnRoot ->
+							BinCtnRoot
+
+					end
+
+			end
+
+	end,
+
+	BinFilePath = file_utils:bin_join( BinContentRoot, FilePath0 ),
+
+	FileKey = {BinFilePath, FromType, ToType, Options},
+
+	case is_time_to_recache(BinFilePath, FileKey) of
+
 		true ->
-			wf:info("Recaching Template: ~s",[File]),
+			wf:info("Recaching Template: ~s", [BinFilePath]),
 			%% Recache the template...
-			Template = parse_template(File, FromType, ToType, Callouts, Options),
+			Template = parse_template(BinFilePath, FromType, ToType,
+									  Callouts, Options),
 			wf:set_cache({template_last_recached, FileKey}, {date(), time()}),
 			wf:set_cache({template, FileKey}, Template),
 			Template;
+
 		false ->
 			wf:cache({template, FileKey}, fun() ->
-				parse_template(File, FromType, ToType, Callouts, Options)
+				parse_template(BinFilePath, FromType, ToType, Callouts, Options)
 			end)
 	end.
 
-is_time_to_recache(File, FileKey) ->
+
+is_time_to_recache(BinFilePath, FileKey) ->
 	%% First we check the last time the template was recached/recompiled. This
 	%% will be used to compare against the time the file was updated on the
 	%% filesystem. When it's first loaded, it'll be recorded as a "Never" tuple
@@ -79,35 +129,48 @@ is_time_to_recache(File, FileKey) ->
 	%% Now we load the file's last modified time from the filesystem, and cache
 	%% that result for one second. That way we're not hammering the filesystem
 	%% over and over for the same file.
-	GetLastModified = fun() -> filelib:last_modified(File) end,
-	LastModified = wf:cache({template_last_modified, FileKey}, 1000, GetLastModified),
+	GetLastModified = fun() -> filelib:last_modified(BinFilePath) end,
+
+	LastModified = wf:cache({template_last_modified, FileKey}, 1000,
+							GetLastModified),
 
 	%% Finally if the file's last modification date is after the last time it
 	%% was recached, we need to recache it.
-	?WF_IF(LastModified==0,wf:warning("File appears to be deleted or has no modified time: ~s",[File])),
+	?WF_IF(LastModified==0, wf:warning(
+		"File appears to be deleted or has no modified time: ~s",
+		[BinFilePath])),
+
 	LastModified > LastRecached.
 
-parse_template({content, Binary}, FromType, ToType, Callouts, []) when FromType=:=ToType ->
+
+parse_template({content, Binary}, FromType, ToType, Callouts, [])
+  when FromType=:=ToType ->
 	case Callouts of
 		true -> parse_template1(Binary);
 		false -> Binary
 	end;
+
 parse_template({content, Binary}, FromType, ToType, Callouts, Options) ->
 	case Callouts of
 		false ->
-			wf_pandoc:convert(Binary, [{from, FromType}, {to, ToType} | Options]);
+			wf_pandoc:convert(Binary,
+							  [{from, FromType}, {to, ToType} | Options]);
 		true ->
 			{Bin2, CalloutMap} = remove_callouts(Binary),
 			Bin3 = wf_pandoc:convert(Bin2, [{from, FromType}, {to, ToType} | Options]),
 			Bin4 = add_callouts(CalloutMap, Bin3),
 			parse_template1(Bin4)
 	end;
+
 parse_template(File, FromType, ToType, Callouts, Options) ->
 	case file:read_file(File) of
 		{ok, Binary} ->
+			trace_utils:debug_fmt( "Template file '~ts' read.", [ File ] ),
 			parse_template({content, Binary}, FromType, ToType, Callouts, Options);
 		_ ->
 			?LOG("Error reading file: ~s~n", [File]),
+			trace_utils:error_fmt( "Template '~ts' not found (from '~ts').",
+				[ File, file_utils:get_current_directory() ] ),
 			throw({template_not_found, File})
 	end.
 

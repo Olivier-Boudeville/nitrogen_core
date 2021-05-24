@@ -5,9 +5,9 @@
 % This cache handler relies on nitro_cache
 %
 
--module (default_cache_handler).
+-module(default_cache_handler).
 
--behaviour (cache_handler).
+-behaviour(cache_handler).
 
 -include("wf.hrl").
 
@@ -17,14 +17,15 @@
 	finish/2,
 	get_cached/5,
 	set_cached/5,
+	get_full_key/2,
 	clear/3,
 	clear_all/2
 ]).
 
 
 
-% Corresponding to the base content root of the Nitrogen-based website
-% corresponding to this cache instance:
+% Stores the base content root of the Nitrogen-based website corresponding to
+% this cache instance:
 %
 -type cache_state() :: file_utils:bin_directory_path().
 
@@ -39,6 +40,8 @@ init( Config, InitialCacheState ) ->
 	trace_utils:debug_fmt( "Initialising default cache handler from "
 		"configuration '~p' and initial cache state ~p (cache name is '~ts').",
 		[ Config, InitialCacheState, CacheName ] ),
+
+	%basic_utils:crash(),
 
 	try
 
@@ -80,11 +83,22 @@ add_cache(Caches, CacheName) ->
 finish(_Config, State) ->
 	{ok, State}.
 
--spec get_cached(term(), fun(), integer() | infinity, proplist(), any()) -> {ok, term(), any()}.
+
+-spec get_cached(term(), fun(), integer() | infinity, proplist(), any()) ->
+						{ok, term(), any()}.
 get_cached(Key, Function, TTL, Config, State)
 		when is_function(Function, 0) ->
+
 	CacheName = cache_name(Config),
-	Return = nitro_cache:get(CacheName, TTL, Key, Function),
+
+	% Integrates the content root in this key:
+	FullKey = get_full_key( Key, State ),
+
+	trace_utils:debug_fmt( "Default cache handler looking up Key=~p, "
+		"with Function=~p, Config=~p and State=~p",
+		[ FullKey, Function, Config, State ] ),
+
+	Return = nitro_cache:get(CacheName, TTL, FullKey, Function),
 	{ok, Return, State}.
 
 set_cached(Key, Value, TTL, Config, State) ->
@@ -104,3 +118,14 @@ cache_name(undefined) ->
 	nitrogen;
 cache_name(Config) ->
 	proplists:get_value(cache_name, Config, nitrogen).
+
+
+% Returns the full key corresponding to specified one, i.e. integrating the
+% content root.
+%
+ get_full_key( Key, State ) ->
+
+	% State is simply directly the content root of interest:
+	BinContentRoot = State,
+
+	{ Key, BinContentRoot }.
