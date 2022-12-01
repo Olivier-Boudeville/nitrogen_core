@@ -45,8 +45,8 @@
 	{ok, CacheState :: cache_state() }.
 init( Config, InitialCacheState ) ->
 
-	trace_utils:debug_fmt( "Initialising cache handler from configuration ~p "
-		"and initial cache state ~p.", [ Config, InitialCacheState ] ),
+	%trace_utils:debug_fmt( "Initialising cache handler from configuration ~p "
+	%	"and initial cache state ~p.", [ Config, InitialCacheState ] ),
 
 	{ok, InitialCacheState }.
 
@@ -85,8 +85,8 @@ get_cached(Key, Function, TTL) ->
 	P = {ok, Value} = wf_handler:call( cache_handler, get_cached,
 										[Key, ContextedFun, TTL]),
 
-	trace_utils:debug_fmt( "[~w] Getting cached value for key '~p': '~p'.",
-						   [ self(), Key, Value ] ),
+	%trace_utils:debug_fmt( "[~w] Getting cached value for key '~p': '~p'.",
+	%					   [ self(), Key, Value ] ),
 
 	P.
 
@@ -95,8 +95,8 @@ get_cached(Key, Function, TTL) ->
 % value already exists for that key, it is replaced.
 set_cached(Key, Value, TTL ) ->
 
-	trace_utils:debug_fmt( "Setting cached value for key '~p' to ~p",
-						   [ Key,Value ] ),
+	%trace_utils:debug_fmt( "Setting cached value for key '~p' to ~p",
+	%					   [ Key,Value ] ),
 
 	ok = wf_handler:call(cache_handler, set_cached, [Key, Value, TTL]).
 

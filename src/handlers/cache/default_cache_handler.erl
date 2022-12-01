@@ -37,9 +37,9 @@ init( Config, InitialCacheState ) ->
 
 	CacheName = cache_name( Config ),
 
-	trace_utils:debug_fmt( "Initialising default cache handler from "
-		"configuration '~p' and initial cache state ~p (cache name is '~ts').",
-		[ Config, InitialCacheState, CacheName ] ),
+	%trace_utils:debug_fmt( "Initialising default cache handler from "
+	%	"configuration '~p' and initial cache state ~p (cache name is '~ts').",
+	%	[ Config, InitialCacheState, CacheName ] ),
 
 	%basic_utils:crash(),
 
@@ -78,7 +78,9 @@ add_cache(Caches, CacheName) ->
 			false -> throw({cannot_init_cache, CacheName})
 		end
 	end,
-	application:set_env(nitro_cache, initialized_nitrogen_caches, [CacheName | Caches]).
+	application:set_env( nitro_cache, initialized_nitrogen_caches,
+						 [ CacheName | Caches ] ).
+
 
 finish(_Config, State) ->
 	{ok, State}.
@@ -94,9 +96,9 @@ get_cached(Key, Function, TTL, Config, State)
 	% Integrates the content root in this key:
 	FullKey = get_full_key( Key, State ),
 
-	trace_utils:debug_fmt( "Default cache handler looking up Key=~p, "
-		"with Function=~p, Config=~p and State=~p",
-		[ FullKey, Function, Config, State ] ),
+	%trace_utils:debug_fmt( "Default cache handler looking up Key=~p, "
+	%	"with Function=~p, Config=~p and State=~p",
+	%	[ FullKey, Function, Config, State ] ),
 
 	Return = nitro_cache:get(CacheName, TTL, FullKey, Function),
 	{ok, Return, State}.

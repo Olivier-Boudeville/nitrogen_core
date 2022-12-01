@@ -345,7 +345,7 @@ page_module() ->
 
 page_module(Module) ->
 	Page = page_context(),
-	 page_context(Page#page_context { module = Module }).
+	page_context(Page#page_context{ module = Module }).
 
 entry_point() ->
 	Page = page_context(),
