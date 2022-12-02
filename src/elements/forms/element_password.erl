@@ -3,7 +3,7 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (element_password).
+-module(element_password).
 -include("wf.hrl").
 -export([
     reflect/0,
@@ -17,6 +17,6 @@ reflect() -> record_info(fields, password).
 transform_element(Record) ->
     Textbox = wf_utils:copy_fields(Record, #textbox{}),
     Textbox#textbox{
-	class=[password,Record#password.class],
-	type=password
+        class = [password, Record#password.class],
+        type = password
     }.

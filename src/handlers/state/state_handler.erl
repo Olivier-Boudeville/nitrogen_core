@@ -3,9 +3,9 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (state_handler).
+-module(state_handler).
 -include("wf.hrl").
--export ([
+-export([
     get_state/1,
     get_state/2,
     set_state/2,
@@ -13,24 +13,35 @@
     clear_all/0
 ]).
 
-
--callback init(         handler_config(),
-			handler_state()) -> {ok, handler_state()}.
--callback finish(       handler_config(),
-			handler_state()) -> {ok, handler_state()}.
--callback get_state(    Key :: term(),
-			DefaultValue :: term(),
-			handler_config(),
-			handler_state()) -> Value :: term().
--callback set_state(    Key :: term(),
-			Value :: term(),
-			handler_config(),
-			handler_state()) -> {ok, handler_state()}.
--callback clear_all(    handler_config(),
-			handler_state()) -> {ok, handler_state()}.
--callback clear(        Key :: term(),
-			handler_config(),
-			handler_state()) -> {ok, handler_state()}.
+-callback init(
+    handler_config(),
+    handler_state()
+) -> {ok, handler_state()}.
+-callback finish(
+    handler_config(),
+    handler_state()
+) -> {ok, handler_state()}.
+-callback get_state(
+    Key :: term(),
+    DefaultValue :: term(),
+    handler_config(),
+    handler_state()
+) -> Value :: term().
+-callback set_state(
+    Key :: term(),
+    Value :: term(),
+    handler_config(),
+    handler_state()
+) -> {ok, handler_state()}.
+-callback clear_all(
+    handler_config(),
+    handler_state()
+) -> {ok, handler_state()}.
+-callback clear(
+    Key :: term(),
+    handler_config(),
+    handler_state()
+) -> {ok, handler_state()}.
 
 -spec get_state(Key :: term()) -> Value :: term().
 %% @doc Retrieve a value from the storage area.

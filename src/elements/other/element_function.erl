@@ -3,7 +3,7 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (element_function).
+-module(element_function).
 -include("wf.hrl").
 -export([
     reflect/0,
@@ -28,11 +28,12 @@ render_element(Record) ->
     call_next_function(Functions).
 
 -spec call_next_function([fun()]) -> body().
-call_next_function([]) -> [];
-call_next_function([F|Functions]) ->
+call_next_function([]) ->
+    [];
+call_next_function([F | Functions]) ->
     % Call the function. If it provides results, then return it,
     % Otherwise, call the next function.
     case F() of
-	undefined -> call_next_function(Functions);
-	Elements  -> Elements
+        undefined -> call_next_function(Functions);
+        Elements -> Elements
     end.

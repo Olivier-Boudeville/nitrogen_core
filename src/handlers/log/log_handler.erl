@@ -3,28 +3,38 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (log_handler).
--compile({no_auto_import,[error/1]}).
+-module(log_handler).
+-compile({no_auto_import, [error/1]}).
 -include("wf.hrl").
--export ([
+-export([
     info/1, info/2,
     warning/1, warning/2,
     error/1, error/2
 ]).
 
--callback init(     handler_config(),
-		    handler_state()) -> {ok, handler_state()}.
--callback finish(   handler_config(),
-		    handler_state()) -> {ok, handler_state()}.
--callback info(     string(),
-		    handler_config(),
-		    handler_state()) -> {ok, handler_state()}.
--callback error(    string(),
-		    handler_config(),
-		    handler_state()) -> {ok, handler_state()}.
--callback warning(  string(),
-		    handler_config(),
-		    handler_state()) -> {ok, handler_state()}.
+-callback init(
+    handler_config(),
+    handler_state()
+) -> {ok, handler_state()}.
+-callback finish(
+    handler_config(),
+    handler_state()
+) -> {ok, handler_state()}.
+-callback info(
+    string(),
+    handler_config(),
+    handler_state()
+) -> {ok, handler_state()}.
+-callback error(
+    string(),
+    handler_config(),
+    handler_state()
+) -> {ok, handler_state()}.
+-callback warning(
+    string(),
+    handler_config(),
+    handler_state()
+) -> {ok, handler_state()}.
 
 % Log an info-level message. Everything is functioning as usual.
 info(String, Args) ->

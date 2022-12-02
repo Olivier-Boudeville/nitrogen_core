@@ -1,7 +1,7 @@
 % vim: sw=4 ts=4 et
--module (wf_core).
+-module(wf_core).
 -include("wf.hrl").
--export ([
+-export([
     run/0,
     init_websocket/1,
     run_websocket/1,
@@ -19,41 +19,41 @@
 run() ->
     Bridge = wf_context:bridge(),
     try
-	case sbw:error(Bridge) of
-	    none -> run_catched();
-	    Other ->
-		Message = wf:f("Errors: ~p~n", [Other]),
-		Bridge1 = sbw:set_response_data(Message, Bridge),
-		sbw:build_response(Bridge1)
-	end
+        case sbw:error(Bridge) of
+            none ->
+                run_catched();
+            Other ->
+                Message = wf:f("Errors: ~p~n", [Other]),
+                Bridge1 = sbw:set_response_data(Message, Bridge),
+                sbw:build_response(Bridge1)
+        end
     catch
-	exit:normal ->
-	    exit(normal);
-	Type : Error ->
-	    run_crash(Bridge, Type, Error, erlang:get_stacktrace())
+        exit:normal ->
+            exit(normal);
+        Type:Error ->
+            run_crash(Bridge, Type, Error, erlang:get_stacktrace())
     end.
-
-
 
 run_crash(Bridge, Type, Error, Stacktrace) ->
     try
-	case wf_context:type() of
-	    first_request       -> run_crashed_first_request(Type, Error, Stacktrace);
-	    static_file         -> run_crashed_first_request(Type, Error, Stacktrace);
-	    postback_request    -> run_crashed_postback_request(Type, Error, Stacktrace);
-	    _                   -> run_crashed_first_request(Type, Error, Stacktrace)
-	end,
-	finish_dynamic_request()
+        case wf_context:type() of
+            first_request -> run_crashed_first_request(Type, Error, Stacktrace);
+            static_file -> run_crashed_first_request(Type, Error, Stacktrace);
+            postback_request -> run_crashed_postback_request(Type, Error, Stacktrace);
+            _ -> run_crashed_first_request(Type, Error, Stacktrace)
+        end,
+        finish_dynamic_request()
     catch
-	exit:normal ->
-	    exit(normal);
-	Type2:Error2 ->
-	    ?LOG("Crash Handler Crashed:~n~p~n~nOriginal Crash:~n~p~n", [
-		{Type2, Error2, erlang:get_stacktrace()},
-		{Type, Error, Stacktrace}]),
-	    Bridge1 = sbw:set_status_code(500, Bridge),
-	    Bridge2 = sbw:set_response_data("Internal Server Error", Bridge1),
-	    sbw:build_response(Bridge2)
+        exit:normal ->
+            exit(normal);
+        Type2:Error2 ->
+            ?LOG("Crash Handler Crashed:~n~p~n~nOriginal Crash:~n~p~n", [
+                {Type2, Error2, erlang:get_stacktrace()},
+                {Type, Error, Stacktrace}
+            ]),
+            Bridge1 = sbw:set_status_code(500, Bridge),
+            Bridge2 = sbw:set_response_data("Internal Server Error", Bridge1),
+            sbw:build_response(Bridge2)
     end.
 
 init_websocket(SerializedPageContext) ->
@@ -63,11 +63,12 @@ init_websocket(SerializedPageContext) ->
 
 run_websocket_crash(Type, Error, Stacktrace) ->
     try
-	crash_handler:postback_request(Type, Error, Stacktrace),
-	run_websocket_comet()
-    catch Type2:Error2 ->
-	?LOG("~p~n", [{error_in_crash_handler, Type2, Error2, erlang:get_stacktrace()}]),
-	"Nitrogen.$console_log('crash_handler crashed in websocket');"
+        crash_handler:postback_request(Type, Error, Stacktrace),
+        run_websocket_comet()
+    catch
+        Type2:Error2 ->
+            ?LOG("~p~n", [{error_in_crash_handler, Type2, Error2, erlang:get_stacktrace()}]),
+            "Nitrogen.$console_log('crash_handler crashed in websocket');"
     end.
 
 run_websocket_comet() ->
@@ -86,21 +87,21 @@ run_catched() ->
     call_init_on_handlers(),
     wf_event:update_context_with_event(wf:q(eventContext)),
     case wf_context:type() of
-	first_request    ->
-	    run_first_request(),
-	    finish_dynamic_request();
-	postback_request ->
-	    run_postback_request(),
-	    finish_dynamic_request();
-	static_file      ->
-	    finish_static_request()
+        first_request ->
+            run_first_request(),
+            finish_dynamic_request();
+        postback_request ->
+            run_postback_request(),
+            finish_dynamic_request();
+        static_file ->
+            finish_static_request()
     end.
 
 finish_dynamic_request() ->
     Elements = wf_context:data(),
     wf_context:clear_data(),
     {ok, Html} = maybe_render_elements(Elements),
-	{ok, Javascript} = wf_render_actions:render_action_queue(),
+    {ok, Javascript} = wf_render_actions:render_action_queue(),
 
     call_finish_on_handlers(),
 
@@ -108,9 +109,9 @@ finish_dynamic_request() ->
     JavascriptFinal = [StateScript, Javascript],
 
     case wf_context:type() of
-	first_request       -> build_first_response(Html, JavascriptFinal);
-	postback_request    -> build_postback_response(JavascriptFinal);
-	_                   -> build_first_response(Html, JavascriptFinal)
+        first_request -> build_first_response(Html, JavascriptFinal);
+        postback_request -> build_postback_response(JavascriptFinal);
+        _ -> build_first_response(Html, JavascriptFinal)
     end.
 
 maybe_render_elements(Elements = {sendfile, 0, _Size, _FullPath}) ->
@@ -130,14 +131,14 @@ maybe_render_elements(Elements) ->
     %{ok, Html}.
     {ok, _Html} = wf_render_elements:render_elements(Elements).
 
-
 finish_websocket_request() ->
     ContextData = wf_context:data(),
     wf_context:clear_data(),
     finish_websocket_request(ContextData).
 
-finish_websocket_request(Empty)
-	when Empty==undefined; Empty==[]; Empty == <<>> ->
+finish_websocket_request(Empty) when
+    Empty == undefined; Empty == []; Empty == <<>>
+->
     {ok, Javascript} = wf_render_actions:render_action_queue(),
     StateScript = serialize_context(),
     [StateScript, Javascript];
@@ -170,7 +171,6 @@ deserialize_request_context() ->
 deserialize_websocket_context(SerializedPageContext) ->
     deserialize_context(SerializedPageContext).
 
-
 % deserialize_context/1 -
 % Updates the context with values that were stored
 % in the browser by serialize_context/1.
@@ -180,18 +180,21 @@ deserialize_context(undefined) ->
 deserialize_context(SerializedPageContext) ->
     % Deserialize page_context and handler_list if available...
     case wf_pickle:depickle(SerializedPageContext) of
-	[PageContext, NewStateHandler] ->
-	    wf_context:page_context(PageContext),
-	    wf_context:restore_handler(NewStateHandler),
-	    ok;
-	undefined ->
-	    exit({failure_to_deserialize_page_context, [
-		{serialized_page_context, SerializedPageContext},
-		{suggestion, "The most common cause of this is that "
-			     "nitro_cache is not started. Try running: "
-			     "application:start(nitro_cache)."}]})
+        [PageContext, NewStateHandler] ->
+            wf_context:page_context(PageContext),
+            wf_context:restore_handler(NewStateHandler),
+            ok;
+        undefined ->
+            exit(
+                {failure_to_deserialize_page_context, [
+                    {serialized_page_context, SerializedPageContext},
+                    {suggestion,
+                        "The most common cause of this is that "
+                        "nitro_cache is not started. Try running: "
+                        "application:start(nitro_cache)."}
+                ]}
+            )
     end.
-
 
 %%% SET UP AND TEAR DOWN HANDLERS %%%
 
@@ -217,7 +220,6 @@ call_init_on_handlers() ->
 call_finish_on_handlers() ->
     [wf_handler:finish(X) || X <- wf_context:handlers()],
     ok.
-
 
 %%% FIRST REQUEST %%%
 
@@ -247,9 +249,9 @@ run_postback_request() ->
     {ok, IsValid} = wf_validation:validate(),
     call_postback_event(IsValid, HandleInvalid, Module, Tag).
 
-call_postback_event(_Valid=true, _HandleInvalid, Module, Tag) ->
+call_postback_event(_Valid = true, _HandleInvalid, Module, Tag) ->
     Module:event(Tag);
-call_postback_event(_Valid=false, _HandleInvalid=true, Module, Tag) ->
+call_postback_event(_Valid = false, _HandleInvalid = true, Module, Tag) ->
     Module:event_invalid(Tag);
 call_postback_event(_Valid, _HandleInvalid, _, _) ->
     ok.
@@ -283,12 +285,12 @@ build_postback_response(Script) ->
     Bridge1 = sbw:set_response_data(Script1, Bridge),
     sbw:build_response(Bridge1).
 
-replace_script(_,Html) when ?IS_STRING(Html) -> Html;
-replace_script(Script, [script|T]) -> [Script|T];
+replace_script(_, Html) when ?IS_STRING(Html) -> Html;
+replace_script(Script, [script | T]) -> [Script | T];
 %% For the mobile_script, it's necessary that it's inside the data-role attr,
 %% and therefore must be escaped before it can be sent to the browser
-replace_script(Script, [mobile_script|T]) -> [wf:html_encode(Script)|T];
-replace_script(Script, [H|T]) -> [replace_script(Script, H)|replace_script(Script, T)];
+replace_script(Script, [mobile_script | T]) -> [wf:html_encode(Script) | T];
+replace_script(Script, [H | T]) -> [replace_script(Script, H) | replace_script(Script, T)];
 replace_script(_, Other) -> Other.
 
 encode(Text) ->
@@ -300,27 +302,28 @@ encode(none, Body) ->
     Body;
 encode(unicode, Body) ->
     case unicode:characters_to_binary(Body) of
-	{error, Encoded, Rest} ->
-	    wf:warning("Unable to encode Unicode: ~p", [Rest]),
-	    [Encoded, Rest];
-	{incomplete, Encoded, Rest} ->
-	    wf:warning("Incomplete Unicode: ~p", [Rest]),
-	    [Encoded, Rest];
-	Binary when is_binary(Binary) ->
-	    Binary
+        {error, Encoded, Rest} ->
+            wf:warning("Unable to encode Unicode: ~p", [Rest]),
+            [Encoded, Rest];
+        {incomplete, Encoded, Rest} ->
+            wf:warning("Incomplete Unicode: ~p", [Rest]),
+            [Encoded, Rest];
+        Binary when is_binary(Binary) ->
+            Binary
     end;
 encode({Mod, Fun}, Body) ->
     Mod:Fun(Body);
 encode(Fun, Body) when is_function(Fun, 1) ->
     Fun(Body);
 encode(auto, Body) ->
-    Encoding = case config_encoding() of
-	undefined ->
-	    ContentType = wf_context:content_type(),
-	    encoding_by_content_type(wf:to_binary(ContentType));
-	Other ->
-	    Other
-    end,
+    Encoding =
+        case config_encoding() of
+            undefined ->
+                ContentType = wf_context:content_type(),
+                encoding_by_content_type(wf:to_binary(ContentType));
+            Other ->
+                Other
+        end,
     encode(Encoding, Body).
 
 config_encoding() ->
@@ -329,7 +332,7 @@ config_encoding() ->
 %% Please note that this is naive, in that it doesn't even check content-type
 %% for charset. This is done for speed (to avoid running a regex on each
 %% request).
-encoding_by_content_type(<<"text/",_/binary>>) ->
+encoding_by_content_type(<<"text/", _/binary>>) ->
     unicode;
 encoding_by_content_type(<<"application/javascript">>) ->
     unicode;

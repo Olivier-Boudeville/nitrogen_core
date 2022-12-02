@@ -14,31 +14,39 @@
 %   http://svn.ulf.wiger.net/gproc/
 %
 
--module (process_registry_handler).
+-module(process_registry_handler).
 -include("wf.hrl").
--export ([
+-export([
     get_pid/1,
     get_pid/2
 ]).
 
--callback init(         handler_config(),
-			handler_state()) -> {ok, handler_state()}.
--callback finish(       handler_config(),
-			handler_state()) -> {ok, handler_state()}.
--callback get_pid(      Key :: term(),
-			handler_config(),
-			handler_state()) -> {ok, pid() | undefined, handler_state()}.
--callback get_pid(      Key :: term(),
-			Function :: fun(),
-			handler_config(),
-			handler_state()) -> {ok, pid(), handler_state()}.
+-callback init(
+    handler_config(),
+    handler_state()
+) -> {ok, handler_state()}.
+-callback finish(
+    handler_config(),
+    handler_state()
+) -> {ok, handler_state()}.
+-callback get_pid(
+    Key :: term(),
+    handler_config(),
+    handler_state()
+) -> {ok, pid() | undefined, handler_state()}.
+-callback get_pid(
+    Key :: term(),
+    Function :: fun(),
+    handler_config(),
+    handler_state()
+) -> {ok, pid(), handler_state()}.
 
 % Get the process associated with this Key.
 -spec get_pid(Key :: term()) -> {ok, pid()} | undefined.
 get_pid(Key) ->
     case wf_handler:call(process_registry_handler, get_pid, [Key]) of
-	{ok, undefined} -> undefined;
-	{ok, Pid} -> {ok, Pid}
+        {ok, undefined} -> undefined;
+        {ok, Pid} -> {ok, Pid}
     end.
 
 % Return the process associated with Key. If that process does not

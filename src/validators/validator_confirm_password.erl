@@ -3,17 +3,17 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (validator_confirm_password).
--include_lib ("wf.hrl").
+-module(validator_confirm_password).
+-include_lib("wf.hrl").
 -export([
     render_action/1
 ]).
 
-render_action(Record)  ->
+render_action(Record) ->
     #confirm_same{
-	trigger=Record#confirm_password.trigger,
-	target=Record#confirm_password.target,
-	text=Record#confirm_password.text,
-	confirm_id=Record#confirm_password.password,
-	attach_to=Record#confirm_password.attach_to
+        trigger = Record#confirm_password.trigger,
+        target = Record#confirm_password.target,
+        text = Record#confirm_password.text,
+        confirm_id = Record#confirm_password.password,
+        attach_to = Record#confirm_password.attach_to
     }.

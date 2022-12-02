@@ -3,10 +3,10 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (passthrough_route_handler).
--behaviour (route_handler).
+-module(passthrough_route_handler).
+-behaviour(route_handler).
 -include("wf.hrl").
--export ([
+-export([
     init/2,
     finish/2
 ]).

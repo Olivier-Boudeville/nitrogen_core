@@ -3,14 +3,13 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (default_security_handler).
--behaviour (security_handler).
+-module(default_security_handler).
+-behaviour(security_handler).
 -include("wf.hrl").
--export ([
+-export([
     init/2,
     finish/2
 ]).
-
 
 init(_Config, State) ->
     % By default, let all requests through. If we wanted to impose

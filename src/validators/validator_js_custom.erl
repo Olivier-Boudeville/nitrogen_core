@@ -3,8 +3,8 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (validator_js_custom).
--include_lib ("wf.hrl").
+-module(validator_js_custom).
+-include_lib("wf.hrl").
 -compile(export_all).
 
 render_action(Record) ->
@@ -12,4 +12,7 @@ render_action(Record) ->
     Function = Record#js_custom.function,
     Args = Record#js_custom.args,
     WhenEmpty = Record#js_custom.when_empty,
-    wf:f("v.add(Validate.Custom, { against: ~s, args: ~ts, failureMessage: \"~ts\", displayMessageWhenEmpty: ~ts });", [Function, Args, Text, WhenEmpty]).
+    wf:f(
+        "v.add(Validate.Custom, { against: ~s, args: ~ts, failureMessage: \"~ts\", displayMessageWhenEmpty: ~ts });",
+        [Function, Args, Text, WhenEmpty]
+    ).

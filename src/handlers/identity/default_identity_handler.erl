@@ -3,9 +3,9 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (default_identity_handler).
--behaviour (identity_handler).
--export ([
+-module(default_identity_handler).
+-behaviour(identity_handler).
+-export([
     init/2,
     finish/2,
     get_user/2,

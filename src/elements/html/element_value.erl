@@ -3,7 +3,7 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (element_value).
+-module(element_value).
 -include("wf.hrl").
 -export([
     reflect/0,
@@ -17,9 +17,9 @@ reflect() -> record_info(fields, value).
 render_element(Record) ->
     Text = wf:html_encode(Record#value.text, Record#value.html_encode),
     wf_tags:emit_tag(span, Text, [
-	{id, Record#value.html_id},
-	{class, [value, Record#value.class]},
-	{title, Record#value.title},
-	{style, Record#value.style},
-	{data_fields, Record#value.data_fields}
+        {id, Record#value.html_id},
+        {class, [value, Record#value.class]},
+        {title, Record#value.title},
+        {style, Record#value.style},
+        {data_fields, Record#value.data_fields}
     ]).

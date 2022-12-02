@@ -18,7 +18,7 @@
   Each Entry Point function expects a single argument, `PathInfo`, which is
   exactly the same information that would be retrieved from calling
   `wf:path_info()`.
-  
+
   NOTE: This is designed to work with the standard `dynamic_route_handler`
   provided with Nitrogen. If you switch away from using the
   `dynamic_route_handler`, then you'll have to modify whatever route handler you
@@ -54,4 +54,3 @@
 ### See Also
 
  *  [Route Handler Docs](route.md)
-

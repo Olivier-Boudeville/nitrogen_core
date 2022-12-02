@@ -3,7 +3,7 @@
 % Copyright (c) 2008-2013 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (validator_is_integer).
+-module(validator_is_integer).
 -include("wf.hrl").
 -export([
     render_action/1
@@ -19,29 +19,32 @@ render_action(Record) ->
 
     ValidationFun = fun(_, Value) -> validate(AllowBlank, Value, Min, Max) end,
 
-    CustomValidatorAction =  #custom {
-	trigger=TriggerPath,
-	target=TargetPath,
-	function=ValidationFun,
-	text = Text,
-	tag=Record,
-	attach_to=Record#is_integer.attach_to
+    CustomValidatorAction = #custom{
+        trigger = TriggerPath,
+        target = TargetPath,
+        function = ValidationFun,
+        text = Text,
+        tag = Record,
+        attach_to = Record#is_integer.attach_to
     },
 
     %% A little silly that we have to set both notAnInteger and notANumber
     %% message, but apparently if it's not a number, Livevalidation shows "Not a
     %% Number" before it checks if it's an integer.  This is an easy fix, but I
     %% want to replace livevalidation completely
-    Script = wf:f("v.add(Validate.Numericality, { notAnIntegerMessage: \"~ts\", notANumberMessage: \"~ts\", onlyInteger: true });", [Text, Text]),
+    Script = wf:f(
+        "v.add(Validate.Numericality, { notAnIntegerMessage: \"~ts\", notANumberMessage: \"~ts\", onlyInteger: true });",
+        [Text, Text]
+    ),
     [CustomValidatorAction, Script].
 
-validate(_AllowBlank=true, "", _Min, _Max) ->
+validate(_AllowBlank = true, "", _Min, _Max) ->
     true;
 validate(_AllowBlank, Value, Min, Max) ->
     try
-	validate_range(wf:to_integer(Value), Min, Max)
+        validate_range(wf:to_integer(Value), Min, Max)
     catch
-	_ : _ -> false
+        _:_ -> false
     end.
 
 validate_range(_Int, undefined, undefined) ->

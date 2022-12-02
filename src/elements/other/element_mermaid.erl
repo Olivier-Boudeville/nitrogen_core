@@ -3,7 +3,7 @@
 % Copyright (c) 2008-2013 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (element_mermaid).
+-module(element_mermaid).
 -include("wf.hrl").
 -export([
     reflect/0,
@@ -27,31 +27,30 @@ render_element(Record) ->
     Script0 = wf:f(<<"mermaid.mermaidAPI.initialize(~s);">>, [OptionsJs]),
 
     wf:wire(#script{
-	dependency_js = <<"/nitrogen/mermaid.min.js">>,
-	script=Script0
+        dependency_js = <<"/nitrogen/mermaid.min.js">>,
+        script = Script0
     }),
 
     Script1 = wf:f("Nitrogen.$mermaid('~s', '~s');", [GraphID, wf:js_escape(Code)]),
 
     wf:wire(#script{
-	dependency_js = <<"/nitrogen/mermaid.min.js">>,
-	script=Script1
+        dependency_js = <<"/nitrogen/mermaid.min.js">>,
+        script = Script1
     }),
 
     Classid = wf_render_elements:normalize_id(GraphID),
 
-    Panel = #panel {
-	html_id = Record#mermaid.html_id,
-	id = GraphID,
-	anchor = Record#mermaid.anchor,
-	class = [Classid, wf_mermaid, Record#mermaid.class],
-	title = Record#mermaid.title,
-	body = [],
-	data_fields=Record#mermaid.data_fields,
-	style = Record#mermaid.style
+    Panel = #panel{
+        html_id = Record#mermaid.html_id,
+        id = GraphID,
+        anchor = Record#mermaid.anchor,
+        class = [Classid, wf_mermaid, Record#mermaid.class],
+        title = Record#mermaid.title,
+        body = [],
+        data_fields = Record#mermaid.data_fields,
+        style = Record#mermaid.style
     },
     element_panel:render_element(Panel).
-
 
 options_to_js(Global, Diagram) ->
     OptionsJs = global_options_to_js(Global),
@@ -59,7 +58,6 @@ options_to_js(Global, Diagram) ->
     L = lists:filter(fun check_empty/1, [OptionsJs, DiagramOptionsJs]),
     Options1 = wf:join(L, ","),
     wf:f(<<"{ ~s }">>, [Options1]).
-
 
 %% Options is a list of {Key,Value} tuples
 global_options_to_js([]) ->
@@ -69,10 +67,9 @@ global_options_to_js(Options) ->
     Options2 = wf:join(Options1, ","),
     wf:f(<<"~s">>, [Options2]).
 
-
-diagram_options_to_js(undefined)->
+diagram_options_to_js(undefined) ->
     wf:f(<<"">>);
-diagram_options_to_js({Diagram, Options})->
+diagram_options_to_js({Diagram, Options}) ->
     OptionsJs = global_options_to_js(Options),
     wf:f(<<"~s: { ~s }">>, [Diagram, OptionsJs]).
 
@@ -82,7 +79,7 @@ format_option({Key, Value}) when is_binary(Value) ->
     format_option({Key, wf:to_list(Value)});
 format_option({Key, Value}) when ?IS_STRING(Value) ->
     wf:f(<<"~s: '~s'">>, [Key, wf:js_escape(Value)]);
-format_option({Key, Value}) when Value=:=true; Value=:=false ->
+format_option({Key, Value}) when Value =:= true; Value =:= false ->
     wf:f(<<"~s: ~s">>, [Key, Value]);
 format_option({Key, Value}) ->
     wf:f(<<"~s: ~p">>, [Key, Value]).

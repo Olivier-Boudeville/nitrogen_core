@@ -29,35 +29,39 @@
     code_change/3
 ]).
 
--record(state, {trigger, autoadvance=true, test_paths=[], current_test, passed=0, failed=0}).
+-record(state, {
+    trigger, autoadvance = true, test_paths = [], current_test, passed = 0, failed = 0
+}).
 
 main() ->
     Trigger = wf:to_integer(wf:q(id)),
     case is_trigger_valid(Trigger) of
-	false ->
-	    "Invalid Test Launch Path";
-	true ->
-	    FirstTestPath = next_test_path(),
-	    wf:redirect(FirstTestPath)
+        false ->
+            "Invalid Test Launch Path";
+        true ->
+            FirstTestPath = next_test_path(),
+            wf:redirect(FirstTestPath)
     end.
 
 start(AppName) when is_atom(AppName) ->
     {ok, TestPaths} = application:get_env(AppName, tests),
     %% when we remove support for R15, we can change this to get_env/3
-    Opts = case application:get_env(AppName, test_options) of
-	undefined -> [];
-	{ok, Op} -> Op
-    end,
+    Opts =
+        case application:get_env(AppName, test_options) of
+            undefined -> [];
+            {ok, Op} -> Op
+        end,
     start(undefined, TestPaths, Opts).
 
 start(BrowserExec, TestPaths) ->
     start(BrowserExec, TestPaths, []).
 
 start(BrowserExec, TestPaths, Opts) ->
-    BaseUrl = case proplists:get_value(base_url, Opts) of
-	undefined -> "http://127.0.0.1:8000";
-	Base -> Base
-    end,
+    BaseUrl =
+        case proplists:get_value(base_url, Opts) of
+            undefined -> "http://127.0.0.1:8000";
+            Base -> Base
+        end,
     Trigger = ?WF_UNIQUE,
     LaunchUrl = wf:f(BaseUrl ++ "/wf_test_srv?id=~p", [Trigger]),
     wf_test:log("Starting Nitrogen Test Server...~nOpen your browser to:~n        ~s~n", [LaunchUrl]),
@@ -72,8 +76,10 @@ maybe_launch_browser(BrowserExec, LaunchUrl) ->
     ok.
 
 is_trigger_valid(Trigger) ->
-    try gen_server:call(?MODULE, {is_trigger_valid, Trigger})
-    catch exit:{noproc,_} -> false
+    try
+        gen_server:call(?MODULE, {is_trigger_valid, Trigger})
+    catch
+        exit:{noproc, _} -> false
     end.
 
 passed(Num) ->
@@ -87,14 +93,14 @@ set_autoadvance(TF) when is_boolean(TF) ->
 
 next_test_path() ->
     case gen_server:call(?MODULE, next_test_path) of
-	{ok, Next} ->
-	    Next;
-	autoadvance_disabled ->
-	    %% autoadvance is disabled
-	    autoadvance_disabled;
-	undefined ->
-	    print_summary_and_close(),
-	    done
+        {ok, Next} ->
+            Next;
+        autoadvance_disabled ->
+            %% autoadvance is disabled
+            autoadvance_disabled;
+        undefined ->
+            print_summary_and_close(),
+            done
     end.
 
 print_summary_and_close() ->
@@ -111,35 +117,37 @@ stop() ->
     gen_server:cast(?MODULE, stop).
 
 init([Trigger, TestPaths]) ->
-    {ok, #state{trigger=Trigger, test_paths=TestPaths}, ?TIMEOUT}.
+    {ok, #state{trigger = Trigger, test_paths = TestPaths}, ?TIMEOUT}.
 
-handle_call({is_trigger_valid, ProvidedTrigger}, _From, State=#state{trigger=Trigger}) ->
+handle_call({is_trigger_valid, ProvidedTrigger}, _From, State = #state{trigger = Trigger}) ->
     Reply = ProvidedTrigger == Trigger,
     {reply, Reply, State, ?TIMEOUT};
-handle_call(next_test_path, _From, State=#state{autoadvance=false}) ->
+handle_call(next_test_path, _From, State = #state{autoadvance = false}) ->
     {reply, autoadvance_disabled, State};
-handle_call(next_test_path, _From, State=#state{test_paths=[Next | Rest]}) ->
+handle_call(next_test_path, _From, State = #state{test_paths = [Next | Rest]}) ->
     Reply = {ok, Next},
-    {reply, Reply, State#state{test_paths=Rest, current_test=Next}, ?TIMEOUT};
-handle_call(next_test_path, _From, State=#state{test_paths=[]}) ->
+    {reply, Reply, State#state{test_paths = Rest, current_test = Next}, ?TIMEOUT};
+handle_call(next_test_path, _From, State = #state{test_paths = []}) ->
     Reply = undefined,
-    {reply, Reply, State#state{current_test=undefined}, ?TIMEOUT};
-handle_call(summary, _From, State=#state{passed=Passed, failed=Failed}) ->
+    {reply, Reply, State#state{current_test = undefined}, ?TIMEOUT};
+handle_call(summary, _From, State = #state{passed = Passed, failed = Failed}) ->
     Reply = {ok, [{passed, Passed}, {failed, Failed}]},
     {reply, Reply, State, ?TIMEOUT}.
 
 handle_cast({set_autoadvance, TF}, State) ->
-    {noreply, State#state{autoadvance=TF}};
-handle_cast({passed, Num}, State=#state{passed=Cur}) ->
-    {noreply, State#state{passed=Cur+Num}, ?TIMEOUT};
-handle_cast({failed, Num}, State=#state{failed=Cur}) ->
-    {noreply, State#state{failed=Cur+Num}, ?TIMEOUT};
+    {noreply, State#state{autoadvance = TF}};
+handle_cast({passed, Num}, State = #state{passed = Cur}) ->
+    {noreply, State#state{passed = Cur + Num}, ?TIMEOUT};
+handle_cast({failed, Num}, State = #state{failed = Cur}) ->
+    {noreply, State#state{failed = Cur + Num}, ?TIMEOUT};
 handle_cast(stop, State) ->
     {stop, normal, State}.
 
-handle_info(timeout, State=#state{test_paths=TestPaths, current_test=Cur}) ->
+handle_info(timeout, State = #state{test_paths = TestPaths, current_test = Cur}) ->
     Remaining = length(TestPaths),
-    wf_test:log("ERROR: Tests Timed Out. Test '~s' never finished. ~p remaining tests!", [Cur, Remaining]),
+    wf_test:log("ERROR: Tests Timed Out. Test '~s' never finished. ~p remaining tests!", [
+        Cur, Remaining
+    ]),
     {stop, timeout, State}.
 
 terminate(_Reason, _State) ->

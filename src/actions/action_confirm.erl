@@ -3,8 +3,8 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (action_confirm).
--include_lib ("wf.hrl").
+-module(action_confirm).
+-include_lib("wf.hrl").
 -compile(export_all).
 
 render_action(Record) ->
@@ -12,8 +12,13 @@ render_action(Record) ->
     TargetPath = Record#confirm.target,
     Delegate = Record#confirm.delegate,
     [
-	wf:f("if (confirm(\"~ts\")) {", [wf:js_escape(Record#confirm.text)]),
-	#event { postback=Record#confirm.postback, trigger=TriggerPath, target=TargetPath, delegate=Delegate },
-	Record#confirm.actions,
-	"}"
+        wf:f("if (confirm(\"~ts\")) {", [wf:js_escape(Record#confirm.text)]),
+        #event{
+            postback = Record#confirm.postback,
+            trigger = TriggerPath,
+            target = TargetPath,
+            delegate = Delegate
+        },
+        Record#confirm.actions,
+        "}"
     ].

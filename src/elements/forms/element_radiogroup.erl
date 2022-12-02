@@ -3,7 +3,7 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (element_radiogroup).
+-module(element_radiogroup).
 -include("wf.hrl").
 -export([
     reflect/0,
@@ -23,20 +23,20 @@ render_element(Record) ->
     Body = wf_render_elements:recurse_body(NameFun, Record#radiogroup.body),
 
     % Render the record...
-    element_panel:render_element(#panel {
-	id=Record#radiogroup.id,
-	anchor=Record#radiogroup.anchor,
-	class=[radiogroup, Record#radiogroup.class],
-	title=Record#radiogroup.title,
-	style=Record#radiogroup.style,
-	data_fields=Record#radiogroup.data_fields,
-	body=Body
+    element_panel:render_element(#panel{
+        id = Record#radiogroup.id,
+        anchor = Record#radiogroup.anchor,
+        class = [radiogroup, Record#radiogroup.class],
+        title = Record#radiogroup.title,
+        style = Record#radiogroup.style,
+        data_fields = Record#radiogroup.data_fields,
+        body = Body
     }).
 
 set_name_fun(Name) ->
     fun
-	(X = #radio{}) ->
-	    X#radio{name=Name};
-	(X) ->
-	    X
+        (X = #radio{}) ->
+            X#radio{name = Name};
+        (X) ->
+            X
     end.

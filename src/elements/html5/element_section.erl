@@ -2,7 +2,7 @@
 % Nitrogen Web Framework for Erlang
 % See MIT-LICENSE for licensing information.
 
--module (element_section).
+-module(element_section).
 -include("wf.hrl").
 -export([
     reflect/0,
@@ -15,10 +15,10 @@ reflect() -> record_info(fields, section).
 -spec render_element(#section{}) -> body().
 render_element(Record) ->
     wf_tags:emit_tag(section, Record#section.body, [
-	{id, Record#section.html_id},
-	{class, ["section", Record#section.class]},
-	{title, Record#section.title},
-	{style, Record#section.style},
-	{role, Record#section.role},
-	{data_fields, Record#section.data_fields}
+        {id, Record#section.html_id},
+        {class, ["section", Record#section.class]},
+        {title, Record#section.title},
+        {style, Record#section.style},
+        {role, Record#section.role},
+        {data_fields, Record#section.data_fields}
     ]).

@@ -4,7 +4,7 @@
 % See MIT-LICENSE for licensing information.
 -module(nitrogen_smart_extensions).
 -export([
-	json/1
+    json/1
 ]).
 
 json(EntryFun) ->

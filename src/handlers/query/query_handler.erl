@@ -3,31 +3,42 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (query_handler).
+-module(query_handler).
 -include("wf.hrl").
--export ([
+-export([
     get_value/1,
     get_values/1,
     get_params/0,
     set_websocket_params/1
 ]).
 
-
--callback init(         handler_config(),
-			handler_state()) -> {ok, handler_state()}.
--callback finish(       handler_config(),
-			handler_state()) -> {ok, handler_state()}.
--callback set_websocket_params(Params :: proplist(),
-			handler_config(),
-			handler_state()) -> {ok, handler_state()}.
--callback get_value(    Path :: string() | atom(),
-			handler_config(),
-			handler_state()) -> Value :: string() | binary().
--callback get_values(   Path :: string() | atom(),
-			handler_config(),
-			handler_state()) -> [Value :: string()].
--callback get_params(   handler_config(),
-			handler_state()) -> [{Key :: string(), Value :: string()}].
+-callback init(
+    handler_config(),
+    handler_state()
+) -> {ok, handler_state()}.
+-callback finish(
+    handler_config(),
+    handler_state()
+) -> {ok, handler_state()}.
+-callback set_websocket_params(
+    Params :: proplist(),
+    handler_config(),
+    handler_state()
+) -> {ok, handler_state()}.
+-callback get_value(
+    Path :: string() | atom(),
+    handler_config(),
+    handler_state()
+) -> Value :: string() | binary().
+-callback get_values(
+    Path :: string() | atom(),
+    handler_config(),
+    handler_state()
+) -> [Value :: string()].
+-callback get_params(
+    handler_config(),
+    handler_state()
+) -> [{Key :: string(), Value :: string()}].
 
 set_websocket_params(Params) ->
     ok = wf_handler:call(query_handler, set_websocket_params, [Params]).

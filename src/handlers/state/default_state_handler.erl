@@ -3,10 +3,10 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (default_state_handler).
--behaviour (state_handler).
+-module(default_state_handler).
+-behaviour(state_handler).
 -include("wf.hrl").
--export ([
+-export([
     init/2,
     finish/2,
     get_state/4,
@@ -27,7 +27,7 @@ get_state(Key, DefaultValue, _Config, State) ->
 
 set_state(Key, Value, _Config, State) ->
     State1 = proplists:delete(Key, State),
-    State2 = [{Key, Value}|State1],
+    State2 = [{Key, Value} | State1],
     {ok, State2}.
 
 clear(Key, _Config, State) ->

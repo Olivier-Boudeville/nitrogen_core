@@ -3,9 +3,9 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (http_basic_auth_security_handler).
--behaviour (security_handler).
--export ([
+-module(http_basic_auth_security_handler).
+-behaviour(security_handler).
+-export([
     init/2,
     finish/2,
     main/0
@@ -65,7 +65,6 @@
 %%
 %% @end
 
-
 %% Attempt authentication. The general pattern below
 %% is to try each step of decoding the authorization string.
 %% If the step is successful, then move on to the step below.
@@ -74,52 +73,51 @@
 init(CallbackMod, State) ->
     PageModule = wf:page_module(),
     case CallbackMod:is_protected(PageModule) of
-	true ->
-	    case wf:header(authorization) of
-		AuthHeader when AuthHeader /= undefined ->
-		    check_auth_header(PageModule, CallbackMod, AuthHeader);
-		_ ->
-		    prompt_for_authentication(CallbackMod)
-	    end;
-	_ ->
-	    do_nothing
+        true ->
+            case wf:header(authorization) of
+                AuthHeader when AuthHeader /= undefined ->
+                    check_auth_header(PageModule, CallbackMod, AuthHeader);
+                _ ->
+                    prompt_for_authentication(CallbackMod)
+            end;
+        _ ->
+            do_nothing
     end,
     {ok, State}.
 
 finish(_Config, State) ->
     {ok, State}.
 
-
 check_auth_header(Module, CallbackMod, AuthHeader) ->
     case string:tokens(AuthHeader, " ") of
-	["Basic", Digest] ->
-	    decode_digest(Module, CallbackMod, Digest);
-	_ ->
-	    prompt_for_authentication(CallbackMod)
+        ["Basic", Digest] ->
+            decode_digest(Module, CallbackMod, Digest);
+        _ ->
+            prompt_for_authentication(CallbackMod)
     end.
 
 decode_digest(Module, CallbackMod, Digest) ->
     case string:tokens(base64:decode_to_string(Digest), ":") of
-	[User, Password] ->
-	    check_is_authenticated(Module, CallbackMod, User, Password);
-	_ ->
-	    prompt_for_authentication(CallbackMod)
+        [User, Password] ->
+            check_is_authenticated(Module, CallbackMod, User, Password);
+        _ ->
+            prompt_for_authentication(CallbackMod)
     end.
 
 check_is_authenticated(Module, CallbackMod, User, Password) ->
     case CallbackMod:is_authenticated(Module, User) of
-	false ->
-	    authenticate_user(Module, CallbackMod, User, Password);
-	_ ->
-	    ok
+        false ->
+            authenticate_user(Module, CallbackMod, User, Password);
+        _ ->
+            ok
     end.
 
 authenticate_user(Module, CallbackMod, User, Password) ->
     case CallbackMod:authenticate(Module, User, Password) of
-	true  ->
-	    ok;
-	_ ->
-	    prompt_for_authentication(CallbackMod)
+        true ->
+            ok;
+        _ ->
+            prompt_for_authentication(CallbackMod)
     end.
 
 prompt_for_authentication(CallbackMod) ->
@@ -135,6 +133,6 @@ prompt_for_authentication(CallbackMod) ->
 main() ->
     CallbackMod = wf:state(callback_mod),
     Realm = CallbackMod:realm(),
-    wf:header("WWW-Authenticate", "Basic realm=\""++Realm++"\""),
+    wf:header("WWW-Authenticate", "Basic realm=\"" ++ Realm ++ "\""),
     wf:status_code(401),
     "<strong>Authentication required!</strong>".

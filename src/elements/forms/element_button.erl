@@ -3,7 +3,7 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (element_button).
+-module(element_button).
 -include("wf.hrl").
 -export([
     reflect/0,
@@ -18,59 +18,61 @@ render_element(Record) ->
     ID = Record#button.id,
     Anchor = Record#button.anchor,
     case Record#button.postback of
-	undefined -> ignore;
-	Postback ->
-	    wf:wire(Anchor, #event {
-		type=click,
-		validation_group=ID,
-		postback=Postback,
-		handle_invalid=Record#button.handle_invalid,
-		on_invalid=Record#button.on_invalid,
-		delegate=Record#button.delegate
-	    })
+        undefined ->
+            ignore;
+        Postback ->
+            wf:wire(Anchor, #event{
+                type = click,
+                validation_group = ID,
+                postback = Postback,
+                handle_invalid = Record#button.handle_invalid,
+                on_invalid = Record#button.on_invalid,
+                delegate = Record#button.delegate
+            })
     end,
 
-	case Record#button.click of
-		undefined -> ignore;
-		ClickActions -> wf:wire(Anchor, #event { type=click, actions=ClickActions })
-	end,
+    case Record#button.click of
+        undefined -> ignore;
+        ClickActions -> wf:wire(Anchor, #event{type = click, actions = ClickActions})
+    end,
 
     action_event:maybe_wire_next(Anchor, Record#button.next),
     wire_enter_clicks(Anchor, Record#button.enter_clicks),
 
     Text = wf:html_encode(Record#button.text, Record#button.html_encode),
     Image = format_image(Record#button.image),
-    Body = case {Image,Record#button.body} of
-	{[], []} -> [];
-	{I, B} -> [I, B]
-    end,
+    Body =
+        case {Image, Record#button.body} of
+            {[], []} -> [];
+            {I, B} -> [I, B]
+        end,
 
     UniversalAttributes = [
-	{id, Record#button.html_id},
-	{class, [button, Record#button.class]},
-	{title, Record#button.title},
-	{style, Record#button.style},
-	{data_fields, Record#button.data_fields},
-	?WF_IF(Record#button.disabled, disabled)
+        {id, Record#button.html_id},
+        {class, [button, Record#button.class]},
+        {title, Record#button.title},
+        {style, Record#button.style},
+        {data_fields, Record#button.data_fields},
+        ?WF_IF(Record#button.disabled, disabled)
     ],
 
     case Body of
-	[] ->
-	    wf_tags:emit_tag(input, [
-		{type, button},
-		{value, Text}
-		| UniversalAttributes
-	    ]);
-	_ ->
-	    wf_tags:emit_tag(button, [Body, Text], UniversalAttributes)
+        [] ->
+            wf_tags:emit_tag(input, [
+                {type, button},
+                {value, Text}
+                | UniversalAttributes
+            ]);
+        _ ->
+            wf_tags:emit_tag(button, [Body, Text], UniversalAttributes)
     end.
 
 wire_enter_clicks(Targetid, Triggerids) when is_list(Triggerids) ->
     [wire_enter_click(Targetid, Triggerid) || Triggerid <- Triggerids].
 
 wire_enter_click(Targetid, Triggerid) ->
-    wf:wire(Triggerid, #event{type=enterkey, actions=#click{target=Targetid}}).
+    wf:wire(Triggerid, #event{type = enterkey, actions = #click{target = Targetid}}).
 
 format_image(undefined) -> [];
 format_image([]) -> [];
-format_image(Path) -> [#image{image=Path}," "].
+format_image(Path) -> [#image{image = Path}, " "].
