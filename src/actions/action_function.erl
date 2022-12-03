@@ -9,5 +9,5 @@
 
 % This action is used internally by Nitrogen.
 render_action(Record) ->
-    F = Record#function.function,
-    F().
+	F = Record#function.function,
+	F().

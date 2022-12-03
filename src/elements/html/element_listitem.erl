@@ -6,8 +6,8 @@
 -module(element_listitem).
 -include("wf.hrl").
 -export([
-    reflect/0,
-    render_element/1
+	reflect/0,
+	render_element/1
 ]).
 
 -spec reflect() -> [atom()].
@@ -15,16 +15,16 @@ reflect() -> record_info(fields, listitem).
 
 -spec render_element(#listitem{}) -> body().
 render_element(Record) ->
-    Body = [
-        wf:html_encode(Record#listitem.text, Record#listitem.html_encode),
-        Record#listitem.body
-    ],
+	Body = [
+		wf:html_encode(Record#listitem.text, Record#listitem.html_encode),
+		Record#listitem.body
+	],
 
-    wf_tags:emit_tag(li, Body, [
-        {id, Record#listitem.html_id},
-        {class, [listitem, Record#listitem.class]},
-        {title, Record#listitem.title},
-        {role, Record#listitem.role},
-        {style, Record#listitem.style},
-        {data_fields, Record#listitem.data_fields}
-    ]).
+	wf_tags:emit_tag(li, Body, [
+		{id, Record#listitem.html_id},
+		{class, [listitem, Record#listitem.class]},
+		{title, Record#listitem.title},
+		{role, Record#listitem.role},
+		{style, Record#listitem.style},
+		{data_fields, Record#listitem.data_fields}
+	]).

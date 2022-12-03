@@ -6,8 +6,8 @@
 -module(element_image).
 -include("wf.hrl").
 -export([
-    reflect/0,
-    render_element/1
+	reflect/0,
+	render_element/1
 ]).
 
 -spec reflect() -> [atom()].
@@ -15,16 +15,16 @@ reflect() -> record_info(fields, image).
 
 -spec render_element(#image{}) -> body().
 render_element(Record) ->
-    Attributes = [
-        {id, Record#image.html_id},
-        {class, [image, Record#image.class]},
-        {title, Record#image.title},
-        {style, Record#image.style},
-        {data_fields, Record#image.data_fields},
-        {height, Record#image.height},
-        {width, Record#image.width},
-        {alt, Record#image.alt},
-        {src, wf:to_binary(Record#image.image)}
-    ],
+	Attributes = [
+		{id, Record#image.html_id},
+		{class, [image, Record#image.class]},
+		{title, Record#image.title},
+		{style, Record#image.style},
+		{data_fields, Record#image.data_fields},
+		{height, Record#image.height},
+		{width, Record#image.width},
+		{alt, Record#image.alt},
+		{src, wf:to_binary(Record#image.image)}
+	],
 
-    wf_tags:emit_tag(img, Attributes).
+	wf_tags:emit_tag(img, Attributes).

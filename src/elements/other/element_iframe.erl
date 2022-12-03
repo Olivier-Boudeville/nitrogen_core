@@ -6,8 +6,8 @@
 -module(element_iframe).
 -include("wf.hrl").
 -export([
-    reflect/0,
-    render_element/1
+	reflect/0,
+	render_element/1
 ]).
 
 -spec reflect() -> [atom()].
@@ -15,21 +15,21 @@ reflect() -> record_info(fields, iframe).
 
 -spec render_element(#iframe{}) -> body().
 render_element(Record) ->
-    Attributes = [
-        {id, Record#iframe.html_id},
-        {class, [iframe, Record#iframe.class]},
-        {style, Record#iframe.style},
-        {data_fields, Record#iframe.data_fields},
-        {height, Record#iframe.height},
-        {width, Record#iframe.width},
-        {src, Record#iframe.src},
-        {srcdoc, Record#iframe.srcdoc},
-        {align, Record#iframe.align},
-        {frameborder, Record#iframe.frameborder},
-        {name, Record#iframe.name},
-        {sandbox, Record#iframe.sandbox},
-        {seamless, Record#iframe.seamless},
-        {allowfullscreen, Record#iframe.allowfullscreen}
-    ],
+	Attributes = [
+		{id, Record#iframe.html_id},
+		{class, [iframe, Record#iframe.class]},
+		{style, Record#iframe.style},
+		{data_fields, Record#iframe.data_fields},
+		{height, Record#iframe.height},
+		{width, Record#iframe.width},
+		{src, Record#iframe.src},
+		{srcdoc, Record#iframe.srcdoc},
+		{align, Record#iframe.align},
+		{frameborder, Record#iframe.frameborder},
+		{name, Record#iframe.name},
+		{sandbox, Record#iframe.sandbox},
+		{seamless, Record#iframe.seamless},
+		{allowfullscreen, Record#iframe.allowfullscreen}
+	],
 
-    wf_tags:emit_tag(iframe, [], Attributes).
+	wf_tags:emit_tag(iframe, [], Attributes).

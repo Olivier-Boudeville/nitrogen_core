@@ -8,11 +8,11 @@
 -export([render_action/1]).
 
 render_action(#disable_option{target = Target, value = Value}) ->
-    toggle_option(true, Target, Value);
+	toggle_option(true, Target, Value);
 render_action(#enable_option{target = Target, value = Value}) ->
-    toggle_option(false, Target, Value).
+	toggle_option(false, Target, Value).
 
 toggle_option(Disabled, Target, Value) ->
-    wf:f("objs('~s').find(\"option[value='~ts']\").prop('disabled',~p);", [
-        Target, wf:js_escape(wf:to_list(Value)), Disabled
-    ]).
+	wf:f("objs('~s').find(\"option[value='~ts']\").prop('disabled',~p);", [
+		Target, wf:js_escape(wf:to_list(Value)), Disabled
+	]).

@@ -6,8 +6,8 @@
 -module(element_value).
 -include("wf.hrl").
 -export([
-    reflect/0,
-    render_element/1
+	reflect/0,
+	render_element/1
 ]).
 
 -spec reflect() -> [atom()].
@@ -15,11 +15,11 @@ reflect() -> record_info(fields, value).
 
 -spec render_element(#value{}) -> body().
 render_element(Record) ->
-    Text = wf:html_encode(Record#value.text, Record#value.html_encode),
-    wf_tags:emit_tag(span, Text, [
-        {id, Record#value.html_id},
-        {class, [value, Record#value.class]},
-        {title, Record#value.title},
-        {style, Record#value.style},
-        {data_fields, Record#value.data_fields}
-    ]).
+	Text = wf:html_encode(Record#value.text, Record#value.html_encode),
+	wf_tags:emit_tag(span, Text, [
+		{id, Record#value.html_id},
+		{class, [value, Record#value.class]},
+		{title, Record#value.title},
+		{style, Record#value.style},
+		{data_fields, Record#value.data_fields}
+	]).

@@ -7,19 +7,19 @@
 -export([postback_request/0]).
 
 -callback init(
-    handler_config(),
-    handler_state()
+	handler_config(),
+	handler_state()
 ) -> {ok, handler_state()}.
 
 -callback finish(
-    handler_config(),
-    handler_state()
+	handler_config(),
+	handler_state()
 ) -> {ok, handler_state()}.
 
 -callback postback_request(
-    handler_config(),
-    handler_state()
+	handler_config(),
+	handler_state()
 ) -> any().
 
 postback_request() ->
-    _Value = wf_handler:call_readonly(postback_handler, postback_request, []).
+	_Value = wf_handler:call_readonly(postback_handler, postback_request, []).

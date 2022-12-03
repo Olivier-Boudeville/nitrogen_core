@@ -6,8 +6,8 @@
 -module(action_click).
 -include("wf.hrl").
 -export([
-    render_action/1
+	render_action/1
 ]).
 
 render_action(#click{target = Target}) ->
-    wf:f(<<"objs('~s').focus(); objs('~s').trigger('click'); ">>, [Target, Target]).
+	wf:f(<<"objs('~s').focus(); objs('~s').trigger('click'); ">>, [Target, Target]).

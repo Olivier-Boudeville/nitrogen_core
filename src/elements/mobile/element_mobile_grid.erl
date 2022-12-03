@@ -7,47 +7,47 @@
 -module(element_mobile_grid).
 -include("wf.hrl").
 -export([
-    reflect/0,
-    render_element/1
+	reflect/0,
+	render_element/1
 ]).
 
 reflect() -> record_info(fields, mobile_grid).
 
 render_element(Record) ->
-    Columns = Record#mobile_grid.columns,
-    GridClass = grid_class(Columns),
-    #panel{
-        html_id = Record#mobile_grid.html_id,
-        class = [GridClass | Record#mobile_grid.class],
-        data_fields = Record#mobile_grid.data_fields,
-        body = format_blocks(Record#mobile_grid.blocks, Columns)
-    }.
+	Columns = Record#mobile_grid.columns,
+	GridClass = grid_class(Columns),
+	#panel{
+		html_id = Record#mobile_grid.html_id,
+		class = [GridClass | Record#mobile_grid.class],
+		data_fields = Record#mobile_grid.data_fields,
+		body = format_blocks(Record#mobile_grid.blocks, Columns)
+	}.
 
 format_blocks(Blocks, Columns) ->
-    format_blocks(lists:flatten(Blocks), 1, Columns).
+	format_blocks(lists:flatten(Blocks), 1, Columns).
 
 format_blocks([], _, _) ->
-    [];
+	[];
 %% If we are at the beginning of a specified row, or we should wrap around
 %% (the Current Column is higher than the max columns), then let's reset the
 %% Current column to 1, which will start us at the first column again
 format_blocks([Block | Blocks], CurColumn, MaxColumns) when
-    Block#mobile_grid_block.new_row == true orelse
-        CurColumn > MaxColumns
+	Block#mobile_grid_block.new_row == true orelse
+		CurColumn > MaxColumns
 ->
-    format_blocks([Block#mobile_grid_block{new_row = false} | Blocks], 1, MaxColumns);
+	format_blocks([Block#mobile_grid_block{new_row = false} | Blocks], 1, MaxColumns);
 %% This will iterate through each block, and assign the proper grid block class
 %% to it, based on its location
 format_blocks([Block | Blocks], CurColumn, MaxColumns) ->
-    NewBlock = format_block(Block, CurColumn),
-    [NewBlock | format_blocks(Blocks, CurColumn + 1, MaxColumns)].
+	NewBlock = format_block(Block, CurColumn),
+	[NewBlock | format_blocks(Blocks, CurColumn + 1, MaxColumns)].
 
 %% Set the proper jquery mobile block class based on it's column number
 format_block(Block, CurColumn) ->
-    BlockClass = block_class(CurColumn),
-    Block#mobile_grid_block{
-        class = [BlockClass | Block#mobile_grid_block.class]
-    }.
+	BlockClass = block_class(CurColumn),
+	Block#mobile_grid_block{
+		class = [BlockClass | Block#mobile_grid_block.class]
+	}.
 
 grid_class(1) -> "";
 grid_class(2) -> 'ui-grid-a';

@@ -6,8 +6,8 @@
 -module(element_table).
 -include("wf.hrl").
 -export([
-    reflect/0,
-    render_element/1
+	reflect/0,
+	render_element/1
 ]).
 
 -spec reflect() -> [atom()].
@@ -15,26 +15,26 @@ reflect() -> record_info(fields, table).
 
 -spec render_element(#table{}) -> body().
 render_element(Record) ->
-    Header =
-        case Record#table.header of
-            [] -> "";
-            _ -> wf_tags:emit_tag(thead, Record#table.header, [])
-        end,
+	Header =
+		case Record#table.header of
+			[] -> "";
+			_ -> wf_tags:emit_tag(thead, Record#table.header, [])
+		end,
 
-    Footer =
-        case Record#table.footer of
-            [] -> "";
-            _ -> wf_tags:emit_tag(tfoot, Record#table.footer, [])
-        end,
+	Footer =
+		case Record#table.footer of
+			[] -> "";
+			_ -> wf_tags:emit_tag(tfoot, Record#table.footer, [])
+		end,
 
-    Body = wf_tags:emit_tag(tbody, Record#table.rows, []),
-    Content = [Header, Footer, Body],
+	Body = wf_tags:emit_tag(tbody, Record#table.rows, []),
+	Content = [Header, Footer, Body],
 
-    wf_tags:emit_tag(table, Content, [
-        {id, Record#table.html_id},
-        {border, Record#table.border},
-        {class, [table, Record#table.class]},
-        {title, Record#table.title},
-        {style, Record#table.style},
-        {data_fields, Record#table.data_fields}
-    ]).
+	wf_tags:emit_tag(table, Content, [
+		{id, Record#table.html_id},
+		{border, Record#table.border},
+		{class, [table, Record#table.class]},
+		{title, Record#table.title},
+		{style, Record#table.style},
+		{data_fields, Record#table.data_fields}
+	]).

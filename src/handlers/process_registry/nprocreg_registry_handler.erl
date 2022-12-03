@@ -7,22 +7,22 @@
 -behaviour(process_registry_handler).
 -include_lib("wf.hrl").
 -export([
-    init/2,
-    finish/2,
-    get_pid/3,
-    get_pid/4
+	init/2,
+	finish/2,
+	get_pid/3,
+	get_pid/4
 ]).
 
 init(_Config, State) ->
-    {ok, State}.
+	{ok, State}.
 
 finish(_Config, State) ->
-    {ok, State}.
+	{ok, State}.
 
 get_pid(Key, _Config, State) ->
-    Pid = nprocreg:get_pid(Key),
-    {ok, Pid, State}.
+	Pid = nprocreg:get_pid(Key),
+	{ok, Pid, State}.
 
 get_pid(Key, Function, _Config, State) ->
-    Pid = nprocreg:get_pid(Key, Function),
-    {ok, Pid, State}.
+	Pid = nprocreg:get_pid(Key, Function),
+	{ok, Pid, State}.

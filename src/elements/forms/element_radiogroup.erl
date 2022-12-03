@@ -6,8 +6,8 @@
 -module(element_radiogroup).
 -include("wf.hrl").
 -export([
-    reflect/0,
-    render_element/1
+	reflect/0,
+	render_element/1
 ]).
 
 -spec reflect() -> [atom()].
@@ -15,28 +15,28 @@ reflect() -> record_info(fields, radiogroup).
 
 -spec render_element(#radiogroup{}) -> body().
 render_element(Record) ->
-    % Set the group to the current HtmlID...
-    Anchor = Record#radiogroup.anchor,
+	% Set the group to the current HtmlID...
+	Anchor = Record#radiogroup.anchor,
 
-    NameFun = set_name_fun(Anchor),
+	NameFun = set_name_fun(Anchor),
 
-    Body = wf_render_elements:recurse_body(NameFun, Record#radiogroup.body),
+	Body = wf_render_elements:recurse_body(NameFun, Record#radiogroup.body),
 
-    % Render the record...
-    element_panel:render_element(#panel{
-        id = Record#radiogroup.id,
-        anchor = Record#radiogroup.anchor,
-        class = [radiogroup, Record#radiogroup.class],
-        title = Record#radiogroup.title,
-        style = Record#radiogroup.style,
-        data_fields = Record#radiogroup.data_fields,
-        body = Body
-    }).
+	% Render the record...
+	element_panel:render_element(#panel{
+		id = Record#radiogroup.id,
+		anchor = Record#radiogroup.anchor,
+		class = [radiogroup, Record#radiogroup.class],
+		title = Record#radiogroup.title,
+		style = Record#radiogroup.style,
+		data_fields = Record#radiogroup.data_fields,
+		body = Body
+	}).
 
 set_name_fun(Name) ->
-    fun
-        (X = #radio{}) ->
-            X#radio{name = Name};
-        (X) ->
-            X
-    end.
+	fun
+		(X = #radio{}) ->
+			X#radio{name = Name};
+		(X) ->
+			X
+	end.

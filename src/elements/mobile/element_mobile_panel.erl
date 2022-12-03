@@ -7,8 +7,8 @@
 -module(element_mobile_panel).
 -include("wf.hrl").
 -export([
-    reflect/0,
-    transform_element/1
+	reflect/0,
+	transform_element/1
 ]).
 
 -spec reflect() -> [atom()].
@@ -16,14 +16,14 @@ reflect() -> record_info(fields, mobile_panel).
 
 -spec transform_element(#mobile_panel{}) -> body().
 transform_element(Record) ->
-    Panel = wf_utils:copy_fields(Record, #panel{}),
-    Panel#panel{
-        data_fields = [
-            {role, panel},
-            {position, Record#mobile_panel.position},
-            {display, Record#mobile_panel.display_mode},
-            {dismissible, Record#mobile_panel.dismissible},
-            {theme, Record#mobile_panel.theme}
-            | Record#mobile_panel.data_fields
-        ]
-    }.
+	Panel = wf_utils:copy_fields(Record, #panel{}),
+	Panel#panel{
+		data_fields = [
+			{role, panel},
+			{position, Record#mobile_panel.position},
+			{display, Record#mobile_panel.display_mode},
+			{dismissible, Record#mobile_panel.dismissible},
+			{theme, Record#mobile_panel.theme}
+			| Record#mobile_panel.data_fields
+		]
+	}.

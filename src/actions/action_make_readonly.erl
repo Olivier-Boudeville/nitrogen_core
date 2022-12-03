@@ -6,9 +6,9 @@
 -module(action_make_readonly).
 -include("wf.hrl").
 -export([
-    render_action/1
+	render_action/1
 ]).
 
 -spec render_action(#make_readonly{}) -> actions().
 render_action(#make_readonly{target = Target}) ->
-    #script{script = wf:f(<<"objs('~s').prop('readonly',true);">>, [Target])}.
+	#script{script = wf:f(<<"objs('~s').prop('readonly',true);">>, [Target])}.

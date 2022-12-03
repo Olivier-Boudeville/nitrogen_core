@@ -3,38 +3,38 @@
 -include("wf.hrl").
 
 -export([
-    generate/0,
-    nonce/0
+	generate/0,
+	nonce/0
 ]).
 
 generate() ->
-    case wf:config_default(content_security_policy, []) of
-        [] ->
-            undefined;
-        Spec ->
-            build_csp(Spec)
-    end.
+	case wf:config_default(content_security_policy, []) of
+		[] ->
+			undefined;
+		Spec ->
+			build_csp(Spec)
+	end.
 
 build_csp(Spec) when is_list(Spec) ->
-    lists:foldl(fun process_csp_rule/2, [], Spec);
+	lists:foldl(fun process_csp_rule/2, [], Spec);
 build_csp(Spec) ->
-    Spec.
+	Spec.
 
 process_csp_rule({Domain, Sources}, Acc) ->
-    NormalizedSources = string:join([source(S) || S <- Sources], " "),
-    domain(Domain) ++ " " ++ NormalizedSources ++ "; " ++ Acc.
+	NormalizedSources = string:join([source(S) || S <- Sources], " "),
+	domain(Domain) ++ " " ++ NormalizedSources ++ "; " ++ Acc.
 
 %% create a random nonce value; hard coded to be 12 characters
 nonce() ->
-    Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
-    Length = length(Chars),
-    lists:foldl(
-        fun(_, Acc) ->
-            [lists:nth(rand:uniform(Length), Chars)] ++ Acc
-        end,
-        [],
-        lists:seq(1, 12)
-    ).
+	Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+	Length = length(Chars),
+	lists:foldl(
+		fun(_, Acc) ->
+			[lists:nth(rand:uniform(Length), Chars)] ++ Acc
+		end,
+		[],
+		lists:seq(1, 12)
+	).
 
 %% allow atomized aliases for CSP domains
 domain(default_src) -> "default-src";

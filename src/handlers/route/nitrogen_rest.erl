@@ -18,8 +18,8 @@
 -module(nitrogen_rest).
 -include("wf.hrl").
 -export([
-    handle_request/1,
-    handle_return/1
+	handle_request/1,
+	handle_return/1
 ]).
 
 %% The return value of restful function can either be {StatusCode, Body} or
@@ -34,7 +34,7 @@
 %% Less commonly used methods, not sure if they should be included in the
 %% behaviour because their lack generates warnings
 %%-callback connect(	PathInfo :: string()) -> restful_return().
-%%-callback trace(  	PathInfo :: string()) -> restful_return().
+%%-callback trace(		PathInfo :: string()) -> restful_return().
 %%-callback options(	PathInfo :: string()) -> restful_return().
 
 -spec handle_request(Module :: module()) -> body().
@@ -43,20 +43,20 @@
 % (get, put, etc), and will ultimately set the status code and return just a
 % body which can be rendered.
 handle_request(Module) ->
-    PathInfo = wf:path_info(),
-    Method = wf:request_method(),
-    RestfulReturn =
-        case erlang:function_exported(Module, Method, 1) of
-            true ->
-                Module:Method(PathInfo);
-            false ->
-                {405, ["This resource does not support the action '", wf:to_list(Method), "'"]}
-        end,
-    handle_return(RestfulReturn).
+	PathInfo = wf:path_info(),
+	Method = wf:request_method(),
+	RestfulReturn =
+		case erlang:function_exported(Module, Method, 1) of
+			true ->
+				Module:Method(PathInfo);
+			false ->
+				{405, ["This resource does not support the action '", wf:to_list(Method), "'"]}
+		end,
+	handle_return(RestfulReturn).
 
 -spec handle_return(restful_return()) -> body().
 handle_return({StatusCode, Body}) when is_integer(StatusCode) ->
-    wf:status_code(StatusCode),
-    Body;
+	wf:status_code(StatusCode),
+	Body;
 handle_return(Body) ->
-    Body.
+	Body.

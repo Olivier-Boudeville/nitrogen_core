@@ -4,10 +4,10 @@
 % See MIT-LICENSE for licensing information.
 -module(nitrogen_smart_extensions).
 -export([
-    json/1
+	json/1
 ]).
 
 json(EntryFun) ->
-    wf:content_type("application/json"),
-    Json = EntryFun(),
-    _EncodedJson = wf:json_encode(Json).
+	wf:content_type("application/json"),
+	Json = EntryFun(),
+	_EncodedJson = wf:json_encode(Json).
