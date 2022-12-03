@@ -10,11 +10,11 @@
 	serialize_context/0
 ]).
 
-% nitrogen_core -
-% --
-% Render a single Nitrogen page or inline application. This can be called
-% from other Erlang web frameworks or resource servers, such as WebMachine,
-% Erlang Web, ErlyWeb, etc.
+% nitrogen_core
+%
+% Renders a single Nitrogen page or inline application. This can be called from
+% other Erlang web frameworks or resource servers, such as WebMachine, Erlang
+% Web, ErlyWeb, etc.
 
 run() ->
 	Bridge = wf_context:bridge(),
@@ -150,6 +150,7 @@ finish_static_request() ->
 	Path = wf_context:path_info(),
 	build_static_file_response(Path).
 
+
 %%% SERIALIZE AND DESERIALIZE STATE %%%
 
 % serialize_context_state/0 -
@@ -178,6 +179,7 @@ deserialize_websocket_context(SerializedPageContext) ->
 deserialize_context(undefined) ->
 	%% If the serialized page context is undefined, don't do anything.
 	ok;
+
 deserialize_context(SerializedPageContext) ->
 	% Deserialize page_context and handler_list if available...
 	case wf_pickle:depickle(SerializedPageContext) of
@@ -191,8 +193,10 @@ deserialize_context(SerializedPageContext) ->
 					{serialized_page_context, SerializedPageContext},
 					{suggestion,
 						"The most common cause of this is that "
-						"nitro_cache is not started. Try running: "
-						"application:start(nitro_cache)."}
+						"nitro_cache is not started (then try running: "
+						"application:start(nitro_cache)) or that "
+						"a lingering browser is attempting to reconnect to a "
+						"former Nitrogen instance."}
 				]}
 			)
 	end.
