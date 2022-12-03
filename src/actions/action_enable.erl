@@ -3,7 +3,7 @@
 % Copyright (c) 2012 Milan Svoboda
 % See MIT-LICENSE for licensing information.
 
--module (action_enable).
+-module(action_enable).
 -include("wf.hrl").
 -export([
     render_action/1,
@@ -12,8 +12,8 @@
 ]).
 
 -spec render_action(#enable{}) -> actions().
-render_action(#enable{target=Target}) ->
-	#script{script=wf:f(<<"obj('~s').disabled = false;">>, [Target])}.
+render_action(#enable{target = Target}) ->
+    #script{script = wf:f(<<"obj('~s').disabled = false;">>, [Target])}.
 
 -spec enable(Target :: id()) -> ok.
 enable(Target) ->

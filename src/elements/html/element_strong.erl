@@ -3,7 +3,7 @@
 % Copyright (c) 2011 Sergei Lebedev
 % See MIT-LICENSE for licensing information.
 
--module (element_strong).
+-module(element_strong).
 -include("wf.hrl").
 -export([
     reflect/0,

@@ -3,10 +3,10 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (default_config_handler).
+-module(default_config_handler).
 -include("wf.hrl").
--behaviour (config_handler).
--export ([
+-behaviour(config_handler).
+-export([
     init/2,
     finish/2,
     get_value/4,
@@ -32,12 +32,13 @@ get_values(Key, DefaultValue, Config, State) ->
     %% By default, use nitrogen_core as the app (for Nitrogen 2.4+), however,
     %% for backwards compatibility, also check for the nitrogen app.
     DefaultApps = [nitrogen_core, nitrogen],
-    Apps = case application:get_env(nitrogen_core, application_config_key, []) of
-               App when is_list(App) ->
-                   App ++ DefaultApps;
-               App ->
-                   [App] ++ DefaultApps
-           end,
+    Apps =
+        case application:get_env(nitrogen_core, application_config_key, []) of
+            App when is_list(App) ->
+                App ++ DefaultApps;
+            App ->
+                [App] ++ DefaultApps
+        end,
     %% If a nitrogen_core configuration key application_config_fn
     %% exists and is a function of arity 2, dispatch to that function.
     %%
@@ -51,7 +52,7 @@ get_values(Key, DefaultValue, Config, State) ->
 
 get_values([], _Key, DefaultValue, _Config, _State) ->
     DefaultValue;
-get_values([App|Apps], Key, DefaultValue, _Config, _State) ->
+get_values([App | Apps], Key, DefaultValue, _Config, _State) ->
     case application:get_env(App, Key) of
         {ok, Value} ->
             [Value];

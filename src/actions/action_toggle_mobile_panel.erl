@@ -14,5 +14,5 @@
 reflect() -> record_info(fields, toggle_mobile_panel).
 
 -spec render_action(#toggle_mobile_panel{}) -> script().
-render_action(#toggle_mobile_panel{target=Target}) ->
-    wf:f(<<"objs('~s').panel(\"toggle\");">>,[Target]).
+render_action(#toggle_mobile_panel{target = Target}) ->
+    wf:f(<<"objs('~s').panel(\"toggle\");">>, [Target]).

@@ -3,35 +3,36 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (action_wire).
+-module(action_wire).
 -include("wf.hrl").
 -compile(export_all).
 
 % This action is used internally by Nitrogen.
 render_action(Record) ->
-    try 
+    try
         DefaultAnchor = Record#wire.anchor,
-    	DefaultTrigger = Record#wire.trigger,
-    	DefaultTarget = Record#wire.target,
-    	Actions = set_paths(DefaultAnchor, DefaultTrigger, DefaultTarget, Record#wire.actions),
-    	[Actions]
-    catch Type : Error ->
-        ?PRINT(Type),
-        ?PRINT(Error),
-        ?PRINT(Record),
-        erlang:Type(Error)
+        DefaultTrigger = Record#wire.trigger,
+        DefaultTarget = Record#wire.target,
+        Actions = set_paths(DefaultAnchor, DefaultTrigger, DefaultTarget, Record#wire.actions),
+        [Actions]
+    catch
+        Type:Error ->
+            ?PRINT(Type),
+            ?PRINT(Error),
+            ?PRINT(Record),
+            erlang:Type(Error)
     end.
 
-set_paths(_DefaultAnchor, _DefaultTrigger, _DefaultTarget, []) -> 
+set_paths(_DefaultAnchor, _DefaultTrigger, _DefaultTarget, []) ->
     [];
-
-set_paths(DefaultAnchor, DefaultTrigger, DefaultTarget, [H|T]) ->
-    [set_paths(DefaultAnchor, DefaultTrigger, DefaultTarget, H)|
-        set_paths(DefaultAnchor, DefaultTarget, DefaultTarget, T)];
-
+set_paths(DefaultAnchor, DefaultTrigger, DefaultTarget, [H | T]) ->
+    [
+        set_paths(DefaultAnchor, DefaultTrigger, DefaultTarget, H)
+        | set_paths(DefaultAnchor, DefaultTarget, DefaultTarget, T)
+    ];
 set_paths(DefaultAnchor, DefaultTrigger, DefaultTarget, Action) when is_tuple(Action) ->
     % If the action doesn't have a target
-    Anchor  = wf:coalesce([get_anchor(Action), DefaultAnchor]),
+    Anchor = wf:coalesce([get_anchor(Action), DefaultAnchor]),
     Action1 = set_anchor(Action, Anchor),
 
     Trigger = wf:coalesce([get_trigger(Action1), DefaultTrigger]),
@@ -39,8 +40,8 @@ set_paths(DefaultAnchor, DefaultTrigger, DefaultTarget, Action) when is_tuple(Ac
 
     Target = wf:coalesce([get_target(Action2), DefaultTarget]),
     set_target(Action2, Target);
-
-set_paths(_, _, _, Other) -> Other.
+set_paths(_, _, _, Other) ->
+    Other.
 
 get_anchor(Action) -> element(4, Action).
 set_anchor(Action, Anchor) -> setelement(4, Action, Anchor).
@@ -50,34 +51,28 @@ get_target(Action) -> element(6, Action).
 set_target(Action, Target) -> setelement(6, Action, Target).
 
 eager(Trigger, Target, Actions) ->
-	wire(eager, Trigger, Target, Actions).
+    wire(eager, Trigger, Target, Actions).
 
 wire(Trigger, Target, Actions) ->
-	wire(normal, Trigger, Target, Actions).
+    wire(normal, Trigger, Target, Actions).
 
 defer(Trigger, Target, Actions) ->
-	wire(defer, Trigger, Target, Actions).
+    wire(defer, Trigger, Target, Actions).
 
-
-
-wire(_, _, _, undefined) -> 
+wire(_, _, _, undefined) ->
     ok;
-
-wire(_, _, _, []) -> 
+wire(_, _, _, []) ->
     ok;
-
 wire(_, _, _, <<>>) ->
-	ok;
-
+    ok;
 wire(Priority, Trigger, Target, Actions) when is_binary(Actions) orelse ?IS_STRING(Actions) ->
-    wire(Priority, Trigger, Target, #script { script=Actions });
-
+    wire(Priority, Trigger, Target, #script{script = Actions});
 wire(Priority, Trigger, Target, Actions) ->
     Anchor = wf_context:anchor(),
-    Action = #wire {
-        anchor  = Anchor, 
-        trigger = wf:coalesce([Trigger, Anchor]), 
-        target  = wf:coalesce([Target, Anchor]), 
+    Action = #wire{
+        anchor = Anchor,
+        trigger = wf:coalesce([Trigger, Anchor]),
+        target = wf:coalesce([Target, Anchor]),
         actions = Actions
     },
     wf_context:add_action(Priority, Action),

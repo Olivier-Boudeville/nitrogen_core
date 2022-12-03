@@ -2,7 +2,7 @@
 % Nitrogen Web Framework for Erlang
 % See MIT-LICENSE for licensing information.
 
--module (element_article).
+-module(element_article).
 -include("wf.hrl").
 -export([
     reflect/0,

@@ -24,5 +24,3 @@
  *  [base element](./action_base.md)
 
  *  [Add Class](add_class.md)
-
- 

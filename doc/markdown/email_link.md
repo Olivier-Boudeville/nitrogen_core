@@ -38,5 +38,3 @@
  *  [base element](./element_base.md)
 
  *  [link element](./link.md)
-
- 

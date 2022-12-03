@@ -24,5 +24,3 @@
  *  [base element](./action_base.md)
 
  *  [slide_down element](./slide_down.md)
-
- 

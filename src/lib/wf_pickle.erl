@@ -6,13 +6,13 @@
 % This is heavily inspired by the n2o_secret pickler located at:
 % https://github.com/5HT/n2o/blob/master/src/handlers/n2o_secret.erl
 
--module (wf_pickle).
+-module(wf_pickle).
 -author("Oleksandr Nikitin").
 -include("wf.hrl").
 
--export ([
+-export([
     pickle/1,
-    depickle/1, 
+    depickle/1,
     depickle/2
 ]).
 
@@ -22,20 +22,21 @@
 
 -spec pickle(Data :: term()) -> pickled().
 pickle(Data) ->
-    Message = term_to_binary({Data,os:timestamp()}),
+    Message = term_to_binary({Data, os:timestamp()}),
     Padding = size(Message) rem 16,
-    Bits = (16-Padding)*8,
+    Bits = (16 - Padding) * 8,
     Key = signkey(),
     IV = crypto:strong_rand_bytes(16),
-    Cipher = ?WF_ENCRYPT(Key,IV,<<Message/binary,0:Bits>>),
-    Signature = ?WF_HASH(<<Key/binary,Cipher/binary>>),
-    modified_base64_encode(<<IV/binary,Signature/binary,Cipher/binary>>).
+    Cipher = ?WF_ENCRYPT(Key, IV, <<Message/binary, 0:Bits>>),
+    Signature = ?WF_HASH(<<Key/binary, Cipher/binary>>),
+    modified_base64_encode(<<IV/binary, Signature/binary, Cipher/binary>>).
 
 -spec depickle(PickledData :: binary() | string()) -> undefined | term().
 depickle(PickledData) ->
     depickle(PickledData, infinity).
 
--spec depickle(PickledData :: pickled(), TTLSeconds :: infinity | integer() | float()) -> undefined | term().
+-spec depickle(PickledData :: pickled(), TTLSeconds :: infinity | integer() | float()) ->
+    undefined | term().
 depickle(PickledData, TTLSeconds) ->
     try
         {Data, PickledTime} = inner_depickle(PickledData),
@@ -43,13 +44,15 @@ depickle(PickledData, TTLSeconds) ->
             true -> Data;
             false -> undefined
         end
-    catch _:_ -> undefined
+    catch
+        _:_ -> undefined
     end.
-
 
 %% PRIVATE FUNCTIONS
 
--spec verify_depickle_time(PickledTime :: erlang:timestamp(), TTLSeconds :: infinity | integer() | float()) -> boolean().
+-spec verify_depickle_time(
+    PickledTime :: erlang:timestamp(), TTLSeconds :: infinity | integer() | float()
+) -> boolean().
 verify_depickle_time(_PickledTime, infinity) ->
     %% Short circuit, even though any number always evaluated to less than infinity,
     %% But this means we don't have to call os:timestamp(), and do the timer comparison
@@ -63,10 +66,10 @@ verify_depickle_time(PickledTime, TTLSeconds) ->
 inner_depickle(PickledData) ->
     Key = signkey(),
     Decoded = modified_base64_decode(wf:to_binary(PickledData)),
-    <<IV:16/binary,Signature:20/binary,Cipher/binary>> = Decoded,
-    Signature = ?WF_HASH(<<Key/binary,Cipher/binary>>),
-    DecryptedBinary = ?WF_DECRYPT(Key,IV,Cipher),
-    {_Data,_Time} = binary_to_term(DecryptedBinary).
+    <<IV:16/binary, Signature:20/binary, Cipher/binary>> = Decoded,
+    Signature = ?WF_HASH(<<Key/binary, Cipher/binary>>),
+    DecryptedBinary = ?WF_DECRYPT(Key, IV, Cipher),
+    {_Data, _Time} = binary_to_term(DecryptedBinary).
 
 -spec signkey() -> binary().
 signkey() ->
@@ -77,7 +80,7 @@ signkey() ->
         case config_handler:get_value(signkey) of
             undefined ->
                 erlang:md5(wf:to_list(erlang:get_cookie()));
-            Key when byte_size(Key)==16 -> 
+            Key when byte_size(Key) == 16 ->
                 Key;
             Key ->
                 erlang:md5(wf:to_list(Key))
@@ -96,7 +99,7 @@ m_b64_e(<<>>, Acc) -> Acc;
 m_b64_e(<<$+, Rest/binary>>, Acc) -> m_b64_e(Rest, <<Acc/binary, $->>);
 m_b64_e(<<$/, Rest/binary>>, Acc) -> m_b64_e(Rest, <<Acc/binary, $_>>);
 m_b64_e(<<$=, Rest/binary>>, Acc) -> m_b64_e(Rest, Acc);
-m_b64_e(<<H,  Rest/binary>>, Acc) -> m_b64_e(Rest, <<Acc/binary, H>>).
+m_b64_e(<<H, Rest/binary>>, Acc) -> m_b64_e(Rest, <<Acc/binary, H>>).
 
 -spec modified_base64_decode(binary()) -> binary().
 % @doc Replace '-' and '_' with '+' and '/', respectively.  Pad with '=' to a
@@ -106,4 +109,4 @@ m_b64_d(<<>>, Acc) when size(Acc) rem 4 == 0 -> Acc;
 m_b64_d(<<>>, Acc) when size(Acc) rem 4 /= 0 -> m_b64_d(<<>>, <<Acc/binary, $=>>);
 m_b64_d(<<$-, Rest/binary>>, Acc) -> m_b64_d(Rest, <<Acc/binary, $+>>);
 m_b64_d(<<$_, Rest/binary>>, Acc) -> m_b64_d(Rest, <<Acc/binary, $/>>);
-m_b64_d(<<H,  Rest/binary>>, Acc) -> m_b64_d(Rest, <<Acc/binary, H>>).
+m_b64_d(<<H, Rest/binary>>, Acc) -> m_b64_d(Rest, <<Acc/binary, H>>).

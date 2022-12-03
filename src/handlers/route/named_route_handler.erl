@@ -3,11 +3,11 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (named_route_handler).
--behaviour (route_handler).
+-module(named_route_handler).
+-behaviour(route_handler).
 -include("wf.hrl").
--export ([
-    init/2, 
+-export([
+    init/2,
     finish/2
 ]).
 
@@ -29,7 +29,7 @@
 %%        {"/", web_index},
 %%        {"/view", web_view},
 %%        {"/img", web_img},
-%%        
+%%
 %%        % Static directories...
 %%        {"/nitrogen", static_file},
 %%        {"/js", static_file},
@@ -37,9 +37,9 @@
 %%        {"/css", static_file}
 %%  ])
 
-
-init(undefined, State) -> init([], State);
-init(Routes, State) -> 
+init(undefined, State) ->
+    init([], State);
+init(Routes, State) ->
     % Get the path...
     Bridge = wf_context:bridge(),
     Path = sbw:path(Bridge),
@@ -51,13 +51,13 @@ init(Routes, State) ->
     wf_context:path_info(PathInfo1),
     {ok, State}.
 
-finish(_Config, State) -> 
+finish(_Config, State) ->
     {ok, State}.
 
 %%% PRIVATE FUNCTIONS %%%
 
 % Look through all routes for a route that matches
-% the specified path. If none are found, then 
+% the specified path. If none are found, then
 % this is a static file. If more than one route are
 % found, takes the longest.
 route(Path, Routes) ->
@@ -73,22 +73,22 @@ route(Path, Routes) ->
     case Matches1 of
         [] ->
             {static_file, Path};
-        [{_, _, static_file}|_] ->
+        [{_, _, static_file} | _] ->
             {static_file, Path};
-        [{_, Prefix, Module}|_] ->
+        [{_, Prefix, Module} | _] ->
             {Module, string:substr(Path, length(Prefix) + 1)}
     end.
 
 check_for_404(static_file, _PathInfo, Path) ->
     {static_file, Path};
-
 check_for_404(Module, PathInfo, Path) ->
     % Make sure the requested module is loaded. If it
     % is not, then try to load the web_404 page. If that
     % is not available, then default to the 'file_not_found_page' module.
     case wf_utils:ensure_loaded(Module) of
-        {module, Module} -> {Module, PathInfo};
-        _ -> 
+        {module, Module} ->
+            {Module, PathInfo};
+        _ ->
             case wf_utils:ensure_loaded(web_404) of
                 {module, web_404} -> {web_404, Path};
                 _ -> {file_not_found_page, Path}

@@ -10,9 +10,9 @@
 
 ```erlang
    #panel { body=[
-     #label { text="Label" },
-     #value { text="Value" },
-     #button { text="Continue", postback=continue }
+	 #label { text="Label" },
+	 #value { text="Value" },
+	 #button { text="Continue", postback=continue }
    ]}
 
 ```
@@ -30,5 +30,3 @@
  *  [base element](./element_base.md)
 
  *  [span element](./span.md)
-
- 

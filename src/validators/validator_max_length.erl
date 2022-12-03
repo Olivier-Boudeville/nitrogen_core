@@ -4,16 +4,23 @@
 % Contributions from Torbjorn Tornkvist (tobbe@tornkvist.org)
 % See MIT-LICENSE for licensing information.
 
--module (validator_max_length).
--include_lib ("wf.hrl").
+-module(validator_max_length).
+-include_lib("wf.hrl").
 -compile(export_all).
 
-render_action(Record)  ->
-    TriggerPath= Record#max_length.trigger,
+render_action(Record) ->
+    TriggerPath = Record#max_length.trigger,
     TargetPath = Record#max_length.target,
     Text = wf:js_escape(Record#max_length.text),
     Length = Record#max_length.length,
-    CustomValidatorAction = #custom { trigger=TriggerPath, target=TargetPath, function=fun validate/2, text=Text, tag=Record, attach_to=Record#max_length.attach_to },
+    CustomValidatorAction = #custom{
+        trigger = TriggerPath,
+        target = TargetPath,
+        function = fun validate/2,
+        text = Text,
+        tag = Record,
+        attach_to = Record#max_length.attach_to
+    },
     validator_custom:render_action(CustomValidatorAction),
     wf:f("v.add(Validate.Length, { maximum: ~p, tooLongMessage: \"~ts\" });", [Length, Text]).
 

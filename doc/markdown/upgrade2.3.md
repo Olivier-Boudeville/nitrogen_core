@@ -28,7 +28,7 @@
   {simple_bridge, "", {git, "git://github.com/nitrogen/simple_bridge", {tag, "v2.0.0"}}},
 
 ```
-  
+
    Then run `make upgrade` in your app, which should fetch the latest versions
    and recompile your app accordingly.
 
@@ -65,7 +65,7 @@ $ git pull origin master
    That second line is just to make sure we're actually on the master branch.
    Previous versions of Nitrogen had an issue that might have caused us to be
    on a detached branch, this will ensure we're good to go.
-  
+
    After running that command, sync very likely would have crashed. That's
    okay: it's supervised, so it would be restarted with a fresh state.
 
@@ -140,15 +140,15 @@ $ curl https://raw.githubusercontent.com/nitrogen/nitrogen/master/rel/overlay/co
 -include_lib("nitrogen_core/include/wf.hrl").
 
 loop(Req) ->
-    {ok, DocRoot} = application:get_env(mochiweb, document_root),
-    RequestBridge = simple_bridge:make_request(mochiweb_request_bridge, {Req, DocRoot}),
-    ResponseBridge = simple_bridge:make_response(mochiweb_response_bridge, {Req, DocRoot}),
-    nitrogen:init_request(RequestBridge, ResponseBridge),
-    wf:header('cache-control',"no-cache"),
-    wf:content_type("text/html; charset=utf-8"),
-    nitrogen:handler(myapp_security_handler,[]),
-    nitrogen:handler(myapp_route_handler, []),
-    nitrogen:run().
+	{ok, DocRoot} = application:get_env(mochiweb, document_root),
+	RequestBridge = simple_bridge:make_request(mochiweb_request_bridge, {Req, DocRoot}),
+	ResponseBridge = simple_bridge:make_response(mochiweb_response_bridge, {Req, DocRoot}),
+	nitrogen:init_request(RequestBridge, ResponseBridge),
+	wf:header('cache-control',"no-cache"),
+	wf:content_type("text/html; charset=utf-8"),
+	nitrogen:handler(myapp_security_handler,[]),
+	nitrogen:handler(myapp_route_handler, []),
+	nitrogen:run().
 
 ```
 
@@ -159,18 +159,18 @@ loop(Req) ->
    -export([run/0]).
 
    handlers() ->
-       nitrogen:handler(myapp_security_handler,[]),
-       nitrogen:handler(myapp_route_handler, []),
+	   nitrogen:handler(myapp_security_handler,[]),
+	   nitrogen:handler(myapp_route_handler, []),
 
    ws_init() ->
-      handlers(),
-      ok.
+	  handlers(),
+	  ok.
 
    run() ->
-       wf:header('cache-control',"no-cache"),
-       wf:content_type("text/html; charset=utf-8"),
-       handlers(),
-       wf_core:run().
+	   wf:header('cache-control',"no-cache"),
+	   wf:content_type("text/html; charset=utf-8"),
+	   handlers(),
+	   wf_core:run().
 
 ```
 

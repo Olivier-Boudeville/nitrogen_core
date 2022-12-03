@@ -10,9 +10,9 @@
 
 ```erlang
    #nav { class=main_navigation, body=[
-      #link{text="Menu item 1", url="/item1"},
-      #link{text="Menu item 2", url="/item2"},
-      ...
+	  #link{text="Menu item 1", url="/item1"},
+	  #link{text="Menu item 2", url="/item2"},
+	  ...
    ]}.
 
 ```

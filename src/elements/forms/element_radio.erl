@@ -3,7 +3,7 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (element_radio).
+-module(element_radio).
 -include("wf.hrl").
 -export([
     reflect/0,
@@ -14,26 +14,31 @@
 reflect() -> record_info(fields, radio).
 
 -spec render_element(#radio{}) -> body().
-render_element(Record) -> 
+render_element(Record) ->
     ID = Record#radio.id,
-    Anchor = case Record#radio.anchor of
-        "." ++ AnchorNoDot -> AnchorNoDot;
-        A -> A
-    end,
-    CheckedOrNot = case Record#radio.checked of
-        true -> checked;
-        _ -> not_checked
-    end,
+    Anchor =
+        case Record#radio.anchor of
+            "." ++ AnchorNoDot -> AnchorNoDot;
+            A -> A
+        end,
+    CheckedOrNot =
+        case Record#radio.checked of
+            true -> checked;
+            _ -> not_checked
+        end,
 
     case Record#radio.postback of
-        undefined -> ignore;
-        Postback -> wf:wire(Anchor, #event {
-                    type=change,
-                    postback=Postback,
-                    validation_group=ID,
-                    handle_invalid=Record#radio.handle_invalid,
-                    on_invalid=Record#radio.on_invalid,
-                    delegate=Record#radio.delegate })
+        undefined ->
+            ignore;
+        Postback ->
+            wf:wire(Anchor, #event{
+                type = change,
+                postback = Postback,
+                validation_group = ID,
+                handle_invalid = Record#radio.handle_invalid,
+                on_invalid = Record#radio.on_invalid,
+                delegate = Record#radio.delegate
+            })
     end,
 
     action_event:maybe_wire_next(Record#radio.anchor, Record#radio.next),
@@ -56,7 +61,7 @@ render_element(Record) ->
             %% semantic meanings.  'html_name' is generally reserved for
             %% RESTful forms, while 'name' will be the more commonly used
             %% attribute.
-            {name, wf:coalesce([Record#radio.html_name,Record#radio.name])},
+            {name, wf:coalesce([Record#radio.html_name, Record#radio.name])},
             {type, radio},
             {class, [radio, Record#radio.class]},
             {title, Record#radio.title},

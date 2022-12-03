@@ -10,8 +10,8 @@
 
 ```erlang
    #main { body=[
-      "Here is some main content",
-      ...
+	  "Here is some main content",
+	  ...
    ]}.
 
 ```

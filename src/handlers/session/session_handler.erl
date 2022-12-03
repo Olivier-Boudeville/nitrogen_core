@@ -10,33 +10,44 @@
 % An application can define a custom session handler to control
 % how Nitrogen manages session values.
 
--module (session_handler).
+-module(session_handler).
 -include("wf.hrl").
--export ([
-    get_value/1, 
-    get_value/2, 
-    set_value/2, 
+-export([
+    get_value/1,
+    get_value/2,
+    set_value/2,
     clear_all/0,
     session_id/0
 ]).
 
--callback init(         handler_config(),
-                        handler_state()) -> {ok, handler_state()}.
--callback finish(       handler_config(),
-                        handler_state()) -> {ok, handler_state()}.
--callback get_value(    Key :: term(),
-                        DefaultValue :: term(),
-                        handler_config(),
-                        handler_state()) -> {ok, Value :: term(), handler_state()}.
--callback set_value(    Key :: term(),
-                        Value :: term(),
-                        handler_config(),
-                        handler_state()) -> {ok, OldValue :: term(), handler_state()}.
--callback clear_all(    handler_config(),
-                        handler_state()) -> {ok, handler_state()}.
--callback session_id(   handler_config(),
-                        handler_state()) -> {ok, Sessionid:: term(), handler_state()}.
-
+-callback init(
+    handler_config(),
+    handler_state()
+) -> {ok, handler_state()}.
+-callback finish(
+    handler_config(),
+    handler_state()
+) -> {ok, handler_state()}.
+-callback get_value(
+    Key :: term(),
+    DefaultValue :: term(),
+    handler_config(),
+    handler_state()
+) -> {ok, Value :: term(), handler_state()}.
+-callback set_value(
+    Key :: term(),
+    Value :: term(),
+    handler_config(),
+    handler_state()
+) -> {ok, OldValue :: term(), handler_state()}.
+-callback clear_all(
+    handler_config(),
+    handler_state()
+) -> {ok, handler_state()}.
+-callback session_id(
+    handler_config(),
+    handler_state()
+) -> {ok, Sessionid :: term(), handler_state()}.
 
 % get(Key, DefaultValue, State, Key, DefaultValue) -> {ok, Value, NewState}.
 % Retrieve a value from the storage area.

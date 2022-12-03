@@ -16,34 +16,40 @@
 reflect() -> record_info(fields, sync_panel).
 
 -spec render_element(#sync_panel{}) -> #panel{}.
-render_element(#sync_panel{body_fun=Fun}) when not(is_function(Fun)) ->
+render_element(#sync_panel{body_fun = Fun}) when not (is_function(Fun)) ->
     throw({sync_panel_element, {body_fun_not_a_function, Fun}});
-render_element(E = #sync_panel{
-        body_fun=BodyFun,
-        triggers=Triggers,
-        pool=Pool}) ->
-        
+render_element(
+    E = #sync_panel{
+        body_fun = BodyFun,
+        triggers = Triggers,
+        pool = Pool
+    }
+) ->
     Targetid = wf:temp_id(),
-    SyncPanel = E#sync_panel{id=Targetid},
+    SyncPanel = E#sync_panel{id = Targetid},
     wf:comet_global(fun() -> update(Targetid, Triggers, BodyFun) end, Pool),
     register_target_body_fun(Targetid, BodyFun, Pool, Triggers),
     Panel = wf_utils:copy_fields(SyncPanel, #panel{}),
-    Panel#panel{body=BodyFun()}.
-   
--spec register_target_body_fun(Targetid :: id(), BodyFun :: fun(), Pool :: term(), [Trigger :: term()]) -> ok.
-register_target_body_fun(_,_,_,[]) -> ok;
-register_target_body_fun(Targetid, BodyFun, Pool, [Trigger|Triggers]) ->
-    wf:state({?STATE_KEY, Pool, Trigger},{Targetid, BodyFun}),
+    Panel#panel{body = BodyFun()}.
+
+-spec register_target_body_fun(Targetid :: id(), BodyFun :: fun(), Pool :: term(), [
+    Trigger :: term()
+]) -> ok.
+register_target_body_fun(_, _, _, []) ->
+    ok;
+register_target_body_fun(Targetid, BodyFun, Pool, [Trigger | Triggers]) ->
+    wf:state({?STATE_KEY, Pool, Trigger}, {Targetid, BodyFun}),
     register_target_body_fun(Targetid, BodyFun, Pool, Triggers).
 
--spec get_target_body_fun(Pool :: term(), Trigger :: term()) -> {Targetid :: id(), BodyFun :: fun()} | undefined.
+-spec get_target_body_fun(Pool :: term(), Trigger :: term()) ->
+    {Targetid :: id(), BodyFun :: fun()} | undefined.
 get_target_body_fun(Pool, Trigger) ->
     wf:state({?STATE_KEY, Pool, Trigger}).
 
 -spec refresh(Trigger :: term()) -> ok.
 refresh(Trigger) ->
     refresh(sync_panel, Trigger).
-    
+
 -spec refresh(Pool :: term(), Trigger :: term()) -> ok.
 refresh(Pool, Trigger) ->
     case get_target_body_fun(Pool, Trigger) of
@@ -53,14 +59,13 @@ refresh(Pool, Trigger) ->
             Body = BodyFun(),
             wf:update(Targetid, Body),
             wf:send_global(Pool, {trigger, Trigger})
-            %% Disabled sending generated body across.
-            %% wf:send_global(Pool, {body, Trigger, Body})
+        %% Disabled sending generated body across.
+        %% wf:send_global(Pool, {body, Trigger, Body})
     end.
-
 
 %% This is the private cycle that receives message
 update(Targetid, Triggers, BodyFun) ->
-    receive 
+    receive
         {trigger, T} ->
             case lists:member(T, Triggers) of
                 true ->
@@ -76,19 +81,19 @@ update(Targetid, Triggers, BodyFun) ->
             do_nothing;
         {'LEAVE', _} ->
             do_nothing
-%%        %% Sending Body to all clients?
-%%        %% Let's disable for now. Needs more thought.
-%%        {body, T, Body} ->
-%%            case lists:member(T, Triggers) of
-%%                true ->
-%%                    wf:update(Targetid, Body);
-%%                false ->
-%%                    do_nothing
-%%            end
+        %%        %% Sending Body to all clients?
+        %%        %% Let's disable for now. Needs more thought.
+        %%        {body, T, Body} ->
+        %%            case lists:member(T, Triggers) of
+        %%                true ->
+        %%                    wf:update(Targetid, Body);
+        %%                false ->
+        %%                    do_nothing
+        %%            end
     after 20000 ->
-        %% The comet process will continue to live for as long as the comet pool exists. 
+        %% The comet process will continue to live for as long as the comet pool exists.
         {ok, TRef} = timer:send_after(20000, self(), not_alive),
-        wf:wire(#event{delegate=?MODULE, postback={still_alive, TRef}}),
+        wf:wire(#event{delegate = ?MODULE, postback = {still_alive, TRef}}),
         wf:flush()
     end,
     ?MODULE:update(Targetid, Triggers, BodyFun).

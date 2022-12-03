@@ -32,40 +32,51 @@ transform_element(Record) ->
     Actions = Record#date_dropdown.actions,
 
     AllowBlank = Record#date_dropdown.allow_blank,
-    {Y,M,D} = to_date(AllowBlank, Record#date_dropdown.value),
+    {Y, M, D} = to_date(AllowBlank, Record#date_dropdown.value),
     MinYear = handle_min(Record#date_dropdown.min_year),
     MaxYear = handle_max(Record#date_dropdown.max_year),
     Format = Record#date_dropdown.format,
     MonthOpts0 = month_opts(Record),
     Years = lists:seq(MaxYear, MinYear, -1),
     YearOpts0 = num_opts(Years),
-    Days = lists:seq(1,31),
+    Days = lists:seq(1, 31),
     DayOpts0 = num_opts(Days),
     %#span{id=Wrapperid, body=[
-    Hidden = #hidden{id=Id, class=ValTempClass, text=date_to_string({Y,M,D})},
+    Hidden = #hidden{id = Id, class = ValTempClass, text = date_to_string({Y, M, D})},
 
     MonthOpts = maybe_add_blank(AllowBlank, MonthOpts0),
     DayOpts = maybe_add_blank(AllowBlank, DayOpts0),
     YearOpts = maybe_add_blank(AllowBlank, YearOpts0),
 
     Postback = build_postback(Yid, Mid, Did, ValTempid),
-    MaybeRemoveValidation = #event{type=focus, actions=[
-        wf:f("objs('~s')
-                .removeClass('LV_invalid_field')
-                .siblings('.LV_validation_message')
-                .remove();",
-                [Id])
-    ]},
-    BaseDD = #dropdown{delegate=?MODULE, actions=MaybeRemoveValidation, postback=Postback},
+    MaybeRemoveValidation = #event{
+        type = focus,
+        actions = [
+            wf:f(
+                "objs('~s')\n"
+                "                .removeClass('LV_invalid_field')\n"
+                "                .siblings('.LV_validation_message')\n"
+                "                .remove();",
+                [Id]
+            )
+        ]
+    },
+    BaseDD = #dropdown{delegate = ?MODULE, actions = MaybeRemoveValidation, postback = Postback},
 
-    YDD = BaseDD#dropdown{id=Yid, value=Y, options=YearOpts},
-    MDD = BaseDD#dropdown{id=Mid, value=M, options=MonthOpts},
-    DDD = BaseDD#dropdown{id=Did, value=D, options=DayOpts},
+    YDD = BaseDD#dropdown{id = Yid, value = Y, options = YearOpts},
+    MDD = BaseDD#dropdown{id = Mid, value = M, options = MonthOpts},
+    DDD = BaseDD#dropdown{id = Did, value = D, options = DayOpts},
 
-    #panel{id=Wrapperid, class=Class, style=Style, actions=Actions, body=[
-        build_format(Format, YDD, MDD, DDD),
-        Hidden
-    ]}.
+    #panel{
+        id = Wrapperid,
+        class = Class,
+        style = Style,
+        actions = Actions,
+        body = [
+            build_format(Format, YDD, MDD, DDD),
+            Hidden
+        ]
+    }.
 
 maybe_add_blank(false, Opts) ->
     Opts;
@@ -76,55 +87,66 @@ build_postback(Yid, Mid, Did, ValTempid) ->
     {update, Yid, Mid, Did, ValTempid}.
 
 build_format(ymd, Y, M, D) ->
-    [Y,M,D];
+    [Y, M, D];
 build_format(dmy, Y, M, D) ->
-    [D,M,Y];
+    [D, M, Y];
 build_format(mdy, Y, M, D) ->
-    [M,D,Y];
+    [M, D, Y];
 build_format(iso, Y, M, D) ->
     build_format(ymd, Y, M, D);
 build_format(usa, Y, M, D) ->
     build_format(mdy, Y, M, D).
 
 blank_or_int(X) ->
-    try wf:to_integer(X)
-    catch _:_ -> ""
+    try
+        wf:to_integer(X)
+    catch
+        _:_ -> ""
     end.
 
 event({update, Yid, Mid, Did, ValTempid}) ->
-    [Y0,M0,D0] = wf:mq([Yid, Mid, Did]),
+    [Y0, M0, D0] = wf:mq([Yid, Mid, Did]),
     Y = blank_or_int(Y0),
     M = blank_or_int(M0),
     D = blank_or_int(D0),
-    NumDays = try calendar:last_day_of_the_month(Y, M)
-              catch _:_ -> 31
-              end,
-    ChoppingBlock = [29,30,31],
-    lists:foreach(fun(Day) ->
-        wf:wire(#remove_option{target=Did, value=Day}),
-        ?WF_IF(Day =< NumDays, wf:wire(#add_option{target=Did, option={Day, Day}}))
-    end, ChoppingBlock),
-    IsValid = try calendar:valid_date({Y,M,D})
-              catch _:_ -> false
-              end,
+    NumDays =
+        try
+            calendar:last_day_of_the_month(Y, M)
+        catch
+            _:_ -> 31
+        end,
+    ChoppingBlock = [29, 30, 31],
+    lists:foreach(
+        fun(Day) ->
+            wf:wire(#remove_option{target = Did, value = Day}),
+            ?WF_IF(Day =< NumDays, wf:wire(#add_option{target = Did, option = {Day, Day}}))
+        end,
+        ChoppingBlock
+    ),
+    IsValid =
+        try
+            calendar:valid_date({Y, M, D})
+        catch
+            _:_ -> false
+        end,
     case IsValid of
-        true -> 
+        true ->
             wf:set(Did, D),
-            wf:set(ValTempid, date_to_string({Y,M,D}));
+            wf:set(ValTempid, date_to_string({Y, M, D}));
         false ->
             wf:set(ValTempid, "")
     end.
 
 date_to_string({"", "", ""}) ->
     "";
-date_to_string({Y,M,D}) ->
+date_to_string({Y, M, D}) ->
     wf:to_list(Y) ++ "-" ++ format_m_or_d(M) ++ "-" ++ format_m_or_d(D).
 
 format_m_or_d(X) when X =< 9 ->
     "0" ++ wf:to_list(X);
 format_m_or_d(X) ->
     wf:to_list(X).
-    
+
 handle_min(undefined) ->
     {Y, _, _} = erlang:date(),
     Y - 100;
@@ -137,35 +159,35 @@ handle_max(undefined) ->
 handle_max(Y) ->
     Y.
 
-to_date(true=_AllowBlank, Blank) when Blank==undefined; Blank=="" ->
+to_date(true = _AllowBlank, Blank) when Blank == undefined; Blank == "" ->
     {"", "", ""};
-to_date(false=_AllowBlank, Blank) when Blank==undefined; Blank=="" ->
+to_date(false = _AllowBlank, Blank) when Blank == undefined; Blank == "" ->
     erlang:date();
-to_date(_, {Y,M,D}) ->
-    {Y,M,D};
-to_date(_, {{Y,M,D},{_,_,_}}) ->
-    {Y,M,D};
+to_date(_, {Y, M, D}) ->
+    {Y, M, D};
+to_date(_, {{Y, M, D}, {_, _, _}}) ->
+    {Y, M, D};
 to_date(AllowBlank, RawVal) ->
     %% We're going to be really forgiving of bad date values, so we trap it in
     %% a try/catch block
     try qdate:to_date(RawVal) of
         {Date, _Time} -> Date
-    catch _:_ ->
-        case AllowBlank of
-            true -> {"", "", ""};
-            false -> erlang:date()
-        end
+    catch
+        _:_ ->
+            case AllowBlank of
+                true -> {"", "", ""};
+                false -> erlang:date()
+            end
     end.
 
 num_opts(Nums) ->
-    [{X,X} || X <- Nums].
+    [{X, X} || X <- Nums].
 
-month_opts(#date_dropdown{month_names=false}) ->
-    num_opts(lists:seq(1,12));
-month_opts(#date_dropdown{month_fun=Fun}) ->
+month_opts(#date_dropdown{month_names = false}) ->
+    num_opts(lists:seq(1, 12));
+month_opts(#date_dropdown{month_fun = Fun}) ->
     Months = call_month_fun(Fun),
-    lists:zip(lists:seq(1,12), Months).
-
+    lists:zip(lists:seq(1, 12), Months).
 
 call_month_fun(MonthFun) when is_function(MonthFun, 0) ->
     MonthFun;
@@ -173,4 +195,4 @@ call_month_fun({Mod, Fun}) ->
     Mod:Fun().
 
 months() ->
-    ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].
+    ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].

@@ -3,9 +3,9 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (action_disable_selection).
--include_lib ("wf.hrl").
+-module(action_disable_selection).
+-include_lib("wf.hrl").
 -compile(export_all).
 
-render_action(_Record) -> 
+render_action(_Record) ->
     "Nitrogen.$disable_selection(obj('me'));".

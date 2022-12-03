@@ -13,8 +13,8 @@
 
 ```erlang
    #section{ body=[
-      #h1{text="Some heading"},
-      "Here is some content for this section"
+	  #h1{text="Some heading"},
+	  "Here is some content for this section"
    ]}.
 
 ```
@@ -30,5 +30,5 @@
  *  [Base element](./element_base.md)
 
  *  [Article element](article.md)
-   
+
  *  [About the Section HTML Element](http://html5doctor.com/http://html5doctor.com/the-section-element//)

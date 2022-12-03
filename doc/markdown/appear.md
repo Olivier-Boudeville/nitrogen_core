@@ -22,5 +22,3 @@
  *  [base element](./action_base.md)
 
  *  [fade element](./fade.md)
-
- 

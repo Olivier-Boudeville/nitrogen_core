@@ -23,12 +23,10 @@
 
 #### event(Tag)
 
-    Called when the ok button is clicked. Tag is specified in the 'postback' attribute.
+	Called when the ok button is clicked. Tag is specified in the 'postback' attribute.
 
 ### See Also
 
  *  [base element](./action_base.md)
 
  *  [alert element](./alert.md)
-
- 

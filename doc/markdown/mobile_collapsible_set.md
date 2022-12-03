@@ -12,23 +12,23 @@
 ### Usage
 
 ```erlang
-   #mobile_collapsible_set { 
-      collapsed=true,
-      body=[
-         #collapsible{ ... },
-         #collapsible{ ... },
-         #collapsible{ ... }
-      ]
+   #mobile_collapsible_set {
+	  collapsed=true,
+	  body=[
+		 #collapsible{ ... },
+		 #collapsible{ ... },
+		 #collapsible{ ... }
+	  ]
    }
 
 ```
 
 ### Attributes
-   
+
    * `header_theme` (atom) - Set the jQuery Mobile swatch letter for the contained #collapsible{} elements' header.
 
    * `content_theme` (atom) - Set the jQuery Mobile swatch letter for the contained #collapsible{} elements' content.
-   
+
    * `mini` (boolean) - Set to true to render the contained #collapsible{} elements in a smaller, more compact form.
 
 ### See Also

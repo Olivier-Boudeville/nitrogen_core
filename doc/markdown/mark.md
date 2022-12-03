@@ -11,9 +11,9 @@
 
 ```erlang
    #panel{body=[
-      <<"In this sentence, ">>,
-      #mark { text="just this phrase" },
-      " will be highlighted"
+	  <<"In this sentence, ">>,
+	  #mark { text="just this phrase" },
+	  " will be highlighted"
    ]}.
 
 ```
@@ -23,10 +23,10 @@
    * `text` (string) - The text to display.
 
    * `html_encode` (boolean) - Set to true to safely html-encode the
-      displayed text.
+	  displayed text.
 
    * `body` (Nitrogen element or list of elements.) - Set the element or
-      elements that will be rendered within this panel.
+	  elements that will be rendered within this panel.
 
    * `role` (String) - The role of the HTML5 Mark element.
 
@@ -36,4 +36,4 @@
 
  *  [span element](./span.md)
 
- *  [About the HTML Mark Element](http://html5doctor.com/draw-attention-with-mark/) 
+ *  [About the HTML Mark Element](http://html5doctor.com/draw-attention-with-mark/)

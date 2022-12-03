@@ -3,7 +3,7 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (element_tablerow).
+-module(element_tablerow).
 -include("wf.hrl").
 -export([
     reflect/0,
@@ -14,7 +14,7 @@
 reflect() -> record_info(fields, tablerow).
 
 -spec render_element(#tablerow{}) -> body().
-render_element(Record) -> 
+render_element(Record) ->
     Cells = Record#tablerow.cells,
     wf_tags:emit_tag(tr, Cells, [
         {id, Record#tablerow.html_id},

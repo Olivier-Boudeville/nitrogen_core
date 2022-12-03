@@ -6,7 +6,7 @@
 
   If an effect is specified, then call JQuery UI's [show(effect,
   options, speed)](http://docs.jquery.com/UI/Effects/show) on the target element.
-	
+
   Otherwise, just show the element.
 
 
@@ -30,5 +30,3 @@
  *  [base element](./action_base.md)
 
  *  [hide element](./hide.md)
-
- 

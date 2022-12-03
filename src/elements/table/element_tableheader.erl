@@ -3,7 +3,7 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (element_tableheader).
+-module(element_tableheader).
 -include("wf.hrl").
 -export([
     reflect/0,
@@ -14,7 +14,7 @@
 reflect() -> record_info(fields, tableheader).
 
 -spec render_element(#tableheader{}) -> body().
-render_element(Record) -> 
+render_element(Record) ->
     Body = [
         wf:html_encode(Record#tableheader.text, Record#tableheader.html_encode),
         Record#tableheader.body

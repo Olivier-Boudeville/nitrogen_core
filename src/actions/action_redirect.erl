@@ -3,35 +3,37 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (action_redirect).
+-module(action_redirect).
 -include("wf.hrl").
 -export([
-        render_action/1,
-        redirect/1,
-        redirect_to_login/1,
-        redirect_to_login/2,
-        redirect_from_login/1,
-        login_redirect_url/1,
-        login_redirect_url/2
-    ]).
+    render_action/1,
+    redirect/1,
+    redirect_to_login/1,
+    redirect_to_login/2,
+    redirect_from_login/1,
+    login_redirect_url/1,
+    login_redirect_url/2
+]).
 
 -spec render_action(#redirect{}) -> text().
-render_action(#redirect{url=Url, login=Login}) ->
+render_action(#redirect{url = Url, login = Login}) ->
     RedirectUrl = redirect_url(Login, Url),
     wf:f("window.location=\"~ts\";", [wf:js_escape(RedirectUrl)]).
 
 -spec redirect(url()) -> html().
 redirect(Url) ->
-    wf:wire(#redirect { url=Url }),
-    wf:f("<script nonce=\"~s\">window.location=\"~ts\";</script>",
-         [wf_context:script_nonce(), wf:js_escape(Url)]).
+    wf:wire(#redirect{url = Url}),
+    wf:f(
+        "<script nonce=\"~s\">window.location=\"~ts\";</script>",
+        [wf_context:script_nonce(), wf:js_escape(Url)]
+    ).
 
 -spec redirect_url(Login :: boolean() | url(), Url :: url()) -> url().
-redirect_url(_Login=false, Url) ->
+redirect_url(_Login = false, Url) ->
     Url;
-redirect_url(_Login=true, Url) ->
+redirect_url(_Login = true, Url) ->
     login_redirect_url(Url);
-redirect_url(Login, Url) when is_list(Login); is_binary(Login)  ->
+redirect_url(Login, Url) when is_list(Login); is_binary(Login) ->
     %% In this situation, `Login` is the URL To redirect to after successful login.
     login_redirect_url(Url, Login).
 
@@ -45,7 +47,6 @@ login_redirect_url(LoginUrl) ->
 login_redirect_url(LoginUrl, PostLoginUrl) ->
     PickledUrl = wf:pickle(PostLoginUrl),
     wf:to_list([LoginUrl, "?x=", PickledUrl]).
-
 
 -spec redirect_to_login(url(), url()) -> html().
 redirect_to_login(LoginUrl, PostLoginUrl) ->

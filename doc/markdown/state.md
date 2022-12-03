@@ -13,25 +13,25 @@
   Bear in mind that the state is not a **secure** store. That is, page-state gets
   pickled and sent to the client, so anything that needs to be hidden from the
   client is not recommended to be stored in the state.
- 
+
   The default implementation of the page-state is as a simple Erlang proplist.
 
 ### Behavior Functions
- 
+
 ##### `init(Config, State)`
 
   Initialize the state handler
 
- *  /Return Value/ - `{ok, NewState}` 
+ *  /Return Value/ - `{ok, NewState}`
 
 ##### `finish(Config, State)`
 
   Clean up the handler
 
  *  /Return Value/ - `{ok, NewState}`
-  
+
 ##### `get_state(Key, DefaultValue, Config, State)`
-  
+
   Retrieves the current value of the state variable with the identifier `Key`
 
  *  `Key` - The identifier to search for
@@ -73,30 +73,30 @@ Here is the complete text of the default state handler
 -behaviour (state_handler).
 -include_lib ("wf.hrl").
 -export ([
-    init/2, finish/2, get_state/4, set_state/4, clear/3, clear_all/2
+	init/2, finish/2, get_state/4, set_state/4, clear/3, clear_all/2
 ]).
 
 init(_Config, State) ->
-    % Deserialize the state from domState.
-    {ok, State}.
+	% Deserialize the state from domState.
+	{ok, State}.
 
 finish(_Config, State) ->
-    {ok, State}.
+	{ok, State}.
 
 get_state(Key, DefaultValue, _Config, State) ->
-    _Value = proplists:get_value(Key, State, DefaultValue).
+	_Value = proplists:get_value(Key, State, DefaultValue).
 
 set_state(Key, Value, _Config, State) ->
-    State1 = proplists:delete(Key, State),
-    State2 = [{Key, Value}|State1],
-    {ok, State2}.
+	State1 = proplists:delete(Key, State),
+	State2 = [{Key, Value}|State1],
+	{ok, State2}.
 
 clear(Key, _Config, State) ->
-    State1 = proplists:delete(Key, State),
-    {ok, State1}.
+	State1 = proplists:delete(Key, State),
+	{ok, State1}.
 
 clear_all(Config, _State) ->
-    init(Config, []).
+	init(Config, []).
 
 ```
 

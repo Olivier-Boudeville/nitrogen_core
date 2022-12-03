@@ -8,12 +8,12 @@
 ### Usage
 
 ```erlang
-   #some_mobile_element { 
-      theme=a,
-      data_fields=[
-         {icon, minus},
-         {shadow, true}
-      ]
+   #some_mobile_element {
+	  theme=a,
+	  data_fields=[
+		 {icon, minus},
+		 {shadow, true}
+	  ]
    }
 
 ```

@@ -3,12 +3,12 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (validator_custom).
+-module(validator_custom).
 -include("wf.hrl").
 -compile(export_all).
 
-render_action(Record) -> 
-    TriggerPath= Record#custom.trigger,
+render_action(Record) ->
+    TriggerPath = Record#custom.trigger,
     TargetPath = Record#custom.target,
     Validators = state_handler:get_state(validators, []),
     V = {TriggerPath, TargetPath, Record},

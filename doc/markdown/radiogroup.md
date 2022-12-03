@@ -11,9 +11,9 @@ Note: As of Nitrogen 2.4, this will do a "deep dive" in the body elements.
 
 ```erlang
    #radiogroup { id=fruit, body= [
-      #radio { text="Apple", value="apple", checked=true },
-      #radio { text="Orange", value="orange" },
-      #radio { text="Banana", value="banana" }
+	  #radio { text="Apple", value="apple", checked=true },
+	  #radio { text="Orange", value="orange" },
+	  #radio { text="Banana", value="banana" }
    ]}.
 
 ```

@@ -14,7 +14,7 @@
 
 ```erlang
    #droppable { tag=drop1, accept_class=accept, hover_class=hover, body=[
-     #span { text="This is a droppable block." }
+	 #span { text="This is a droppable block." }
    ]}
 
 ```
@@ -22,20 +22,20 @@
 ### Attributes
 
    * `tag` (Erlang term) - The drag term to pass into the drop_event/2
-     event.
+	 event.
 
    * `body` (Nitrogen elements) - The elements that will be droppable.
 
    * `accept_groups` (list of atoms (defaults to 'all')) - The drag groups
-     that will be accepted by this drop target
+	 that will be accepted by this drop target
 
    * `active_class` (atom or string (defaults to 'active')) - This CSS
-     class will be applied to the element when the user drags a draggable
-     element.
+	 class will be applied to the element when the user drags a draggable
+	 element.
 
    * `hover_class` (atom or string (defaults to 'hover')) - This CSS class
-     will be applied to the element when the user hovers with a draggable
-     element.
+	 will be applied to the element when the user hovers with a draggable
+	 element.
 
 ### Events
 

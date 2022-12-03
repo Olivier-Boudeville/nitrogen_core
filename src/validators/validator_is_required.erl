@@ -4,27 +4,28 @@
 % Copyright (c) 2014 Jesse Gumm
 % See MIT-LICENSE for licensing information.
 
--module (validator_is_required).
+-module(validator_is_required).
 -include("wf.hrl").
 -export([render_action/1]).
 
-
-render_action(Record = #is_required{unless_has_value=undefined}) ->
-    render_action(Record#is_required{unless_has_value=[]});
-render_action(Record = #is_required{unless_has_value=UHV}) when ?IS_STRING(UHV);
-                                                                not(is_list(UHV)) ->
-    render_action(Record#is_required{unless_has_value=[UHV]});
+render_action(Record = #is_required{unless_has_value = undefined}) ->
+    render_action(Record#is_required{unless_has_value = []});
+render_action(Record = #is_required{unless_has_value = UHV}) when
+    ?IS_STRING(UHV);
+    not (is_list(UHV))
+->
+    render_action(Record#is_required{unless_has_value = [UHV]});
 render_action(Record) ->
     TriggerPath = Record#is_required.trigger,
     TargetPath = Record#is_required.target,
     Text = wf:js_escape(Record#is_required.text),
     CustomValidator = #custom{
-        trigger=TriggerPath,
-        target=TargetPath,
-        text=Text,
-        tag=Record,
-        function=fun validate/2,
-        attach_to=Record#is_required.attach_to
+        trigger = TriggerPath,
+        target = TargetPath,
+        text = Text,
+        tag = Record,
+        function = fun validate/2,
+        attach_to = Record#is_required.attach_to
     },
 
     case Record#is_required.unless_has_value of
@@ -34,12 +35,12 @@ render_action(Record) ->
         Otherfields ->
             JSValidatorFun = build_js_function(Otherfields),
             JSValidation = #js_custom{
-                trigger=TriggerPath,
-                target=TargetPath,
-                function=JSValidatorFun,
-                text=Text,
-                attach_to=Record#is_required.attach_to,
-                when_empty=true
+                trigger = TriggerPath,
+                target = TargetPath,
+                function = JSValidatorFun,
+                text = Text,
+                attach_to = Record#is_required.attach_to,
+                when_empty = true
             },
             [CustomValidator, JSValidation]
     end.
@@ -49,20 +50,24 @@ build_js_function(OtherFields) ->
     OredFieldChecks = wf:join(FieldChecks, " || "),
     [
         "function(value, args) {",
-            "return (value != '') || ", OredFieldChecks,
+        "return (value != '') || ",
+        OredFieldChecks,
         "}"
     ].
 
 validate(Rec, undefined) ->
     % provided value is undefined, convert to empty string and try again
     validate(Rec, "");
-validate(#is_required{unless_has_value=Otherfields}, "") when Otherfields =/= [] ->
+validate(#is_required{unless_has_value = Otherfields}, "") when Otherfields =/= [] ->
     % provided value is blank, and we're evaluating the other fields, so let's
     % evaluate them
-    lists:any(fun(Field) ->
-        Val = wf:q(Field),
-        Val =/= undefined andalso Val =/= ""
-    end, Otherfields);
+    lists:any(
+        fun(Field) ->
+            Val = wf:q(Field),
+            Val =/= undefined andalso Val =/= ""
+        end,
+        Otherfields
+    );
 validate(_, "") ->
     % Provided field is blank, and we're not checking other fields (we know
     % this because the previous clause would have caught it).

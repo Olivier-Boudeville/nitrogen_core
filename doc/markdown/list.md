@@ -8,20 +8,20 @@ The list element produces an HTML list element (`<ol>` and `<ul>`).
 
 ```erlang
    #list{
-      numbered=true,
-      body=[
-         #listitem{ ... },
-         #listitem{ ... },
-         #listitem{ ... } 
-      ]
+	  numbered=true,
+	  body=[
+		 #listitem{ ... },
+		 #listitem{ ... },
+		 #listitem{ ... }
+	  ]
    }.
-	
+
 ```
 
 ### Attributes
-  
+
    * `numbered` (boolean) - Set to true to make this a numbered list, otherwise it will be typical bullet list.
- 
+
    * `body` (list of Nitrogen `#listitem{}` elements) - A list of listitems elements
 
    * `role` (atom or string) - Set the [XHTML Role attribute](http://www.w3.org/TR/xhtml-role/).
@@ -29,6 +29,6 @@ The list element produces an HTML list element (`<ol>` and `<ul>`).
 ### See Also
 
  *  [base element](./element_base.md)
- *  [listitem element](./listitem.md) 
+ *  [listitem element](./listitem.md)
  *  [mobile_list element](./mobile_list.md)
  *  [Simple Controls Demos](http://nitrogenproject.com/demos/simplecontrols)

@@ -64,21 +64,21 @@
    requires following the following steps:
 
    1) A Nitrogen plugin must be a valid Erlang application, that is, it has
-      either a .app file in the ebin directory, or a .app.src file in the src
-      directory.
+	  either a .app file in the ebin directory, or a .app.src file in the src
+	  directory.
 
    2) In order for Nitrogen to determine that an application is indeed a
-      Nitrogen plugin, the root of your plugin must contain the file
-      `nitrogen.plugin`. This file can be blank.
+	  Nitrogen plugin, the root of your plugin must contain the file
+	  `nitrogen.plugin`. This file can be blank.
 
    3) Place any static resources (javascript, CSS, images, etc) in the
-      `priv/static` directory of your plugin.
+	  `priv/static` directory of your plugin.
 
    4) Place any templates in the `priv/templates` directory of your plugin.
 
    4) Place any necessary Erlang header files (e.g. if this plugin contains
-      custom elements or actions) in a directory in the root of the plugin
-      and call it `include`.
+	  custom elements or actions) in a directory in the root of the plugin
+	  and call it `include`.
 
    5) Finally, place your plugin's Erlang source code in the `src` directory.
 

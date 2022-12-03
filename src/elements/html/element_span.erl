@@ -3,7 +3,7 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (element_span).
+-module(element_span).
 -include("wf.hrl").
 -export([
     reflect/0,
@@ -14,7 +14,7 @@
 reflect() -> record_info(fields, span).
 
 -spec render_element(#span{}) -> body().
-render_element(Record) -> 
+render_element(Record) ->
     Body = [
         wf:html_encode(Record#span.text, Record#span.html_encode),
         Record#span.body

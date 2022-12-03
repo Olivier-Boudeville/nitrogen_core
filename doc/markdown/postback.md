@@ -38,21 +38,21 @@ event/1 callback if the postback tag matches `{_, exception}`.
 -behaviour(postback_handler).
 -include_lib("wf.hrl").
 -export([
-          init/2
-        , finish/2
-        , postback_request/2
-        ]).
+		  init/2
+		, finish/2
+		, postback_request/2
+		]).
 
 init(_Config, State) ->
-    {ok, State}.
+	{ok, State}.
 
 finish(_Config, State) ->
-    {ok, State}.
+	{ok, State}.
 
 postback_request(_Config, _State) ->
   case wf_context:event_tag() of
-    {_, exception} -> wf_context:event_module(other_module);
-    _              -> ok
+	{_, exception} -> wf_context:event_module(other_module);
+	_              -> ok
   end.
 ```
 

@@ -4,8 +4,8 @@
 
 ## Base Element
 
- *  [Base Element](element_base.md) - All elements contain these attributes. 
- 
+ *  [Base Element](element_base.md) - All elements contain these attributes.
+
 ## Layout
 
  *  [Template](template.md)
@@ -98,4 +98,3 @@
 
  *  [Nitrogen Element Paths](paths.md)
  *  [jQuery Mobile Integration](jquery_mobile_integration.md)
-

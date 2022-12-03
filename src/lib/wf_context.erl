@@ -3,119 +3,119 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (wf_context).
+-module(wf_context).
 -include("wf.hrl").
 
 -export([
-        bridge/0,
-        bridge/1,
+    bridge/0,
+    bridge/1,
 
-        in_request/0,
-        socket/0,
+    in_request/0,
+    socket/0,
 
-        caching/0,
-        caching/1,
+    caching/0,
+    caching/1,
 
-        path/0,
-        protocol/0,
-        uri/0,
-        url/0,
+    path/0,
+    protocol/0,
+    uri/0,
+    url/0,
 
-        peer_ip/0,
-        peer_ip/1,
-        peer_ip/2,
+    peer_ip/0,
+    peer_ip/1,
+    peer_ip/2,
 
-        request_method/0,
-        request_body/0,
-        status_code/0,
-        status_code/1,
+    request_method/0,
+    request_body/0,
+    status_code/0,
+    status_code/1,
 
-        content_type/1,
-        content_type/0,
-        encoding/0,
-        encoding/1,
-        download_as/1,
-        headers/0,
-        header/1,
-        header/2,
+    content_type/1,
+    content_type/0,
+    encoding/0,
+    encoding/1,
+    download_as/1,
+    headers/0,
+    header/1,
+    header/2,
 
-        anchor/1,
-        anchor/0,
+    anchor/1,
+    anchor/0,
 
-        data/0,
-        data/1,
-        clear_data/0,
+    data/0,
+    data/1,
+    clear_data/0,
 
-        add_action/2,
-        actions/0,
-        next_action/0,
-        action_queue/0,
-        action_queue/1,
-        clear_action_queue/0,
-        new_action_queue/0,
+    add_action/2,
+    actions/0,
+    next_action/0,
+    action_queue/0,
+    action_queue/1,
+    clear_action_queue/0,
+    new_action_queue/0,
 
-        page_context/0,
-        page_context/1,
+    page_context/0,
+    page_context/1,
 
-        entry_point/0,
-        entry_point/1,
+    entry_point/0,
+    entry_point/1,
 
-        series_id/0,
-        series_id/1,
+    series_id/0,
+    series_id/1,
 
-        page_module/0,
-        page_module/1,
+    page_module/0,
+    page_module/1,
 
-        path_info/0,
-        path_info/1,
+    path_info/0,
+    path_info/1,
 
-        async_mode/0,
-        async_mode/1,
+    async_mode/0,
+    async_mode/1,
 
-        event_context/0,
-        event_context/1,
+    event_context/0,
+    event_context/1,
 
-        type/0,
-        type/1,
+    type/0,
+    type/1,
 
-        event_module/0,
-        event_module/1,
+    event_module/0,
+    event_module/1,
 
-        event_tag/0,
-        event_tag/1,
+    event_tag/0,
+    event_tag/1,
 
-        event_validation_group/0,
-        event_validation_group/1,
-        event_handle_invalid/0,
-        event_handle_invalid/1,
+    event_validation_group/0,
+    event_validation_group/1,
+    event_handle_invalid/0,
+    event_handle_invalid/1,
 
-        handlers/0,
-        handlers/1,
-        handler/1,
-        restore_handler/1,
+    handlers/0,
+    handlers/1,
+    handler/1,
+    restore_handler/1,
 
-        init_context/1,
-        make_handler/2,
+    init_context/1,
+    make_handler/2,
 
-        context/0,
-        context/1,
+    context/0,
+    context/1,
 
-        script_nonce/0,
-        script_nonce/1,
+    script_nonce/0,
+    script_nonce/1,
 
-        content_security_policy/0,
-        content_security_policy/1
-    ]).
+    content_security_policy/0,
+    content_security_policy/1
+]).
 
 -export([increment/1]).
 
 %% Exports for backwards compatibility
 -export([
-        request_bridge/0,
-        request_bridge/1,
-        response_bridge/0,
-        response_bridge/1
-    ]).
+    request_bridge/0,
+    request_bridge/1,
+    response_bridge/0,
+    response_bridge/1
+]).
 
 %% This particular macro is really no longer needed the way it was when we were
 %% using tuple calls, but I like the way the macros are highlighted when
@@ -125,12 +125,12 @@
 %%% REQUEST AND RESPONSE BRIDGE %%%
 
 bridge() ->
-    Context=context(),
+    Context = context(),
     Context#context.bridge.
 
 bridge(Bridge) ->
     Context = context(),
-    context(Context#context{bridge=Bridge}).
+    context(Context#context{bridge = Bridge}).
 
 in_request() ->
     %% If we have a context set and it is a #context{} tuple, then we are in a
@@ -158,20 +158,20 @@ url() ->
 peer_ip() ->
     sbw:peer_ip(?BRIDGE).
 
-
 peer_ip(Proxies) ->
-    peer_ip(Proxies,x_forwarded_for).
+    peer_ip(Proxies, x_forwarded_for).
 
-peer_ip(Proxies,ForwardedHeader) ->
+peer_ip(Proxies, ForwardedHeader) ->
     ConnIP = peer_ip(),
     case header(ForwardedHeader) of
-        undefined -> ConnIP;
+        undefined ->
+            ConnIP;
         RawForwardedIP ->
             ForwardedIP = wf_convert:parse_ip(RawForwardedIP),
             DoesIPMatch = fun(Proxy) ->
                 wf_convert:parse_ip(Proxy) =:= ConnIP
             end,
-            case lists:any(DoesIPMatch,Proxies) of
+            case lists:any(DoesIPMatch, Proxies) of
                 true -> ForwardedIP;
                 false -> ConnIP
             end
@@ -179,22 +179,22 @@ peer_ip(Proxies,ForwardedHeader) ->
 
 request_method() ->
     case sbw:request_method(?BRIDGE) of
-        'GET'       -> get;
-        get         -> get;
-        'POST'      -> post;
-        post        -> post;
-        'DELETE'    -> delete;
-        delete      -> delete;
-        'PUT'       -> put;
-        put         -> put;
-        'TRACE'     -> trace;
-        trace       -> trace;
-        'HEAD'      -> head;
-        head        -> head;
-        'CONNECT'   -> connect;
-        connect     -> connect;
-        'OPTIONS'   -> options;
-        options     -> options;
+        'GET' -> get;
+        get -> get;
+        'POST' -> post;
+        post -> post;
+        'DELETE' -> delete;
+        delete -> delete;
+        'PUT' -> put;
+        put -> put;
+        'TRACE' -> trace;
+        trace -> trace;
+        'HEAD' -> head;
+        head -> head;
+        'CONNECT' -> connect;
+        connect -> connect;
+        'OPTIONS' -> options;
+        options -> options;
         Other -> list_to_existing_atom(string:to_lower(wf:to_list(Other)))
     end.
 
@@ -205,7 +205,7 @@ status_code() ->
     sbw:get_status_code(?BRIDGE).
 
 status_code(StatusCode) ->
-    Bridge2 = sbw:set_status_code(StatusCode,?BRIDGE),
+    Bridge2 = sbw:set_status_code(StatusCode, ?BRIDGE),
     bridge(Bridge2),
     ok.
 
@@ -213,7 +213,7 @@ content_type(ContentType) ->
     header("Content-Type", ContentType).
 
 content_type() ->
-    case sbw:get_response_header(<<"content-type">>,?BRIDGE) of
+    case sbw:get_response_header(<<"content-type">>, ?BRIDGE) of
         undefined -> "text/html";
         ContentType -> ContentType
     end.
@@ -236,7 +236,7 @@ header(Header, Value) ->
 -spec encoding(Encoding :: encoding()) -> ok.
 encoding(Encoding) ->
     Context = context(),
-    context(Context#context { encoding=Encoding }).
+    context(Context#context{encoding = Encoding}).
 
 encoding() ->
     Context = context(),
@@ -248,21 +248,21 @@ script_nonce() ->
 
 script_nonce(Value) ->
     Context = context(),
-    context(Context#context{ script_nonce=Value }).
+    context(Context#context{script_nonce = Value}).
 
 content_security_policy() ->
-  content_security_policy(wf_security_policy:generate()).
+    content_security_policy(wf_security_policy:generate()).
 
 content_security_policy(undefined) ->
-  ok;
+    ok;
 content_security_policy(Policy) ->
-  header("Content-Security-Policy", Policy).
+    header("Content-Security-Policy", Policy).
 
 %%% TRANSIENT CONTEXT %%%
 
 anchor(Anchor) ->
     Context = context(),
-    context(Context#context { anchor=Anchor }).
+    context(Context#context{anchor = Anchor}).
 
 anchor() ->
     Context = context(),
@@ -274,11 +274,11 @@ data() ->
 
 data(Data) ->
     Context = context(),
-    context(Context#context { data = Data }).
+    context(Context#context{data = Data}).
 
 clear_data() ->
     Context = context(),
-    context(Context#context { data = [] }).
+    context(Context#context{data = []}).
 
 -spec add_action(Priority :: wire_priority(), Action :: actions()) -> ok.
 add_action(Priority, Action) when ?IS_ACTION_PRIORITY(Priority) ->
@@ -294,22 +294,22 @@ actions() ->
 
 -spec next_action() -> {ok, actions()} | empty.
 next_action() ->
-	ActionQueue = action_queue(),
-	case wf_action_queue:out(ActionQueue) of
-		{ok, Action, NewActionQueue} ->
+    ActionQueue = action_queue(),
+    case wf_action_queue:out(ActionQueue) of
+        {ok, Action, NewActionQueue} ->
             action_queue(NewActionQueue),
             {ok, Action};
-		{error, empty} ->
+        {error, empty} ->
             empty
-	end.
+    end.
 
 action_queue() ->
-	Context = context(),
-	Context#context.action_queue.
+    Context = context(),
+    Context#context.action_queue.
 
 action_queue(ActionQueue) ->
     Context = context(),
-    context(Context#context { action_queue = ActionQueue }).
+    context(Context#context{action_queue = ActionQueue}).
 
 clear_action_queue() ->
     action_queue(new_action_queue()).
@@ -325,7 +325,7 @@ page_context() ->
 
 page_context(PageContext) ->
     Context = context(),
-    context(Context#context { page_context = PageContext }).
+    context(Context#context{page_context = PageContext}).
 
 series_id() ->
     Page = page_context(),
@@ -333,7 +333,7 @@ series_id() ->
 
 series_id(SeriesID) ->
     Page = page_context(),
-    page_context(Page#page_context { series_id = SeriesID }).
+    page_context(Page#page_context{series_id = SeriesID}).
 
 page_module() ->
     Page = page_context(),
@@ -341,7 +341,7 @@ page_module() ->
 
 page_module(Module) ->
     Page = page_context(),
-     page_context(Page#page_context { module = Module }).
+    page_context(Page#page_context{module = Module}).
 
 entry_point() ->
     Page = page_context(),
@@ -349,7 +349,7 @@ entry_point() ->
 
 entry_point(EntryPoint) ->
     Page = page_context(),
-    page_context(Page#page_context { entry_point = EntryPoint}).
+    page_context(Page#page_context{entry_point = EntryPoint}).
 
 path_info() ->
     Page = page_context(),
@@ -357,7 +357,7 @@ path_info() ->
 
 path_info(PathInfo) ->
     Page = page_context(),
-    page_context(Page#page_context { path_info = PathInfo }).
+    page_context(Page#page_context{path_info = PathInfo}).
 
 async_mode() ->
     Page = page_context(),
@@ -365,8 +365,7 @@ async_mode() ->
 
 async_mode(AsyncMode) ->
     Page = page_context(),
-    page_context(Page#page_context { async_mode=AsyncMode }).
-
+    page_context(Page#page_context{async_mode = AsyncMode}).
 
 %%% EVENT CONTEXT %%%
 
@@ -376,15 +375,16 @@ event_context() ->
 
 event_context(EventContext) ->
     Context = context(),
-    context(Context#context { event_context = EventContext }).
+    context(Context#context{event_context = EventContext}).
 
 type() ->
     Context = context(),
     Context#context.type.
 
-type(Type) -> % either first_request, postback_request, postback_websocket, comet, or static_file
+% either first_request, postback_request, postback_websocket, comet, or static_file
+type(Type) ->
     Context = context(),
-    context(Context#context { type = Type }).
+    context(Context#context{type = Type}).
 
 event_module() ->
     Event = event_context(),
@@ -392,7 +392,7 @@ event_module() ->
 
 event_module(Module) ->
     Event = event_context(),
-    event_context(Event#event_context { module = Module }).
+    event_context(Event#event_context{module = Module}).
 
 event_tag() ->
     Event = event_context(),
@@ -400,7 +400,7 @@ event_tag() ->
 
 event_tag(Tag) ->
     Event = event_context(),
-    event_context(Event#event_context { tag = Tag }).
+    event_context(Event#event_context{tag = Tag}).
 
 event_validation_group() ->
     Event = event_context(),
@@ -408,7 +408,7 @@ event_validation_group() ->
 
 event_validation_group(ValidationGroup) ->
     Event = event_context(),
-    event_context(Event#event_context { validation_group = ValidationGroup }).
+    event_context(Event#event_context{validation_group = ValidationGroup}).
 
 event_handle_invalid() ->
     Event = event_context(),
@@ -416,9 +416,7 @@ event_handle_invalid() ->
 
 event_handle_invalid(HandleInvalid) ->
     Event = event_context(),
-    event_context(Event#event_context { handle_invalid = HandleInvalid }).
-
-
+    event_context(Event#event_context{handle_invalid = HandleInvalid}).
 
 %%% HANDLERS %%%
 
@@ -428,7 +426,7 @@ handlers() ->
 
 handlers(Handlers) ->
     Context = context(),
-    context(Context#context { handler_list = Handlers }).
+    context(Context#context{handler_list = Handlers}).
 
 handler(HandlerName) ->
     Handlers = handlers(),
@@ -442,8 +440,8 @@ restore_handler(NewHandler) ->
     NewHandlers = [maybe_restore_handler(H, NewHandler) || H <- Handlers],
     handlers(NewHandlers).
 
-maybe_restore_handler(Orig = #handler_context{name=Name}, New = #handler_context{name=Name}) ->
-    New#handler_context{config=Orig#handler_context.config};
+maybe_restore_handler(Orig = #handler_context{name = Name}, New = #handler_context{name = Name}) ->
+    New#handler_context{config = Orig#handler_context.config};
 maybe_restore_handler(Orig, _New) ->
     Orig.
 
@@ -461,10 +459,10 @@ maybe_restore_handler(Orig, _New) ->
 
 init_context(Bridge) ->
     % Create the new context using the default handlers.
-    Context = #context {
+    Context = #context{
         bridge = Bridge,
-        page_context = #page_context { series_id = wf:temp_id() },
-        event_context = #event_context {},
+        page_context = #page_context{series_id = wf:temp_id()},
+        event_context = #event_context{},
         action_queue = new_action_queue(),
         script_nonce = wf_security_policy:nonce(),
         handler_list = [
@@ -491,10 +489,10 @@ init_context(Bridge) ->
     context(Context).
 
 make_handler(Name, Module) ->
-    #handler_context {
-        name=Name,
-        module=Module,
-        state=[]
+    #handler_context{
+        name = Name,
+        module = Module,
+        state = []
     }.
 
 caching() ->
@@ -503,7 +501,7 @@ caching() ->
 
 caching(Caching) ->
     Context = context(),
-    context(Context#context{caching=Caching}).
+    context(Context#context{caching = Caching}).
 
 %%% GET AND SET CONTEXT %%%
 % Yes, the context is stored in the process dictionary. It makes the Nitrogen
@@ -516,8 +514,11 @@ context(Context) ->
 %% for debugging. Remove when ready
 increment(Key) ->
     case get(Key) of
-        undefined -> put(Key, 1);
-        V -> io:format("~p=~p~n",[Key, V+1]), put(Key, V+1)
+        undefined ->
+            put(Key, 1);
+        V ->
+            io:format("~p=~p~n", [Key, V + 1]),
+            put(Key, V + 1)
     end.
 
 %% Kept for backwards compatibility with nitrogen 2.2 and below (and

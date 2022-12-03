@@ -3,5 +3,5 @@
 -include("wf.hrl").
 -export([render_action/1]).
 
-render_action(#before_postback{script=Script}) ->
-    wf:f("Nitrogen.$before_postback(function(){ ~ts });",[Script]).
+render_action(#before_postback{script = Script}) ->
+    wf:f("Nitrogen.$before_postback(function(){ ~ts });", [Script]).

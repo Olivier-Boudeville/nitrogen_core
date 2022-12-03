@@ -7,7 +7,7 @@
   The table cell element allows you to specify a table cell within a tablerow element.
 
 ### Usage
-   
+
    See the [Table](table.md) element for usage.
 
 ### Attributes
@@ -37,5 +37,3 @@
  *  [tableheader element](./tableheader.md)
 
  *  [singlerow element](./singlerow.md)
-
- 

@@ -3,7 +3,7 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (element_table).
+-module(element_table).
 -include("wf.hrl").
 -export([
     reflect/0,
@@ -14,24 +14,25 @@
 reflect() -> record_info(fields, table).
 
 -spec render_element(#table{}) -> body().
-render_element(Record) -> 
+render_element(Record) ->
+    Header =
+        case Record#table.header of
+            [] -> "";
+            _ -> wf_tags:emit_tag(thead, Record#table.header, [])
+        end,
 
-    Header = case Record#table.header of
-      [] -> "";
-      _ -> wf_tags:emit_tag(thead, Record#table.header, [])
-    end,
-
-    Footer = case Record#table.footer of
-      [] -> "";
-      _ -> wf_tags:emit_tag(tfoot, Record#table.footer, [])
-    end,
+    Footer =
+        case Record#table.footer of
+            [] -> "";
+            _ -> wf_tags:emit_tag(tfoot, Record#table.footer, [])
+        end,
 
     Body = wf_tags:emit_tag(tbody, Record#table.rows, []),
-    Content = [Header, Footer, Body ],
+    Content = [Header, Footer, Body],
 
-    wf_tags:emit_tag( table, Content, [
+    wf_tags:emit_tag(table, Content, [
         {id, Record#table.html_id},
-        {border,Record#table.border},
+        {border, Record#table.border},
         {class, [table, Record#table.class]},
         {title, Record#table.title},
         {style, Record#table.style},

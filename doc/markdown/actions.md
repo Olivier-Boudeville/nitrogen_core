@@ -12,7 +12,7 @@
  *  [Redirect](redirect.md)
  *  [Event](event.md)
  *  [Update](update.md) (includes Update, Replace, Insert Top,
-    Insert Bottom, Insert Before, Insert, After, and Remove)
+	Insert Bottom, Insert Before, Insert, After, and Remove)
  *  [Script](script.md)
  *  [Validate](validate.md)
  *  [Clear Validation](clear_validation.md)

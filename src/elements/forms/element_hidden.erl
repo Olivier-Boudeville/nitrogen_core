@@ -3,7 +3,7 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (element_hidden).
+-module(element_hidden).
 -include("wf.hrl").
 -export([
     reflect/0,
@@ -14,7 +14,7 @@
 reflect() -> record_info(fields, hidden).
 
 -spec render_element(#hidden{}) -> body().
-render_element(Record) -> 
+render_element(Record) ->
     Value = wf:html_encode(Record#hidden.text, Record#hidden.html_encode),
     wf_tags:emit_tag(input, [
         {id, Record#hidden.html_id},

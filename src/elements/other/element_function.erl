@@ -3,7 +3,7 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (element_function).
+-module(element_function).
 -include("wf.hrl").
 -export([
     reflect/0,
@@ -12,7 +12,7 @@
 
 % The 'function' attribute is an Erlang function of arity 0 that returns [Elements].
 %
-% Elements can either be a String, a binary, more Nitrogen elements, or a combination thereof. 
+% Elements can either be a String, a binary, more Nitrogen elements, or a combination thereof.
 %
 % Alternatively, the 'function' attribute can be a list
 % of functions having the properties above. The first
@@ -28,11 +28,12 @@ render_element(Record) ->
     call_next_function(Functions).
 
 -spec call_next_function([fun()]) -> body().
-call_next_function([]) -> []; 
-call_next_function([F|Functions]) ->
-    % Call the function. If it provides results, then return it, 
+call_next_function([]) ->
+    [];
+call_next_function([F | Functions]) ->
+    % Call the function. If it provides results, then return it,
     % Otherwise, call the next function.
     case F() of
         undefined -> call_next_function(Functions);
-        Elements  -> Elements
+        Elements -> Elements
     end.

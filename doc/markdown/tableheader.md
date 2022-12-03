@@ -37,5 +37,3 @@
  *  [tablecell element](./tablecell.md)
 
  *  [singlerow element](./singlerow.md)
-
- 

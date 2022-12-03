@@ -3,25 +3,27 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (element_qr).
+-module(element_qr).
 -include("wf.hrl").
 -export([
-	reflect/0,
-	transform_element/1
+    reflect/0,
+    transform_element/1
 ]).
 
 -spec reflect() -> [atom()].
 reflect() -> record_info(fields, qr).
 
 -spec transform_element(#qr{}) -> body().
-transform_element(#qr{data=Empty} = QR) when Empty =:= undefined;
-                                          Empty =:= <<"">>;
-                                          Empty =:= "" ->
-    transform_element(QR#qr{data=wf:url()});
-transform_element(#qr{data=Data, size=Size, class=Class, id=Id, title=Title}) ->
+transform_element(#qr{data = Empty} = QR) when
+    Empty =:= undefined;
+    Empty =:= <<"">>;
+    Empty =:= ""
+->
+    transform_element(QR#qr{data = wf:url()});
+transform_element(#qr{data = Data, size = Size, class = Class, id = Id, title = Title}) ->
     BSize = wf:to_binary(Size),
     Cht = <<"qr">>,
-    Chs = <<BSize/binary,"x",BSize/binary>>,
+    Chs = <<BSize/binary, "x", BSize/binary>>,
     Choe = "UTF-8",
 
     %% Not sure what this is exactly, but it's recommended to stay at H. Feel
@@ -39,8 +41,8 @@ transform_element(#qr{data=Data, size=Size, class=Class, id=Id, title=Title}) ->
         {chl, Chl}
     ]),
     #image{
-       id=Id,
-       class=Class,
-       title=Title,
-       image=[Path,QS]
+        id = Id,
+        class = Class,
+        title = Title,
+        image = [Path, QS]
     }.

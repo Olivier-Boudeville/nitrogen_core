@@ -3,7 +3,7 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (element_range).
+-module(element_range).
 -include("wf.hrl").
 -export([
     reflect/0,
@@ -14,18 +14,25 @@
 reflect() -> record_info(fields, range).
 
 -spec render_element(#range{}) -> body().
-render_element(Record) -> 
+render_element(Record) ->
     ID = Record#range.id,
     Anchor = Record#range.anchor,
     action_event:maybe_wire_next(Anchor, Record#range.next),
 
     case Record#range.postback of
-        undefined -> ignore;
-        Postback -> wf:wire(Anchor, #event { type=change, postback=Postback, validation_group=ID, delegate=Record#range.delegate })
+        undefined ->
+            ignore;
+        Postback ->
+            wf:wire(Anchor, #event{
+                type = change,
+                postback = Postback,
+                validation_group = ID,
+                delegate = Record#range.delegate
+            })
     end,
 
     wf_tags:emit_tag(input, [
-        {type, range}, 
+        {type, range},
         {class, [range, Record#range.class]},
         {title, Record#range.title},
         {min, Record#range.min},

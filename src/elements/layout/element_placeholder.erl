@@ -3,7 +3,7 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (element_placeholder).
+-module(element_placeholder).
 -include("wf.hrl").
 -export([
     reflect/0,
@@ -14,5 +14,5 @@
 reflect() -> record_info(fields, placeholder).
 
 -spec render_element(#placeholder{}) -> body().
-render_element(Record) -> 
+render_element(Record) ->
     Record#placeholder.body.

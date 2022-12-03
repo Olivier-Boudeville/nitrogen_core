@@ -3,7 +3,7 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (element_hr).
+-module(element_hr).
 -include("wf.hrl").
 -export([
     reflect/0,
@@ -14,7 +14,7 @@
 reflect() -> record_info(fields, hr).
 
 -spec render_element(#hr{}) -> body().
-render_element(Record) -> 
+render_element(Record) ->
     wf_tags:emit_tag(hr, [
         {id, Record#hr.html_id},
         {size, 1},

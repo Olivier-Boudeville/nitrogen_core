@@ -10,10 +10,10 @@
 
 ```erlang
 	OptionsSequence = {sequence, [{showSequenceNumbers, true}, {width, 100}, {height, 100}]},
-    Options = [{theme,"dark"}],
-    Data = "sequenceDiagram\nAlice->John: Hello John, how are you?\n\nNote over Alice,John: A typical interaction",
+	Options = [{theme,"dark"}],
+	Data = "sequenceDiagram\nAlice->John: Hello John, how are you?\n\nNote over Alice,John: A typical interaction",
 
-    #mermaid{
+	#mermaid{
 		code=Data,
 		options=Options,
 		diagram_options=OptionsSequence

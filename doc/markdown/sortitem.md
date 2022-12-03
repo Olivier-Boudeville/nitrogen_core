@@ -1,7 +1,7 @@
 <!-- dash: #sortitem | Element | ###:Element -->
 
 
- 
+
 ## Sort Item Element - #sortitem {}
 
   The sort item element allows you to make a list of Nitrogen elements sortable by the user.
@@ -23,5 +23,3 @@
 	*  [Sorting Demo](http://nitrogenproject.com/demos/sorting1)
 
 	*  [Nested Sorting Demo](http://nitrogenproject.com/demos/sorting2)
-
- 

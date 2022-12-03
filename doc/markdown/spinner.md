@@ -4,7 +4,7 @@
 
   The spinner element places an AJAX spinner on the page.
 
-  The spinner is automatically displayed during a postback, 
+  The spinner is automatically displayed during a postback,
   and hidden when the postback completes.
 
 ### Usage
@@ -21,5 +21,3 @@
 ### See Also
 
  *  [base element](./element_base.md)
-
- 

@@ -12,8 +12,8 @@
 
 ```erlang
    #singlerow { cells=[
-     #tablecell { body="Cell Text" },
-     #tablecell { body=#link { text="Link" }}
+	 #tablecell { body="Cell Text" },
+	 #tablecell { body=#link { text="Link" }}
    ]}
 
 ```
@@ -29,5 +29,3 @@
  *  [tableheader element](./tableheader.md)
 
  *  [tablecell element](./tablecell.md)
-
- 

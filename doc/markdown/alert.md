@@ -22,5 +22,3 @@
  *  [base element](./action_base.md)
 
  *  [confirm element](./confirm.md)
-
- 

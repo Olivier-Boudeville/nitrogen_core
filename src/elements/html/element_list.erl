@@ -3,7 +3,7 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (element_list).
+-module(element_list).
 -include("wf.hrl").
 -export([
     reflect/0,
@@ -14,11 +14,12 @@
 reflect() -> record_info(fields, list).
 
 -spec render_element(#list{}) -> body().
-render_element(Record) -> 
-    Tag = case Record#list.numbered of 
-        true -> ol;
-        _ -> ul
-    end,
+render_element(Record) ->
+    Tag =
+        case Record#list.numbered of
+            true -> ol;
+            _ -> ul
+        end,
 
     wf_tags:emit_tag(Tag, Record#list.body, [
         {id, Record#list.html_id},

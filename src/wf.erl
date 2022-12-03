@@ -3,9 +3,9 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (wf).
+-module(wf).
 -include("wf.hrl").
--compile (export_all).
+-compile(export_all).
 
 %%% EXPOSE WIRE, UPDATE, FLASH %%%
 wire(Actions) ->
@@ -43,10 +43,8 @@ priority_wire(Priority, Target, Actions) ->
 
 priority_wire(eager, Trigger, Target, Actions) ->
     ok = wf:eager(Trigger, Target, Actions);
-
 priority_wire(normal, Trigger, Target, Actions) ->
     ok = wf:wire(Trigger, Target, Actions);
-
 priority_wire(defer, Trigger, Target, Actions) ->
     ok = wf:defer(Trigger, Target, Actions).
 
@@ -61,7 +59,6 @@ set_multiple(Element, Values) ->
 
 set_multiple(Priority, Element, Values) when is_list(Values), ?IS_ACTION_PRIORITY(Priority) ->
     ok = action_set_multiple:set(Priority, Element, Values).
-
 
 update(Target, Elements) ->
     ok = update(normal, Target, Elements).
@@ -147,7 +144,6 @@ redirect_to_login(LoginUrl, PostLoginUrl) ->
 redirect_from_login(DefaultUrl) ->
     action_redirect:redirect_from_login(DefaultUrl).
 
-
 %%% EXPOSE WF_PICKLE %%%
 pickle(Data) ->
     _SerializedData = wf_pickle:pickle(Data).
@@ -157,7 +153,6 @@ depickle(SerializedData) ->
 
 depickle(SerializedData, TTLSeconds) ->
     _Data = wf_pickle:depickle(SerializedData, TTLSeconds).
-
 
 %%% EXPOSE WF_CONVERT %%%
 to_list(T) ->
@@ -226,8 +221,8 @@ to_qs(List) ->
 parse_qs(String) ->
     _Proplist = wf_convert:parse_qs(String).
 
-join(List,Delimiter) ->
-    _Result = wf_convert:join(List,Delimiter).
+join(List, Delimiter) ->
+    _Result = wf_convert:join(List, Delimiter).
 
 %%% EXPOSE WF_BIND %%%
 % TODO
@@ -238,7 +233,11 @@ join(List,Delimiter) ->
 
 %%% OTHER %%%
 
-logout() -> clear_user(), clear_roles(), clear_state(), clear_session().
+logout() ->
+    clear_user(),
+    clear_roles(),
+    clear_state(),
+    clear_session().
 
 to_js_id(Path) ->
     _String = wf_render_actions:to_js_id(Path).
@@ -310,8 +309,8 @@ cookies() ->
 cookie(Cookie) ->
     wf_cookies:get_cookie(Cookie).
 
-cookie_default(Cookie,DefaultValue) ->
-    wf_cookies:get_cookie(Cookie,DefaultValue).
+cookie_default(Cookie, DefaultValue) ->
+    wf_cookies:get_cookie(Cookie, DefaultValue).
 
 cookie(Cookie, Value) ->
     ok = wf_cookies:set_cookie(Cookie, Value).
@@ -320,10 +319,10 @@ cookie(Cookie, Value, Options) ->
     ok = wf_cookies:set_cookie(Cookie, Value, Options).
 
 script_nonce() ->
-  wf_context:script_nonce().
+    wf_context:script_nonce().
 
 script_nonce(Value) ->
-  wf_context:script_nonce(Value).
+    wf_context:script_nonce(Value).
 
 %% Deprecated
 cookie(Cookie, Value, Path, MinutesToLive) ->
@@ -341,8 +340,8 @@ peer_ip() ->
 peer_ip(Proxies) ->
     wf_context:peer_ip(Proxies).
 
-peer_ip(Proxies,ForwardedHeader) ->
-    wf_context:peer_ip(Proxies,ForwardedHeader).
+peer_ip(Proxies, ForwardedHeader) ->
+    wf_context:peer_ip(Proxies, ForwardedHeader).
 
 request_method() ->
     wf_context:request_method().
@@ -358,17 +357,17 @@ qs(Key) ->
     query_handler:get_values(Key).
 
 mq(KeyList) when is_list(KeyList) ->
-    [q(X) || X<-KeyList].
+    [q(X) || X <- KeyList].
 
 mqs(KeyList) when is_list(KeyList) ->
-    [qs(X) || X<-KeyList].
+    [qs(X) || X <- KeyList].
 
 %% Returns a proplist formed from the list of Keys
 q_pl(KeyList) when is_list(KeyList) ->
-    [{K,q(K)} || K <- KeyList].
+    [{K, q(K)} || K <- KeyList].
 
 qs_pl(KeyList) when is_list(KeyList) ->
-    [{K,qs(K)} || K <- KeyList].
+    [{K, qs(K)} || K <- KeyList].
 
 q_map(KeyList) when is_list(KeyList) ->
     PL = q_pl(KeyList),
@@ -380,7 +379,6 @@ qs_map(KeyList) when is_list(KeyList) ->
 
 params() ->
     query_handler:get_params().
-
 
 %%% EXPOSE LOG_HANDLER %%%
 info(String, Args) ->
@@ -458,8 +456,6 @@ user(User) ->
 clear_user() ->
     ok = identity_handler:clear().
 
-
-
 %%% EXPOSE ROLE_HANDLER %%%
 role(Role) ->
     _Boolean = role_handler:get_has_role(Role).
@@ -472,8 +468,6 @@ roles() ->
 
 clear_roles() ->
     ok = role_handler:clear_all().
-
-
 
 %%% EXPOSE STATE_HANDLER %%%
 state(Key) ->
@@ -490,8 +484,6 @@ clear_state(Key) ->
 
 clear_state() ->
     ok = state_handler:clear_all().
-
-
 
 %%% EXPOSE ACTION_COMET %%%
 
@@ -523,7 +515,6 @@ switch_to_polling(IntervalInMS) -> async_mode({poll, IntervalInMS}).
 continue(Tag, Function) -> action_continue:continue(Tag, Function).
 
 continue(Tag, Function, TimeoutMS) -> action_continue:continue(Tag, Function, TimeoutMS).
-
 
 %%% CONFIGURATION %%%
 

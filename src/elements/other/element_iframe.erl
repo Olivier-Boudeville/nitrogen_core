@@ -3,7 +3,7 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (element_iframe).
+-module(element_iframe).
 -include("wf.hrl").
 -export([
     reflect/0,
@@ -29,7 +29,7 @@ render_element(Record) ->
         {name, Record#iframe.name},
         {sandbox, Record#iframe.sandbox},
         {seamless, Record#iframe.seamless},
-        {allowfullscreen, Record#iframe.allowfullscreen}               
+        {allowfullscreen, Record#iframe.allowfullscreen}
     ],
 
     wf_tags:emit_tag(iframe, [], Attributes).

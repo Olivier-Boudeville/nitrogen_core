@@ -19,7 +19,7 @@
 
    * `html_encode` (boolean) - Set to true to safely html-encode the text.
 
-   * `html_name` (string) - the name attribute of the restful_reset element 
+   * `html_name` (string) - the name attribute of the restful_reset element
 
 ### See Also
 
@@ -38,7 +38,7 @@
  *  [Dropdown](./dropdown.md)
 
  *  [Dropdown Option](./option.md)
-   
+
  *  [RESTful Form](restful_form.md)
 
  *  [RESTful Submit](restful_submit.md)

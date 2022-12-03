@@ -9,13 +9,13 @@ The list element produces an HTML listitem element (<li>).
 
 ```erlang
    #listitem {
-      body="My List Element"
+	  body="My List Element"
   }.
 
 ```
 
 ### Attributes
-  
+
    * `body` (list of Nitrogen elements) - A list of listitems elements.
 
    * `text` (string) - Set to the text of the list item.
@@ -26,7 +26,7 @@ The list element produces an HTML listitem element (<li>).
 
  *  [base element](./element_base.md)
 
- *  [list element](./list.md) 
+ *  [list element](./list.md)
 
  *  [mobile_listitem element](./mobile_listitem.md)
 

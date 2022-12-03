@@ -23,5 +23,3 @@
  *  [base element](./action_base.md)
 
  *  [Remove Class](remove_class.md)
-
- 

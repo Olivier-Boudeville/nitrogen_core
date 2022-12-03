@@ -10,20 +10,20 @@
 
 ```erlang
    #iframe {
-       src = "//www.youtube.com/embed/AAF58aJSr28?rel=0",
-       name = "homeVideo",
-       allowfullscreen = "",
-       html_id = "homeVideo",
-       frameborder = "0"
+	   src = "//www.youtube.com/embed/AAF58aJSr28?rel=0",
+	   name = "homeVideo",
+	   allowfullscreen = "",
+	   html_id = "homeVideo",
+	   frameborder = "0"
    }
 
 ```
-   
+
 ### Attributes
 
    * `src` (string) - Set the HTML `src` attribute of the iframe. This can
-    be either an absolute URL (`http://hostname.com/path/to/src`) or a
-    relative URL (`/path/to/src`).
+	be either an absolute URL (`http://hostname.com/path/to/src`) or a
+	relative URL (`/path/to/src`).
 
    * `srcdoc` (string) - Set the HTML `srcdoc` attribute of the iframe.
 
@@ -33,7 +33,7 @@
 
    * `align` (Atom, 'left', 'top', 'right', 'middle', or 'bottom') - Set the alignment of an iframe relative to surrounding elements.
 
-   * `frameborder` (integer, 0 or 1) - Set the HTML `frameborder` attribute of the iframe.  
+   * `frameborder` (integer, 0 or 1) - Set the HTML `frameborder` attribute of the iframe.
 
    * `name` (string) - Set the HTML `name` attribute of the iframe.
 
@@ -42,7 +42,7 @@
    * `seamless` (string) - Set the HTML `seamless` attribute of the iframe.
 
    * `allowfullscreen` (boolean) - Set the HTML `allowfullscreen` attribute of the iframe.
-       
+
 ### See Also
 
  *  [base element](./element_base.md)

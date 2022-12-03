@@ -4,7 +4,7 @@
 % Copyright (c) 2013 Jesse Gumm
 % See MIT-LICENSE for licensing information.
 
--module (element_mobile_panel).
+-module(element_mobile_panel).
 -include("wf.hrl").
 -export([
     reflect/0,
@@ -15,10 +15,10 @@
 reflect() -> record_info(fields, mobile_panel).
 
 -spec transform_element(#mobile_panel{}) -> body().
-transform_element(Record) -> 
+transform_element(Record) ->
     Panel = wf_utils:copy_fields(Record, #panel{}),
     Panel#panel{
-        data_fields=[
+        data_fields = [
             {role, panel},
             {position, Record#mobile_panel.position},
             {display, Record#mobile_panel.display_mode},

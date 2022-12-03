@@ -3,9 +3,9 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (wf_event).
+-module(wf_event).
 -include("wf.hrl").
--export ([
+-export([
     update_context_with_websocket_event/1,
     update_context_with_event/0,
     update_context_with_event/1,
@@ -14,7 +14,7 @@
     serialize_event_context/5
 ]).
 
-% This module looks at the incoming request for 'eventContext' and 'pageContext' params. 
+% This module looks at the incoming request for 'eventContext' and 'pageContext' params.
 % If found, then it updates the current context, putting values into event_context
 % and page_context, respectively.
 %
@@ -41,8 +41,8 @@ update_context_with_event(SerializedEvent) ->
     IsPostback = is_record(Event, event_context),
     case {PageModule, IsPostback} of
         {static_file, _} -> update_context_for_static_file();
-        {_, false}       -> update_context_for_first_request();
-        {_, true}        -> update_context_for_postback_request(Event)
+        {_, false} -> update_context_for_first_request();
+        {_, true} -> update_context_for_postback_request(Event)
     end.
 
 update_context_for_static_file() ->
@@ -67,28 +67,39 @@ update_context_for_postback_request(Event) ->
     wf_context:event_handle_invalid(HandleInvalid),
     ok.
 
-generate_postback_script(undefined, _Anchor, _ValidationGroup, _HandleInvalid, _OnInvalid, _Delegate, _ExtraParam) -> [];
-generate_postback_script(Postback, Anchor, ValidationGroup, HandleInvalid, OnInvalid, Delegate, ExtraParam) ->
-    PickledPostbackInfo = serialize_event_context(Postback, Anchor, ValidationGroup, HandleInvalid, Delegate),
-    OnInvalidScript = case OnInvalid of
-        undefined -> "null";
-        _         -> ["function(){", OnInvalid, "}"]
-    end,
+generate_postback_script(
+    undefined, _Anchor, _ValidationGroup, _HandleInvalid, _OnInvalid, _Delegate, _ExtraParam
+) ->
+    [];
+generate_postback_script(
+    Postback, Anchor, ValidationGroup, HandleInvalid, OnInvalid, Delegate, ExtraParam
+) ->
+    PickledPostbackInfo = serialize_event_context(
+        Postback, Anchor, ValidationGroup, HandleInvalid, Delegate
+    ),
+    OnInvalidScript =
+        case OnInvalid of
+            undefined -> "null";
+            _ -> ["function(){", OnInvalid, "}"]
+        end,
     [
         wf:f("Nitrogen.$queue_event('~s', ", [ValidationGroup]),
         OnInvalidScript,
         wf:f(", '~s', ~s);", [PickledPostbackInfo, ExtraParam])
     ].
 
-generate_system_postback_script(undefined, _Anchor, _ValidationGroup, _HandleInvalid, _Delegate) -> [];
+generate_system_postback_script(undefined, _Anchor, _ValidationGroup, _HandleInvalid, _Delegate) ->
+    [];
 generate_system_postback_script(Postback, Anchor, ValidationGroup, HandleInvalid, Delegate) ->
-    PickledPostbackInfo = serialize_event_context(Postback, Anchor, ValidationGroup, HandleInvalid, Delegate),
+    PickledPostbackInfo = serialize_event_context(
+        Postback, Anchor, ValidationGroup, HandleInvalid, Delegate
+    ),
     wf:f("Nitrogen.$queue_system_event('~s');", [PickledPostbackInfo]).
 
 serialize_event_context(Tag, Anchor, ValidationGroup, HandleInvalid, Delegate) ->
     PageModule = wf_context:page_module(),
     EventModule = wf:coalesce([Delegate, PageModule]),
-    Event = #event_context {
+    Event = #event_context{
         module = EventModule,
         tag = Tag,
         handle_invalid = HandleInvalid,

@@ -16,30 +16,44 @@ main([]) ->
     RandUniform2 = rand_uniform_2(),
     ParseQS = parse_qs(),
 
-    io:format("...?WF_ENCRYPT will use: ~p~n",[Encrypt]),
-    io:format("...?WF_DECRYPT will use: ~p~n",[Decrypt]),
-    io:format("...?WF_HASH will use:    ~p~n",[Hash]),
-    io:format("...?WF_UNIQUE will use:  ~p~n",[Unique]),
-    io:format("...?WF_RAND_UNIFORM/1 will use: ~p~n",[RandUniform1]),
-    io:format("...?WF_RAND_UNIFORM/2 will use: ~p~n",[RandUniform2]),
+    io:format("...?WF_ENCRYPT will use: ~p~n", [Encrypt]),
+    io:format("...?WF_DECRYPT will use: ~p~n", [Decrypt]),
+    io:format("...?WF_HASH will use:    ~p~n", [Hash]),
+    io:format("...?WF_UNIQUE will use:  ~p~n", [Unique]),
+    io:format("...?WF_RAND_UNIFORM/1 will use: ~p~n", [RandUniform1]),
+    io:format("...?WF_RAND_UNIFORM/2 will use: ~p~n", [RandUniform2]),
     io:format("...?WF_PARSE_QS/1 will use: ~p~n", [ParseQS]),
 
     Contents = [
-        "-define(WF_ENCRYPT(Key, IV, Data), ",Encrypt,").\n",
-        "-define(WF_DECRYPT(Key, IV, Data), ",Decrypt,").\n",
-        "-define(WF_HASH(Data), ",Hash,").\n",
-        "-define(WF_UNIQUE, ",Unique,").\n",
-        "-define(WF_RAND_UNIFORM(Max), ",RandUniform1,").\n",
-        "-define(WF_RAND_UNIFORM(Min,Max), ",RandUniform2,").\n",
-        "-define(WF_PARSE_QS(String), ",ParseQS,").\n"
+        "-define(WF_ENCRYPT(Key, IV, Data), ",
+        Encrypt,
+        ").\n",
+        "-define(WF_DECRYPT(Key, IV, Data), ",
+        Decrypt,
+        ").\n",
+        "-define(WF_HASH(Data), ",
+        Hash,
+        ").\n",
+        "-define(WF_UNIQUE, ",
+        Unique,
+        ").\n",
+        "-define(WF_RAND_UNIFORM(Max), ",
+        RandUniform1,
+        ").\n",
+        "-define(WF_RAND_UNIFORM(Min,Max), ",
+        RandUniform2,
+        ").\n",
+        "-define(WF_PARSE_QS(String), ",
+        ParseQS,
+        ").\n"
     ],
 
     ContentsBin = iolist_to_binary(Contents),
     case file:read_file(Filename) of
-        {ok, ContentsBin} -> 
-            io:format("...no changes needed to ~p. Skipping writing new file\n",[Filename]);
-        _ -> 
-            io:format("...writing ~p\n",[Filename]),
+        {ok, ContentsBin} ->
+            io:format("...no changes needed to ~p. Skipping writing new file\n", [Filename]);
+        _ ->
+            io:format("...writing ~p\n", [Filename]),
             file:write_file(Filename, Contents)
     end.
 

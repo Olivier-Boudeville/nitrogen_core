@@ -21,15 +21,15 @@
   structure. This can mean one of three things:
 
  *  Simple List :: If the data is a simple list, then each row must be of the
-     same length, and the map must also be the same length as a data row.
+	 same length, and the map must also be the same length as a data row.
 
  *  Value Pair :: If the data is in the form of a key/value pair, then each row
-     must be a list of {key, value} tuples, and the map must also be a list of
-     {key, value} tuples.  The tuples can be in any order, and there can be extra
-     tuples or missing tuples with no ill effects.
+	 must be a list of {key, value} tuples, and the map must also be a list of
+	 {key, value} tuples.  The tuples can be in any order, and there can be extra
+	 tuples or missing tuples with no ill effects.
 
  *  Records :: If the data is in the form of a record, then each row must be
-     the same type of record, and the map must be a record.  
+	 the same type of record, and the map must be a record.
 
   The bind element can be nested within itself.
 
@@ -38,16 +38,16 @@
 ```erlang
 
    Data = [
-     ["Joe", "Franklin"],
-     ["Samir", "Jahal"],
-     ["Laurie", "O'Conner"]
+	 ["Joe", "Franklin"],
+	 ["Samir", "Jahal"],
+	 ["Laurie", "O'Conner"]
    ],
 
    Map = [firstName@text, lastName@text],
 
    #bind { data=Data, map=Map, body=[
-     #label { id=firstName },
-     #label { id=lastName }
+	 #label { id=firstName },
+	 #label { id=lastName }
    ]}
 
 ```
@@ -58,10 +58,10 @@
 
    * `map` (erlang terms) - Specify how the data maps to the body of elements.
 
-   * `transform` (Function(DataRow, Acc) -> {DataRow1, Acc1, ExtraBindings}) - 
-   A transform function that is run on the data before binding. DataRow contains 
-   one row of data. Acc contains the accumulator set by the 'acc' attribute. 
-   The function can return a modified datarow, an updated accumulator, 
+   * `transform` (Function(DataRow, Acc) -> {DataRow1, Acc1, ExtraBindings}) -
+   A transform function that is run on the data before binding. DataRow contains
+   one row of data. Acc contains the accumulator set by the 'acc' attribute.
+   The function can return a modified datarow, an updated accumulator,
    and a list of extra bindings to apply. The extra bindings must be of the
    form `{element_id@attr, value}`.
 

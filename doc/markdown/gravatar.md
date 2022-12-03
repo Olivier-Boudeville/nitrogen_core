@@ -14,9 +14,9 @@
 
 ```erlang
    #gravatar { email="email@address.com"
-     size="80", 
-     rating="g", 
-     default="identicon" 
+	 size="80",
+	 rating="g",
+	 default="identicon"
    }
 
 ```

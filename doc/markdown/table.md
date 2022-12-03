@@ -11,22 +11,22 @@ The table element allows you to build an HTML table in Nitrogen.
 ```erlang
 
    #table { header=[
-     #tablerow { cells=[
-       #tableheader { text="Name" },
-       #tableheader { text="Location" }
-     ]}], rows=[
-     #tablerow { cells=[
-       #tablecell { text="Rusty" },
-       #tablecell { text="USA" }
-     ]},
-     #tablerow { cells=[
-       #tablecell { text="Jon" },
-       #tablecell { text="Iceland" }
-     ]},
-     #tablerow { cells=[
-       #tablecell { text="Martin" },
-       #tablecell { text="Germany" }
-     ]}	
+	 #tablerow { cells=[
+	   #tableheader { text="Name" },
+	   #tableheader { text="Location" }
+	 ]}], rows=[
+	 #tablerow { cells=[
+	   #tablecell { text="Rusty" },
+	   #tablecell { text="USA" }
+	 ]},
+	 #tablerow { cells=[
+	   #tablecell { text="Jon" },
+	   #tablecell { text="Iceland" }
+	 ]},
+	 #tablerow { cells=[
+	   #tablecell { text="Martin" },
+	   #tablecell { text="Germany" }
+	 ]}
    ]}
 
 ```

@@ -74,10 +74,8 @@ command([]) ->
         "     - This screen."
     ],
     [io:format("~s~n", [X]) || X <- Message];
-
 command(["compile"]) ->
     sync:go();
-
 command(["page", Name]) ->
     Filename = filename:join([".", "site", "src", Name ++ ".erl"]),
     Template = filename:join([".", "site", ".prototypes", "page.erl"]),
@@ -90,7 +88,6 @@ command(["page", Name]) ->
             io:format("Created page: " ++ Filename ++ "\n"),
             io:format("Remember to recompile!~n")
     end;
-
 command(["element", Name]) ->
     Filename = filename:join([".", "site", "src", "elements", "element_" ++ Name ++ ".erl"]),
     Template = filename:join([".", "site", ".prototypes", "element.erl"]),
@@ -103,7 +100,6 @@ command(["element", Name]) ->
             io:format("Created element: " ++ Filename ++ "\n"),
             io:format("Remember to recompile!~n")
     end;
-
 command(["action", Name]) ->
     Filename = filename:join([".", "site", "src", "actions", "action_" ++ Name ++ ".erl"]),
     Template = filename:join([".", "site", ".prototypes", "action.erl"]),
@@ -116,13 +112,17 @@ command(["action", Name]) ->
             io:format("Created action: " ++ Filename ++ "\n"),
             io:format("Remember to recompile!~n")
     end;
-
 command(["plugin", Name]) ->
     Dir = filename:join([".", "lib", Name]),
     PluginTar = filename:join([".", "site", ".prototypes", "plugin.tgz"]),
     TemplateApp = filename:join([".", "site", ".prototypes", "plugin.app.src"]),
-    App = filename:join([".", "lib", Name, "src",
-        io_lib:format("~s.app.src", [Name])]),
+    App = filename:join([
+        ".",
+        "lib",
+        Name,
+        "src",
+        io_lib:format("~s.app.src", [Name])
+    ]),
     TemplateDemo = filename:join([".", "site", ".prototypes", "plugin_page.erl"]),
     Demo = filename:join([".", "site", "src", Name ++ ".erl"]),
 
@@ -133,24 +133,26 @@ command(["plugin", Name]) ->
             io:format("File for the plugin demo page already exists: " ++ Demo ++ "!\n");
         {false, false} ->
             ok = file:make_dir(Dir),
-            erl_tar:extract(PluginTar, [{cwd,Dir}, compressed]),
+            erl_tar:extract(PluginTar, [{cwd, Dir}, compressed]),
             file:write_file(App, template(TemplateApp, Name)),
             file:write_file(Demo, template(TemplateDemo, Name)),
 
             io:format("Plugin created in ~s (demo page in ~s)\n\n", [Dir, Demo]),
             io:format("Don't forget to: \n\n"),
             io:format("1) initialize your newly created plugin with version control (hg or git)\n"),
-            io:format("2) clone your plugin outside this nitrogen release and update the 'deps' section in your rebar.config. For example:\n\n"),
+            io:format(
+                "2) clone your plugin outside this nitrogen release and update the 'deps' section in your rebar.config. For example:\n\n"
+            ),
             io:format(
                 "   {~s, \".*\", {hg, \"https://bitbucket.org/user/my_plugin\", default}}\n\n",
-                [Name]),
+                [Name]
+            ),
             io:format(
-                "3) recompile and check the demo page /~s\n", [Name])
+                "3) recompile and check the demo page /~s\n", [Name]
+            )
     end;
-
-command(["help"|_]) ->
+command(["help" | _]) ->
     command([]);
-
 command(Other) ->
     io:format("ERROR: Unknown command: ~p~n~n", [Other]),
     command([]).
@@ -162,9 +164,9 @@ template(Template, Name) ->
 replace_name(S, Name) ->
     case S of
         "[[[NAME]]]" ++ Rest ->
-            [Name|replace_name(Rest, Name)];
-        [H|T] ->
-            [H|replace_name(T, Name)];
+            [Name | replace_name(Rest, Name)];
+        [H | T] ->
+            [H | replace_name(T, Name)];
         [] ->
             []
     end.

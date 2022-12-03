@@ -2,7 +2,7 @@
 % Nitrogen Web Framework for Erlang
 % See MIT-LICENSE for licensing information.
 
--module (element_main).
+-module(element_main).
 -include("wf.hrl").
 -export([
     reflect/0,
@@ -19,6 +19,6 @@ render_element(Record) ->
         {class, ["main", Record#main.class]},
         {title, Record#main.title},
         {style, Record#main.style},
-        {role, Record#main.role},                                              
+        {role, Record#main.role},
         {data_fields, Record#main.data_fields}
     ]).

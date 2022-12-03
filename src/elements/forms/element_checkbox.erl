@@ -3,7 +3,7 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (element_checkbox).
+-module(element_checkbox).
 -include("wf.hrl").
 -export([
     reflect/0,
@@ -36,7 +36,7 @@ finish_checkbox(Anchor, Checkbox, LabelPosition, Text0, HtmlEncode) ->
     %% Contain the Checkbox within the label element itself. This ensures that
     %% clicking the label will also toggle the checkbox.
     wf_tags:emit_tag(label, LabelBody, [{for, Anchor}]).
-    
+
 position_label('after', Text, Checkbox) ->
     [Checkbox, Text];
 position_label('before', Text, Checkbox) ->
@@ -45,7 +45,7 @@ position_label('before', Text, Checkbox) ->
 render_checkbox_tag(Anchor, Record) ->
     wf_tags:emit_tag(input, [
         {name, Record#checkbox.html_name},
-        {id,   Anchor},
+        {id, Anchor},
         {type, checkbox},
         {class, [checkbox, Record#checkbox.class]},
         {title, Record#checkbox.title},
@@ -59,15 +59,15 @@ render_checkbox_tag(Anchor, Record) ->
 format_anchor(Anchor) ->
     string:strip(Anchor, left, $.).
 
-maybe_wire_postback(_Anchor, #checkbox{postback=undefined}) ->
+maybe_wire_postback(_Anchor, #checkbox{postback = undefined}) ->
     ok;
-maybe_wire_postback(Anchor, Record=#checkbox{}) ->
-    Action = #event {
-        type=change,
-        postback=Record#checkbox.postback,
-        validation_group=Record#checkbox.id,
-        handle_invalid=Record#checkbox.handle_invalid,
-        on_invalid=Record#checkbox.on_invalid,
-        delegate=Record#checkbox.delegate
+maybe_wire_postback(Anchor, Record = #checkbox{}) ->
+    Action = #event{
+        type = change,
+        postback = Record#checkbox.postback,
+        validation_group = Record#checkbox.id,
+        handle_invalid = Record#checkbox.handle_invalid,
+        on_invalid = Record#checkbox.on_invalid,
+        delegate = Record#checkbox.delegate
     },
     wf:wire(Anchor, Action).

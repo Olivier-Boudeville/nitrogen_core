@@ -10,9 +10,9 @@
 
 ```erlang
    #article { body=[
-      #html5_header{ body="Article Header"},
-      "Here is some article content",
-      #html5_footer{ body="Some footer content"}
+	  #html5_header{ body="Article Header"},
+	  "Here is some article content",
+	  #html5_footer{ body="Some footer content"}
    ]}.
 
 ```
@@ -28,7 +28,7 @@
  *  [Base element](./element_base.md.md)
 
  *  [HTML5 Header element](html5_header.md)
-   
+
  *  [HTML5 Footer element](html5_footer.md)
 
  *  [Panel element](panel.md)

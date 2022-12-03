@@ -26,5 +26,3 @@ The value element produces an HTML span with a CSS type of 'value'.
  *  [label element](./label.md)
 
  *  [span element](./span.md)
-
- 

@@ -66,4 +66,3 @@ delay_body_event({my_content, ID}) ->
  * [base element](./element_base.md)
  * [Delay Body Demo](https://nitrogenproject.com/demos/delay_body)
  * [Cache Handler](./cache.md)
-

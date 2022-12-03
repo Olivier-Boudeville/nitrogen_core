@@ -3,7 +3,7 @@
 % Copyright (c) 2008-2010 Rusty Klophaus
 % See MIT-LICENSE for licensing information.
 
--module (element_p).
+-module(element_p).
 -include("wf.hrl").
 -export([
     reflect/0,
@@ -14,7 +14,7 @@
 reflect() -> record_info(fields, p).
 
 -spec render_element(#p{}) -> body().
-render_element(Record) -> 
+render_element(Record) ->
     Body = [
         wf:html_encode(Record#p.text, Record#p.html_encode),
         Record#p.body
@@ -26,4 +26,3 @@ render_element(Record) ->
         {style, Record#p.style},
         {data_fields, Record#p.data_fields}
     ]).
-
