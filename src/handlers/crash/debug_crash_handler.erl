@@ -40,8 +40,10 @@ postback_request(Type, Error, Stacktrace, _Config, _State) ->
 
 format_error(Type, Error, Stacktrace) ->
     wf:f(
-        <<"~p:~p\n"
-        "--------------------------\n"
-        "~p">>,
+        <<
+            "~p:~p\n"
+            "--------------------------\n"
+            "~p"
+        >>,
         [Type, Error, Stacktrace]
     ).
