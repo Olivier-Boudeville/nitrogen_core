@@ -57,7 +57,8 @@ set(Priority, Element, Value) when ?IS_ACTION_PRIORITY(Priority) ->
 set_multiple(Element, Values) ->
 	ok = set_multiple(normal, Element, Values).
 
-set_multiple(Priority, Element, Values) when is_list(Values), ?IS_ACTION_PRIORITY(Priority) ->
+set_multiple(Priority, Element, Values) when is_list(Values),
+											 ?IS_ACTION_PRIORITY(Priority) ->
 	ok = action_set_multiple:set(Priority, Element, Values).
 
 update(Target, Elements) ->
@@ -399,12 +400,16 @@ error(String, Args) ->
 error(String) ->
 	ok = log_handler:error(String).
 
-%% console_log is not part of the log handler, but  relevant
+%% console_log is not part of the log handler, but is still relevant:
 console_log(String) ->
 	action_console_log:console_log(String).
 
 console_log(Priority, String) ->
 	action_console_log:console_log(Priority, String).
+
+console_log_fmt( FormatStr, FormatValues ) ->
+	action_console_log:console_log_fmt( FormatStr, FormatValues ).
+
 
 %%% EXPOSE SESSION_HANDLER %%%
 session(Key) ->
@@ -512,9 +517,11 @@ switch_to_polling(IntervalInMS) -> async_mode({poll, IntervalInMS}).
 
 %%% EXPOSE ACTION_CONTINUE %%%
 
-continue(Tag, Function) -> action_continue:continue(Tag, Function).
+continue(Tag, Function) ->
+	action_continue:continue(Tag, Function).
 
-continue(Tag, Function, TimeoutMS) -> action_continue:continue(Tag, Function, TimeoutMS).
+continue(Tag, Function, TimeoutMS) ->
+	action_continue:continue(Tag, Function, TimeoutMS).
 
 %%% CONFIGURATION %%%
 
@@ -525,7 +532,14 @@ config_default(Key, DefaultValue) ->
 	config_handler:get_value(Key, DefaultValue).
 
 %%% DEBUGGING %%%
-debug() -> wf_utils:debug().
-break() -> wf_utils:break().
-assert(true, _) -> ok;
-assert(false, Error) -> erlang:error(Error).
+debug() ->
+	wf_utils:debug().
+
+break() ->
+	wf_utils:break().
+
+assert( true, _ ) ->
+	ok;
+
+assert( false, Error) ->
+	erlang:error(Error).
