@@ -5,7 +5,7 @@
 -include("wf_test.hrl").
 -compile(nowarn_export_all).
 
-%% This is the parse_transform to allow extending fields
+% This is the parse_transform to allow extending fields:
 -compile({parse_transform, rekt}).
 
 -define(WF_EXTEND(OrigRec, NewRec, Module, Fields),
@@ -14,7 +14,7 @@
 
 %%% TYPES FOR DIALYZER %%%
 
-%% Allow Dialzer to be run on the .ebin files
+%% Allow Dialyzer to be run on the .ebin files:
 -compile(debug_info).
 
 -type nitrogen_element() :: tuple().
@@ -80,7 +80,8 @@
 	| {stream, Size :: integer(), fun()}
 	| {sendfile, integer(), Size :: integer(), Path :: any()}.
 -type context_type() ::
-	first_request | postback_request | static_file | postback_websocket | comet | undefined.
+		first_request | postback_request | static_file | postback_websocket
+	  | comet | undefined.
 -type mermaid_code() :: binary() | string() | iolist().
 -type mermaid_diagram() :: flowchart | sequence | gantt.
 -type mermaid_diagram_options(Diagram) :: {Diagram, proplist()}.
@@ -88,10 +89,15 @@
 
 % Page Request Information.
 -record(page_context, {
-	% A unique ID assigned to the first request which stays constant on repeated requests.
+
+	% A unique ID assigned to the first request which stays constant on repeated
+	% requests:
+	%
 	series_id,
+
 	% The requested page module
 	module,
+
 	% The entry point for the module. Either an atom name
 	entry_point = main,
 	% (for Module:Atom/0) or can be a function arity 0
@@ -99,8 +105,8 @@
 	% Any extra info passed with the request
 	path_info,
 	% {poll, Interval}, comet, or {websocket, WebsocketConnectionPid}
-	async_mode = comet
-}).
+	async_mode = comet }).
+
 
 % Event Information. A serialized version of this record
 % is sent by the browser when an event is called.
