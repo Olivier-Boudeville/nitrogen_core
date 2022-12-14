@@ -31,33 +31,19 @@ render_element(#inplace{
 	ViewPanelID = wf:temp_id(),
 	EditPanelID = wf:temp_id(),
 
-    BaseEdit = wf_utils:get_elementbase(Edit),
-    EditModule = BaseEdit#elementbase.module,
-    EditID = wf:coalesce([BaseEdit#elementbase.id, wf:temp_id()]),
+	% Use id of edit if set, otherwise generate one
 
-    % Use id of view if set, otherwise generate one
+	BaseEdit = wf_utils:get_elementbase(Edit),
+	EditModule = BaseEdit#elementbase.module,
+	EditID = wf:coalesce([BaseEdit#elementbase.id, wf:temp_id()]),
 
-    BaseView = wf_utils:get_elementbase(View),
-    ViewModule = BaseView#elementbase.module,
-    ViewID = wf:coalesce([BaseView#elementbase.id, wf:temp_id()]),
+	% Use id of view if set, otherwise generate one
 
-    % Set up the events...
+	BaseView = wf_utils:get_elementbase(View),
+	ViewModule = BaseView#elementbase.module,
+	ViewID = wf:coalesce([BaseView#elementbase.id, wf:temp_id()]),
 
-    Controls = {ViewPanelID, ViewID, EditPanelID, EditID},
-    OKPostback = {ok, Delegate, Controls, Tag},
-    CancelPostback = {cancel, Controls, Tag},
-    CancelEvent = #event{
-        delegate = ?MODULE,
-        postback = CancelPostback,
-        actions = [
-            #script{
-                script = wf:f(
-                    "v=Nitrogen.$get_value('~s', '~s');Nitrogen.$set_value('~s', '~s', v);",
-                    ["", ViewID, "", EditID]
-                )
-            }
-        ]
-    },
+	% Set up the events...
 
 	Controls = {ViewPanelID, ViewID, EditPanelID, EditID},
 	OKPostback = {ok, Delegate, Controls, Tag},
@@ -75,28 +61,17 @@ render_element(#inplace{
 		]
 	},
 
-    ViewAction = [
-        #buttonize{target = ViewPanelID}
-    ],
+	% Create the view...
 
 	ViewAction = [
 		#buttonize{target = ViewPanelID}
 	],
 
-    % Create the edit...
+	View1 = wf_utils:replace_field(id, ViewID, ViewModule:reflect(), View),
+	View2 = append_field_actions(ViewAction, undefined, ViewModule:reflect(), View1),
+	View3 = replace_field_text(Text, View2, ViewModule:reflect()),
 
-    EditAction = [
-        #event{
-            type = enterkey,
-            shift_key = false,
-            actions = #script{script = ["objs('", OKButtonID, "').click();"]}
-        },
-        #event{
-            type = keyup,
-            keycode = 27,
-            actions = #script{script = ["objs('", CancelButtonID, "').click();"]}
-        }
-    ],
+	% Create the edit...
 
 	EditAction = [
 		#event{
@@ -111,14 +86,12 @@ render_element(#inplace{
 		}
 	],
 
-    % No value in view mode cause the view panel unclickable thus
-    % we set edit mode in that case.
+	Edit1 = wf_utils:replace_field(id, EditID, EditModule:reflect(), Edit),
+	Edit2 = append_field_actions(EditAction, OKButtonID, EditModule:reflect(), Edit1),
+	Edit3 = replace_field_text(Text, Edit2, EditModule:reflect()),
 
-    StartMode1 =
-        case string:strip(Text) of
-            [] -> edit;
-            _ -> StartMode
-        end,
+	% No value in view mode cause the view panel unclickable thus
+	% we set edit mode in that case.
 
 	StartMode1 =
 		case string:strip(Text) of
@@ -202,11 +175,11 @@ event({cancel, {ViewPanelID, _ViewID, EditPanelID, EditID}, _Tag}) ->
 	end.
 
 replace_field_text(Value, Element, Fields) ->
-    case element(1, Element) of
-        dropdown -> wf_utils:replace_field(value, Value, Fields, Element);
-        image -> wf_utils:replace_field(image, Value, Fields, Element);
-        _ -> wf_utils:replace_field(text, Value, Fields, Element)
-    end.
+	case element(1, Element) of
+		dropdown -> wf_utils:replace_field(value, Value, Fields, Element);
+		image -> wf_utils:replace_field(image, Value, Fields, Element);
+		_ -> wf_utils:replace_field(text, Value, Fields, Element)
+	end.
 
 modify_field_action(Action, Trigger) ->
 	case element(1, Action) of
