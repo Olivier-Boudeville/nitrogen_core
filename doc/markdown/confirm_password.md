@@ -10,7 +10,7 @@
 
 ```erlang
    wf:wire(ButtonID, ConfirmPasswordID, #validate { validators=[
-     #confirm_password { text="Passwords must match.", password=PasswordID }
+	 #confirm_password { text="Passwords must match.", password=PasswordID }
    ]})
 
 ```

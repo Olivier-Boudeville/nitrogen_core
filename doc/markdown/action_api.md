@@ -46,16 +46,16 @@
 ```erlang
    %% Let's handle the events now. The tag will become the language and first Argument, if specified will become an override value.
    api_event(API, Lang, Args)
-     when API==hello_english;API==hello_german ->
-       Msg = say_hello(Lang,Args),
-       wf:flash(Lang ++ " speaker says " ++ Msg).
+	 when API==hello_english;API==hello_german ->
+	   Msg = say_hello(Lang,Args),
+	   wf:flash(Lang ++ " speaker says " ++ Msg).
 
    say_hello(english,[]) ->
-     "Hello";
+	 "Hello";
    say_hello(german,[]) ->
-     "Hallo";
+	 "Hallo";
    say_hello(_,[Override | _ ]) ->
-     Override.
+	 Override.
 
 ```
 

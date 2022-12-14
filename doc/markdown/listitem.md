@@ -9,7 +9,7 @@ The list element produces an HTML listitem element (<li>).
 
 ```erlang
    #listitem {
-      body="My List Element"
+	  body="My List Element"
   }.
 
 ```

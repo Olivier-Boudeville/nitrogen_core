@@ -12,10 +12,10 @@
 
 ```erlang
    #restful_form {
-      method=post|get,
-      action="/formdest",
-      enctype="multipart/form-data",
-      body=FormElements
+	  method=post|get,
+	  action="/formdest",
+	  enctype="multipart/form-data",
+	  body=FormElements
    }
 
 ```
@@ -23,16 +23,16 @@
 ### Attributes
 
    * `method` (string or atom) - Set the HTTP request-method (typically
-			    `post` or `get`).
+							`post` or `get`).
 
    * `action` (string) - Set the target-url of the form submit. If
-			    left blank, the same page module is used as
-			    target.
+							left blank, the same page module is used as
+							target.
 
    * `target` (string or atom) - Set the HTML `target` attribute, which can
-			     be used for redirecting the form submission to a
-			     new window, or to a frame. If left blank, will
-			     just target the current window.
+							 be used for redirecting the form submission to a
+							 new window, or to a frame. If left blank, will
+							 just target the current window.
 
    * `enctype` (string) - Sets the encoding for the form transmission.
 

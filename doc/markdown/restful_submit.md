@@ -17,13 +17,13 @@
    * `text` (string) - The button's text.
 
    * `body` (Nitrogen element or list of elements) - Instead of using text
-    for the button label, this will allow you to embed HTML and Nitrogen
-    elements inside the button.
+	for the button label, this will allow you to embed HTML and Nitrogen
+	elements inside the button.
 
    * `html_encode` (boolean) - Set to true to safely html-encode the text.
 
    * `html_name` (string) - the name attribute of the restful_submit
-    element
+	element
 
 ### See Also
 

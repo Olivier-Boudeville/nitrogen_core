@@ -10,7 +10,7 @@
 
 ```erlang
    wf:wire(ButtonID, TextBoxID, #validate { validators=[
-     #is_email { text="Not a valid email address." }
+	 #is_email { text="Not a valid email address." }
    ]})
 
 ```

@@ -9,8 +9,8 @@ This element produces a list item formatted for jQuery Mobile list item for jQue
 
 ```erlang
    #mobile_listitem {
-      theme=c,
-      text="Fruits"
+	  theme=c,
+	  text="Fruits"
    }
 
 ```

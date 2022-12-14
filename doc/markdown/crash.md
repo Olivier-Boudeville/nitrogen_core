@@ -41,38 +41,38 @@
   or websocket request), this will be called with the Error information.
 
  *  `ErrorType` - This is merely the error type retrieved from the class
-     portion of a `catch` statement, typically this will simply be `error`,
-     or it could be `throw` if it's a programmer-thrown error, or `exit` if the
-     process called `exit/1`
+	 portion of a `catch` statement, typically this will simply be `error`,
+	 or it could be `throw` if it's a programmer-thrown error, or `exit` if the
+	 process called `exit/1`
 
  *  `Error` - This will be the more descriptive nature of the error, for
-     example `badarg` or `{badmatch, V}`. See
-     [Errors and Error Handling Section 10.4](http://erlang.org/doc/reference_manual/errors.html)
-     for more descriptions of the error.
+	 example `badarg` or `{badmatch, V}`. See
+	 [Errors and Error Handling Section 10.4](http://erlang.org/doc/reference_manual/errors.html)
+	 for more descriptions of the error.
 
  *  `Stacktrace` - This will be the result of calling `erlang:stack_trace/0`
-     at the time of the error.
+	 at the time of the error.
 
  *  `Config` - Any configuration associated with the crash handler.
 
  *  `State` - Any state information associated with the crash handler
-     (likely unused).
+	 (likely unused).
 
  *  /Return Value/ - The body to be sent to the browser.
 
 #### `postback_request(ErrorType, Error, Stacktrace, Config, State)`
 
-    If the client's request was a an AJAX, Comet, Websocket, or other
-    non-initial request, this function will be called.
+	If the client's request was a an AJAX, Comet, Websocket, or other
+	non-initial request, this function will be called.
 
-    It takes all the same arguments, but the return value is discarded, hence
-    the recommendation to simply return `ok`.
+	It takes all the same arguments, but the return value is discarded, hence
+	the recommendation to simply return `ok`.
 
-    Instead, anything you wire to the browser will be sent. This could allow
-    you to send a simple, useful little alert box to the user saying "We're
-    sorry, there was an issue processing this request, please try again or
-    reload the page". At least then the user will get **some** kind of feedback
-    and not just silently failing.
+	Instead, anything you wire to the browser will be sent. This could allow
+	you to send a simple, useful little alert box to the user saying "We're
+	sorry, there was an issue processing this request, please try again or
+	reload the page". At least then the user will get **some** kind of feedback
+	and not just silently failing.
 
 ### Example
 
@@ -85,37 +85,37 @@
 -behaviour(crash_handler).
 -include("wf.hrl").
 -export([
-    init/2,
-    finish/2,
-    first_request/5,
-    postback_request/5
+	init/2,
+	finish/2,
+	first_request/5,
+	postback_request/5
 ]).
 
 init(_Config,State) ->
-    {ok, State}.
+	{ok, State}.
 
 finish(_Config, State) ->
-    {ok, State}.
+	{ok, State}.
 
 first_request(Type, Error, Stacktrace, _Config, _State) ->
-    %% Print the error message to the Erlang console
-    ?WF_LOG("~p~n", [{error, Type, Error, Stacktrace}]),
+	%% Print the error message to the Erlang console
+	?WF_LOG("~p~n", [{error, Type, Error, Stacktrace}]),
 
-    %% Set the response status code to 500 (internal server error)
-    wf:status_code(500),
+	%% Set the response status code to 500 (internal server error)
+	wf:status_code(500),
 
-    %% Send just the text "Internal Server Error" with no formatting or layout
-    "Internal Server Error".
+	%% Send just the text "Internal Server Error" with no formatting or layout
+	"Internal Server Error".
 
 postback_request(Type, Error, Stacktrace, _Config, _State) ->
-    %% Print the error message to the Erlang console
-    ?WF_LOG("~p~n", [{error, Type, Error, Stacktrace}]),
+	%% Print the error message to the Erlang console
+	?WF_LOG("~p~n", [{error, Type, Error, Stacktrace}]),
 
-    %% Set the status code to 500 (internal server error)
-    wf:status_code(500),
+	%% Set the status code to 500 (internal server error)
+	wf:status_code(500),
 
-    %% Do nothing else
-    ok.
+	%% Do nothing else
+	ok.
 
 
 ```
@@ -128,50 +128,50 @@ postback_request(Type, Error, Stacktrace, _Config, _State) ->
 -behaviour(crash_handler).
 -include_lib("nitrogen_core/include/wf.hrl").
 -export([
-    init/2,
-    finish/2,
-    first_request/5,
-    postback_request/5,
-    body/1
+	init/2,
+	finish/2,
+	first_request/5,
+	postback_request/5,
+	body/1
 ]).
 
 init(_Config,State) ->
-    {ok, State}.
+	{ok, State}.
 
 finish(_Config, State) ->
-    {ok, State}.
+	{ok, State}.
 
 first_request(Type, Error, Stacktrace, _Config, _State) ->
-    %% Print the error message to the Erlang console
-    ?WF_LOG("~p~n", [{error, Type, Error, Stacktrace}]),
+	%% Print the error message to the Erlang console
+	?WF_LOG("~p~n", [{error, Type, Error, Stacktrace}]),
 
-    %% Set the response status code to 500 (internal server error)
-    wf:status_code(500),
+	%% Set the response status code to 500 (internal server error)
+	wf:status_code(500),
 
-    #template{
-      file="./site/templates/error.html",
-      bindings=[{'Stacktrace', Stacktrace}],
-      module_aliases=[{page,?MODULE}]
-    }.
+	#template{
+	  file="./site/templates/error.html",
+	  bindings=[{'Stacktrace', Stacktrace}],
+	  module_aliases=[{page,?MODULE}]
+	}.
 
 %% This is assuming that the error.html template includes a call to [[[page:body(Stacktrace)]]]
 body(Stacktrace) ->
-    [
-      #h1{text="UH OH! Something went wrong!"},
-      #panel{text=wf:f("Here's the contents of the error: ~p",[Stacktrace])}
-    ].
+	[
+	  #h1{text="UH OH! Something went wrong!"},
+	  #panel{text=wf:f("Here's the contents of the error: ~p",[Stacktrace])}
+	].
 
 
 postback_request(Type, Error, Stacktrace, _Config, _State) ->
-    %% Print the error message to the Erlang console
-    ?WF_LOG("~p~n", [{error, Type, Error, Stacktrace}]),
+	%% Print the error message to the Erlang console
+	?WF_LOG("~p~n", [{error, Type, Error, Stacktrace}]),
 
-    %% Note, we don't set the status code to 500. If we did, the browser will
-    %% simply discard any javascript. So we keep a 200 status code and print
-    %% a friendlier error message.
+	%% Note, we don't set the status code to 500. If we did, the browser will
+	%% simply discard any javascript. So we keep a 200 status code and print
+	%% a friendlier error message.
 
-    Msg = wf:f("I'm sorry, but there was an error. Here's the stack trace: ~p",[Stacktrace]),
-    wf:wire(#alert{text=Msg}).
+	Msg = wf:f("I'm sorry, but there was an error. Here's the stack trace: ~p",[Stacktrace]),
+	wf:wire(#alert{text=Msg}).
 
 
 ```

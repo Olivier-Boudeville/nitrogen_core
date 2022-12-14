@@ -9,11 +9,11 @@
 
 ```erlang
    #some_mobile_element {
-      theme=a,
-      data_fields=[
-	 {icon, minus},
-	 {shadow, true}
-      ]
+	  theme=a,
+	  data_fields=[
+		 {icon, minus},
+		 {shadow, true}
+	  ]
    }
 
 ```

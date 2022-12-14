@@ -6,9 +6,9 @@
 -module(http_basic_auth_security_handler).
 -behaviour(security_handler).
 -export([
-    init/2,
-    finish/2,
-    main/0
+	init/2,
+	finish/2,
+	main/0
 ]).
 -include("wf.hrl").
 
@@ -71,68 +71,68 @@
 %% If the step is NOT successful, then prompt for authentication.
 
 init(CallbackMod, State) ->
-    PageModule = wf:page_module(),
-    case CallbackMod:is_protected(PageModule) of
-        true ->
-            case wf:header(authorization) of
-                AuthHeader when AuthHeader /= undefined ->
-                    check_auth_header(PageModule, CallbackMod, AuthHeader);
-                _ ->
-                    prompt_for_authentication(CallbackMod)
-            end;
-        _ ->
-            do_nothing
-    end,
-    {ok, State}.
+	PageModule = wf:page_module(),
+	case CallbackMod:is_protected(PageModule) of
+		true ->
+			case wf:header(authorization) of
+				AuthHeader when AuthHeader /= undefined ->
+					check_auth_header(PageModule, CallbackMod, AuthHeader);
+				_ ->
+					prompt_for_authentication(CallbackMod)
+			end;
+		_ ->
+			do_nothing
+	end,
+	{ok, State}.
 
 finish(_Config, State) ->
-    {ok, State}.
+	{ok, State}.
 
 check_auth_header(Module, CallbackMod, AuthHeader) ->
-    case string:tokens(AuthHeader, " ") of
-        ["Basic", Digest] ->
-            decode_digest(Module, CallbackMod, Digest);
-        _ ->
-            prompt_for_authentication(CallbackMod)
-    end.
+	case string:tokens(AuthHeader, " ") of
+		["Basic", Digest] ->
+			decode_digest(Module, CallbackMod, Digest);
+		_ ->
+			prompt_for_authentication(CallbackMod)
+	end.
 
 decode_digest(Module, CallbackMod, Digest) ->
-    case string:tokens(base64:decode_to_string(Digest), ":") of
-        [User, Password] ->
-            check_is_authenticated(Module, CallbackMod, User, Password);
-        _ ->
-            prompt_for_authentication(CallbackMod)
-    end.
+	case string:tokens(base64:decode_to_string(Digest), ":") of
+		[User, Password] ->
+			check_is_authenticated(Module, CallbackMod, User, Password);
+		_ ->
+			prompt_for_authentication(CallbackMod)
+	end.
 
 check_is_authenticated(Module, CallbackMod, User, Password) ->
-    case CallbackMod:is_authenticated(Module, User) of
-        false ->
-            authenticate_user(Module, CallbackMod, User, Password);
-        _ ->
-            ok
-    end.
+	case CallbackMod:is_authenticated(Module, User) of
+		false ->
+			authenticate_user(Module, CallbackMod, User, Password);
+		_ ->
+			ok
+	end.
 
 authenticate_user(Module, CallbackMod, User, Password) ->
-    case CallbackMod:authenticate(Module, User, Password) of
-        true ->
-            ok;
-        _ ->
-            prompt_for_authentication(CallbackMod)
-    end.
+	case CallbackMod:authenticate(Module, User, Password) of
+		true ->
+			ok;
+		_ ->
+			prompt_for_authentication(CallbackMod)
+	end.
 
 prompt_for_authentication(CallbackMod) ->
-    % Set the callback module and entry_point, then set the page module to
-    % http_basic_auth_security_handler.erl, which will cause the page to be
-    % rendered using the main() function below.
-    % We must also set the entry-point because the Dynamic Route Handler might
-    % be using a custom entry point.
-    wf:state(callback_mod, CallbackMod),
-    wf_context:entry_point(main),
-    wf_context:page_module(?MODULE).
+	% Set the callback module and entry_point, then set the page module to
+	% http_basic_auth_security_handler.erl, which will cause the page to be
+	% rendered using the main() function below.
+	% We must also set the entry-point because the Dynamic Route Handler might
+	% be using a custom entry point.
+	wf:state(callback_mod, CallbackMod),
+	wf_context:entry_point(main),
+	wf_context:page_module(?MODULE).
 
 main() ->
-    CallbackMod = wf:state(callback_mod),
-    Realm = CallbackMod:realm(),
-    wf:header("WWW-Authenticate", "Basic realm=\"" ++ Realm ++ "\""),
-    wf:status_code(401),
-    "<strong>Authentication required!</strong>".
+	CallbackMod = wf:state(callback_mod),
+	Realm = CallbackMod:realm(),
+	wf:header("WWW-Authenticate", "Basic realm=\"" ++ Realm ++ "\""),
+	wf:status_code(401),
+	"<strong>Authentication required!</strong>".

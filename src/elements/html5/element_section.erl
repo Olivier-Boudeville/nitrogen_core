@@ -5,8 +5,8 @@
 -module(element_section).
 -include("wf.hrl").
 -export([
-    reflect/0,
-    render_element/1
+	reflect/0,
+	render_element/1
 ]).
 
 -spec reflect() -> [atom()].
@@ -14,11 +14,11 @@ reflect() -> record_info(fields, section).
 
 -spec render_element(#section{}) -> body().
 render_element(Record) ->
-    wf_tags:emit_tag(section, Record#section.body, [
-        {id, Record#section.html_id},
-        {class, ["section", Record#section.class]},
-        {title, Record#section.title},
-        {style, Record#section.style},
-        {role, Record#section.role},
-        {data_fields, Record#section.data_fields}
-    ]).
+	wf_tags:emit_tag(section, Record#section.body, [
+		{id, Record#section.html_id},
+		{class, ["section", Record#section.class]},
+		{title, Record#section.title},
+		{style, Record#section.style},
+		{role, Record#section.role},
+		{data_fields, Record#section.data_fields}
+	]).

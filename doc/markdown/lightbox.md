@@ -16,11 +16,11 @@ and the elements specified in the body are placed in the center of the browser.
 
 ```erlang
    #lightbox { id=lightbox1, body=[
-     #panel { class=myPanel, body=[
-       #h1 { text="Title" },
-       "Some body text.",
-       #button { text="Close" }
-     ]}
+	 #panel { class=myPanel, body=[
+	   #h1 { text="Title" },
+	   "Some body text.",
+	   #button { text="Close" }
+	 ]}
    ]}
 
 ```

@@ -11,15 +11,15 @@
 
 ```erlang
    #wizard{
-      tag=the_wizard,
-      titles=[Step1Title, Step2Title, Step3Title, ...],
-      steps=[Step1Body, Step2Body, Step3Body, ...]
+	  tag=the_wizard,
+	  titles=[Step1Title, Step2Title, Step3Title, ...],
+	  steps=[Step1Body, Step2Body, Step3Body, ...]
    }.
 
    ...
 
    wizard_event(the_wizard) ->
-      wf:wire(#alert{text="Congrats, you finished the wizard!"}).
+	  wf:wire(#alert{text="Congrats, you finished the wizard!"}).
 
 ```
 

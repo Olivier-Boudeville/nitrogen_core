@@ -30,9 +30,9 @@ The process registry handler is a simple key-value store specifically for
   Returns a Pid from the provided `Key`.
 
  *  `Key` - Any erlang term to use as a key. For the session handler, Nitrogen
-      uses the SessionID, while for the comet functions, Nitrogen uses the
-      comet pool ID, or a timer Pid. The point is, `Key` can be just about
-      anything.
+	  uses the SessionID, while for the comet functions, Nitrogen uses the
+	  comet pool ID, or a timer Pid. The point is, `Key` can be just about
+	  anything.
 
  *  /Return Value/ - `{ok, Pid, NewState}`.  If `Key` is not found, then `Pid` will be `undefined`.
 
@@ -43,11 +43,11 @@ The process registry handler is a simple key-value store specifically for
  *  `Key` - Same as above.
 
  *  `Function` - If `Key` is not found, the process registry should spawn off a
-      new process using the provided `Function` (which should have arity of 0), then return the pid
-      of the newly spawned process.
+	  new process using the provided `Function` (which should have arity of 0), then return the pid
+	  of the newly spawned process.
 
  *  /Return Value/ - `{ok, Pid, NewState}`. If `Key` is not found, then `Pid`
-      will be the Pid of the newly spawned process based on `Function`.
+	  will be the Pid of the newly spawned process based on `Function`.
 
 ### Example
 
@@ -59,25 +59,25 @@ Here is the complete text of the default process registry handler
 -behaviour (process_registry_handler).
 -include_lib ("wf.hrl").
 -export ([
-    init/2,
-    finish/2,
-    get_pid/3,
-    get_pid/4
+	init/2,
+	finish/2,
+	get_pid/3,
+	get_pid/4
 ]).
 
 init(_Config, State) ->
-    {ok, State}.
+	{ok, State}.
 
 finish(_Config, State) ->
-    {ok, State}.
+	{ok, State}.
 
 get_pid(Key, _Config, State) ->
-    Pid = nprocreg:get_pid(Key),
-    {ok, Pid, State}.
+	Pid = nprocreg:get_pid(Key),
+	{ok, Pid, State}.
 
 get_pid(Key, Function, _Config, State) ->
-    Pid = nprocreg:get_pid(Key, Function),
-    {ok, Pid, State}.
+	Pid = nprocreg:get_pid(Key, Function),
+	{ok, Pid, State}.
 
 ```
 

@@ -9,8 +9,8 @@ This element produces a [jQuery Mobile List Divider](http://jquerymobile.com/tes
 
 ```erlang
    #mobile_list_divider {
-      theme=c,
-      text="Fruits"
+	  theme=c,
+	  text="Fruits"
    }
 
 ```

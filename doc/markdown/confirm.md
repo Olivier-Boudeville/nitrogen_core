@@ -23,7 +23,7 @@
 
 #### event(Tag)
 
-    Called when the ok button is clicked. Tag is specified in the 'postback' attribute.
+	Called when the ok button is clicked. Tag is specified in the 'postback' attribute.
 
 ### See Also
 

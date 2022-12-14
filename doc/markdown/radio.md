@@ -9,9 +9,9 @@
 
 ```erlang
    [
-      #radio { name=fruit, text="Apple", checked=true },
-      #radio { name=fruit, text="Orange" },
-      #radio { name=fruit, text="Banana", value="banana" }
+	  #radio { name=fruit, text="Apple", checked=true },
+	  #radio { name=fruit, text="Orange" },
+	  #radio { name=fruit, text="Banana", value="banana" }
    ].
 
 ```

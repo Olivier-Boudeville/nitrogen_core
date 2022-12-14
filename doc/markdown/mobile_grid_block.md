@@ -9,14 +9,14 @@ This element produces a block element for a container [Mobile Grid](./mobile_gri
 
 ```erlang
    #mobile_grid {
-      columns=2,
-      block=[
-	 #mobile_grid_block{ text="Row 1, Cell 1" },
-	 #mobile_grid_block{ text="Row 1, Cell 2" },
-	 #mobile_grid_block{ text="Row 2, Cell 1" },
-	 #mobile_grid_block{ new_row = true, text="Row 3, Cell 1"},
-	 #mobile_grid_block{ text="Row 3, Cell 2"}
-      ]
+	  columns=2,
+	  block=[
+		 #mobile_grid_block{ text="Row 1, Cell 1" },
+		 #mobile_grid_block{ text="Row 1, Cell 2" },
+		 #mobile_grid_block{ text="Row 2, Cell 1" },
+		 #mobile_grid_block{ new_row = true, text="Row 3, Cell 1"},
+		 #mobile_grid_block{ text="Row 3, Cell 2"}
+	  ]
    }
 
 ```

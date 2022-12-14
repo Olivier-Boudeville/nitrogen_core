@@ -22,11 +22,11 @@ header will be produced.  The format of the configuration is:
 ``` erlang
 {nitrogen_core,
   [{content_security_policy,
-    [
-      {default_src, [none]},
-      {script_src, [self, nonce, unsafe_eval]},
-      {style_src, [self, "*.fontawesome.com"]}
-    ]}
+	[
+	  {default_src, [none]},
+	  {script_src, [self, nonce, unsafe_eval]},
+	  {style_src, [self, "*.fontawesome.com"]}
+	]}
   ]}.
 
 ```
@@ -81,10 +81,10 @@ scope of this document (and can be non-trivial).  Two Nitrogen
 specific hints:
 
   * `script_src` will most likely require `unsafe_eval` due to the way
-    Nitrogen handles browser communication; and,
+	Nitrogen handles browser communication; and,
 
   * `connect_src` will most likely require some specification for the
-    websocket.
+	websocket.
 
 ## References
 

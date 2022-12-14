@@ -26,18 +26,18 @@
 ```
 
  *  `EXTENSION` :: is the string extension of the file
-    ("json", "csv", etc).
+	("json", "csv", etc).
 
  *  `ENTRY_FUNCTION` :: is the function in our page module that
-    is called. For Nitrogen's built-in JSON smart extension, you might call
-    it `json_main`). This is expected to be an atom.
+	is called. For Nitrogen's built-in JSON smart extension, you might call
+	it `json_main`). This is expected to be an atom.
 
  *  `PROCESSING_FUNCTION` :: identifies the module and function
-    of a pre and post- processing function. It can either be the atom
-    `undefined`, in which case no pre or post processing will be done.  If,
-    however it's a two-tuple consisting of `{Module, Function}`, it will call
-    `Module:Function(EntryFun)` passing `ENTRY_FUNCTION` above as the only
-    argument.
+	of a pre and post- processing function. It can either be the atom
+	`undefined`, in which case no pre or post processing will be done.  If,
+	however it's a two-tuple consisting of `{Module, Function}`, it will call
+	`Module:Function(EntryFun)` passing `ENTRY_FUNCTION` above as the only
+	argument.
 
 ### Example
 
@@ -61,9 +61,9 @@
 ```erlang
 json_main() ->
   [
-    {favorite_fruit, <<"This is a string">>},
-    {a_list_of_numbers, [45, 100, 50000, 60]},
-    {some_value, "This would also render as a list of numbers"}
+	{favorite_fruit, <<"This is a string">>},
+	{a_list_of_numbers, [45, 100, 50000, 60]},
+	{some_value, "This would also render as a list of numbers"}
   ].
 
 ```
@@ -73,12 +73,12 @@ json_main() ->
 
 ```javascript
    {
-    "favorite_fruit":"This is a string",
-    "a_list_of_numbers":[45,100,50000,60],
-    "some_value":[84,104,105,115,32,119,111,117,108,100,32,97,
-		  108,115,111,32,114,101,110,100,101,114,32,97,
-		  115,32,97,32,108,105,115,116,32,111,102,32,
-		  110,117,109,98,101,114,115]
+	"favorite_fruit":"This is a string",
+	"a_list_of_numbers":[45,100,50000,60],
+	"some_value":[84,104,105,115,32,119,111,117,108,100,32,97,
+				  108,115,111,32,114,101,110,100,101,114,32,97,
+				  115,32,97,32,108,105,115,116,32,111,102,32,
+				  110,117,109,98,101,114,115]
    }
 
 ```

@@ -11,17 +11,17 @@
 reflect() -> record_info(fields, mobile_collapsible_set).
 
 render_element(Record) ->
-    #panel{
-        id = Record#mobile_collapsible_set.id,
-        class = Record#mobile_collapsible_set.class,
-        html_id = Record#mobile_collapsible_set.html_id,
-        style = Record#mobile_collapsible_set.style,
-        body = Record#mobile_collapsible_set.body,
-        data_fields = [
-            {role, 'collapsible-set'},
-            {mini, Record#mobile_collapsible_set.mini},
-            {theme, Record#mobile_collapsible_set.header_theme},
-            {'content-theme', Record#mobile_collapsible_set.content_theme}
-            | Record#mobile_collapsible_set.data_fields
-        ]
-    }.
+	#panel{
+		id = Record#mobile_collapsible_set.id,
+		class = Record#mobile_collapsible_set.class,
+		html_id = Record#mobile_collapsible_set.html_id,
+		style = Record#mobile_collapsible_set.style,
+		body = Record#mobile_collapsible_set.body,
+		data_fields = [
+			{role, 'collapsible-set'},
+			{mini, Record#mobile_collapsible_set.mini},
+			{theme, Record#mobile_collapsible_set.header_theme},
+			{'content-theme', Record#mobile_collapsible_set.content_theme}
+			| Record#mobile_collapsible_set.data_fields
+		]
+	}.

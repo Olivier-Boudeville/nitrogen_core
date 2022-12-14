@@ -11,28 +11,28 @@
 ]).
 
 -callback init(
-    handler_config(),
-    handler_state()
+	handler_config(),
+	handler_state()
 ) -> {ok, handler_state()}.
 -callback finish(
-    handler_config(),
-    handler_state()
+	handler_config(),
+	handler_state()
 ) -> {ok, handler_state()}.
 
 -callback first_request(
-    ErrorType :: term(),
-    Error :: term(),
-    Stacktrace :: list(),
-    handler_config(),
-    handler_state()
+	ErrorType :: term(),
+	Error :: term(),
+	Stacktrace :: list(),
+	handler_config(),
+	handler_state()
 ) -> body().
 
 -callback postback_request(
-    ErrorType :: term(),
-    Error :: term(),
-    Stacktrace :: list(),
-    handler_config(),
-    handler_state()
+	ErrorType :: term(),
+	Error :: term(),
+	Stacktrace :: list(),
+	handler_config(),
+	handler_state()
 ) -> ok.
 
 -spec first_request(ErrorType :: term(), Error :: term(), Stacktrace :: list()) -> body().

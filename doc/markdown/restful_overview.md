@@ -56,30 +56,30 @@
 ## Example
 ```erlang
   case wf:q(restful_method) of
-    "post" -> [
-	% this is code is executed after the submit button was pressed
+	"post" -> [
+		% this is code is executed after the submit button was pressed
 
-	#table{rows=[
-	    #tablerow{cells=[
-		#tablecell{text="text_input"},
-		#tablecell{text=wf:q(text_input)}
-	    ]}
-	 ]};
-    _else -> [
-	% this code is executed when restful_method is "get"
-	% or undefined
+		#table{rows=[
+			#tablerow{cells=[
+				#tablecell{text="text_input"},
+				#tablecell{text=wf:q(text_input)}
+			]}
+		 ]};
+	_else -> [
+		% this code is executed when restful_method is "get"
+		% or undefined
 
-	#restful_form{id=restful_form, method=post, body=[
-	   #table{rows=[
-		#tablerow{cells=[
-		    #tablecell{text="text_input"},
-		    #tablecell{body=[#textbox{id=text_input}]}
-	       ]}
-	    ]},
-	    #restful_reset{},
-	    #restful_submit{}
-	 ]}
-    ]
+		#restful_form{id=restful_form, method=post, body=[
+		   #table{rows=[
+				#tablerow{cells=[
+					#tablecell{text="text_input"},
+					#tablecell{body=[#textbox{id=text_input}]}
+			   ]}
+			]},
+			#restful_reset{},
+			#restful_submit{}
+		 ]}
+	]
   end
 
 ```

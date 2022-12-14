@@ -9,7 +9,7 @@
 
 ```erlang
    wf:wire(myButton, myTextbox, #validate { validators=[
-     #is_required { text="Required." }
+	 #is_required { text="Required." }
    ]})
 
 ```

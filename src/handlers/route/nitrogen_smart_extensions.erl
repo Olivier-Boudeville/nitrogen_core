@@ -8,6 +8,6 @@
 ]).
 
 json(EntryFun) ->
-    wf:content_type("application/json"),
-    Json = EntryFun(),
-    _EncodedJson = wf:json_encode(Json).
+	wf:content_type("application/json"),
+	Json = EntryFun(),
+	_EncodedJson = wf:json_encode(Json).

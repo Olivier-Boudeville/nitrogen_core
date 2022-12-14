@@ -26,23 +26,23 @@
  *  **Erlang 21** or later - http://erlang.org
 
  *  **SimpleBridge** - Common interface to Erlang HTTP servers.
-    - Git Repo: https://github.com/nitrogen/simple_bridge
+	- Git Repo: https://github.com/nitrogen/simple_bridge
 
  *  **cowboy** - HTTP Server (Optional)
-    - Git Repo: https://github.com/ninenines/cowboy
+	- Git Repo: https://github.com/ninenines/cowboy
 
  *  **mochiweb** - HTTP Server (Optional)
-    - Git Repo: https://github.com/nitrogen/mochiweb
+	- Git Repo: https://github.com/nitrogen/mochiweb
 
  *  **webmachine** - HTTP Server (Optional)
-    - Git Repo: https://github.com/webmachine/webmachine
+	- Git Repo: https://github.com/webmachine/webmachine
 
  *  **yaws** - HTTP Server (Optional)
-    - Homepage: https://yaws.hyber.org
-    - Git Repo: https://github.com/erlyaws/yaws
+	- Homepage: https://yaws.hyber.org
+	- Git Repo: https://github.com/erlyaws/yaws
 
  *  **Sync** - Automatically recompile changed Erlang modules.
-    - Git Repo: https://github.com/rustyio/sync
+	- Git Repo: https://github.com/rustyio/sync
 
  *  **jQuery 3.5.1** - http://jquery.com
 

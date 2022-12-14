@@ -33,7 +33,7 @@ variable.
   Set the user information
 
  *  `User` - Free-form user information. Can be any erlang term: a username,
-	     user ID, tuple, proplist, Erlang record, etc..
+			 user ID, tuple, proplist, Erlang record, etc..
 
  *  /Return Value/ - {ok, NewState}
 
@@ -53,30 +53,30 @@ stores the data in sessions.
 -module (default_identity_handler).
 -behaviour (identity_handler).
 -export ([
-    init/2,
-    finish/2,
-    get_user/2,
-    set_user/3,
-    clear/2
+	init/2,
+	finish/2,
+	get_user/2,
+	set_user/3,
+	clear/2
 ]).
 -define(KEY, {default_identity_handler, user}).
 
 init(_Config, State) ->
-    {ok, State}.
+	{ok, State}.
 
 finish(_Config, State) ->
-    {ok, State}.
+	{ok, State}.
 
 get_user(_Config, _State) ->
-    wf:session(?KEY).
+	wf:session(?KEY).
 
 set_user(User, _Config, State) ->
-    wf:session(?KEY, User),
-    {ok, State}.
+	wf:session(?KEY, User),
+	{ok, State}.
 
 clear(_Config, State) ->
-    wf:session(?KEY, undefined),
-    {ok, State}.
+	wf:session(?KEY, undefined),
+	{ok, State}.
 ~
 
 

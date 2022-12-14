@@ -8,4 +8,4 @@
 -compile(export_all).
 
 render_action(Record) ->
-    Record#script.script.
+	Record#script.script.

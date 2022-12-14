@@ -315,7 +315,7 @@
 comet_function() ->
   process_flag(trap_exit, true),
   receive
-    {'EXIT', _, Message} ->
+	{'EXIT', _, Message} ->
 		?PRINT(Message),
 		io:format("The user has left the page.~n")
   end.
@@ -473,9 +473,9 @@ Example:
   Returns something like:
 ```erlang
   [
-      {favorite_robot,"Optimus Prime"},
-      {favorite_dinosaur,"Velociraptor"},
-      {favorite_hobbit,"Samwise"}
+	  {favorite_robot,"Optimus Prime"},
+	  {favorite_dinosaur,"Velociraptor"},
+	  {favorite_hobbit,"Samwise"}
   ].
 
 
@@ -515,9 +515,9 @@ Example:
   Returns something like:
 ```erlang
   [
-     {fruit,["Apple","Peach"]},
-     {veggie,["Broccoli"]},
-     {meat,["Pork","Beef","Venison"]}
+	 {fruit,["Apple","Peach"]},
+	 {veggie,["Broccoli"]},
+	 {meat,["Pork","Beef","Venison"]}
   ].
 
 ```
@@ -536,21 +536,21 @@ Example:
    values are:
 
   *  `none` :: No encoding. Send the response as an iolist of bytes. This is what
-     you would want to use if you were returning binary data (like if you were
-     generating an image file on the fly).
+	 you would want to use if you were returning binary data (like if you were
+	 generating an image file on the fly).
   *  `unicode` :: This runs the return value through Erlang's
-     `unicocde:characters_to_binary/1` before sending to the client.
+	 `unicocde:characters_to_binary/1` before sending to the client.
   *  `Function/1` :: Run the response through this particular function before
-     sending, such as if you have a custom encoding you wish to use.
+	 sending, such as if you have a custom encoding you wish to use.
   *  `{Module, Function}` :: Run this through `Module:Function/1`. This is merely
-     an alternative to the previous option, but one that is configuration-file
-     friendly.
+	 an alternative to the previous option, but one that is configuration-file
+	 friendly.
   *  `auto` (**Default**) :: Reads the specified response header to attempt to
-     determine which encoding should be provided.  It's **quite** naive, however,
-     in the name of speed.  If the header starts with "text/" or is set to
-     "application/json" or "application/javascript", it will use `unicode`,
-     otherwise, it will use `none`.  For example, if your page you had set
-     `wf:content_type("image/png")`, it Encoding would apply as `none`.
+	 determine which encoding should be provided.  It's **quite** naive, however,
+	 in the name of speed.  If the header starts with "text/" or is set to
+	 "application/json" or "application/javascript", it will use `unicode`,
+	 otherwise, it will use `none`.  For example, if your page you had set
+	 `wf:content_type("image/png")`, it Encoding would apply as `none`.
 
 * `wf:encoding() -> Encoding`
 
@@ -670,8 +670,8 @@ Example:
 
 * `wf:script_nonce() -> String`
 
-    Get the value of the nonce in the current context.  See [Content
-    Security Policy](csp.md) for more information.
+	Get the value of the nonce in the current context.  See [Content
+	Security Policy](csp.md) for more information.
 
 ## HTTP Headers
 

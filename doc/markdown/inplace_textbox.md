@@ -26,20 +26,20 @@
    * `html_encode` (boolean) - Set to true to safely html-encode the text.
 
    * `start_mode` (Atom, 'edit' or 'view') - Set whether the textbox should
-      start in edit mode or view mode.
+	  start in edit mode or view mode.
 
    * `validators` (Validator, or list of validators.) - Validators to apply
-      to the textbox.
+	  to the textbox.
 
    * `tag` (Erlang term) - See the delegate attribute for details.
 
 ### Callbacks
 
  *  inplace_textbox_event(Tag, Value) :: Called when the user presses the OK
-      button. Tag is specified in the 'tag' attribute, above.  Value is the
-      current value of the textbox. This callback function should process the
-      value as necessary, and must return either the value itself, or a new value
-      that will be sent back to the page and set as the value of the textbox.
+	  button. Tag is specified in the 'tag' attribute, above.  Value is the
+	  current value of the textbox. This callback function should process the
+	  value as necessary, and must return either the value itself, or a new value
+	  that will be sent back to the page and set as the value of the textbox.
 
 ### See Also
 

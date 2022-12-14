@@ -11,11 +11,11 @@
 
 ```erlang
   #mobile_panel {
-    display_mode=push,
-    body=[
-      #h3{text="Menu"},
-      "Here is a slide-out side menu"
-    ]
+	display_mode=push,
+	body=[
+	  #h3{text="Menu"},
+	  "Here is a slide-out side menu"
+	]
   }.
 
 ```
@@ -23,18 +23,18 @@
 ### Attributes
 
    * `body` (Nitrogen element or list of elements) - Set the element(s) that
-    will be rendered within this panel.
+	will be rendered within this panel.
 
    * `theme` (atom) - Set the jQuery Mobile swatch letter for the content.
 
    * `dismissible` (boolean) - Set to true to allow it to be dismissed with
-    the Escape key or clicking outside of the panel contents.
+	the Escape key or clicking outside of the panel contents.
 
    * `position` (left or right) - Tells which side of the screen to place
-    the panel. (Default: `left`)
+	the panel. (Default: `left`)
 
    * `display_mode` (reveal, push, or overlay) - Which way to animate the
-    panel into visibility. (Default: `reveal`)
+	panel into visibility. (Default: `reveal`)
 
 ### See Also
 

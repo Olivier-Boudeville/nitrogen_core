@@ -12,13 +12,13 @@
 ]).
 
 render_action(#js_fun{function = Fun0, args = Args0}) ->
-    Fun = wf:to_list(Fun0),
-    Args1 = [["\"", wf:js_escape(wf:to_unicode_binary(Arg)), "\""] || Arg <- Args0],
-    Args = wf:join(Args1, ","),
-    [Fun, "(", Args, ");"].
+	Fun = wf:to_list(Fun0),
+	Args1 = [["\"", wf:js_escape(wf:to_unicode_binary(Arg)), "\""] || Arg <- Args0],
+	Args = wf:join(Args1, ","),
+	[Fun, "(", Args, ");"].
 
 js_fun(Fun) ->
     js_fun(Fun, []).
 
 js_fun(Fun, Args) when is_list(Args) ->
-    wf:wire(#js_fun{function = Fun, args = Args}).
+	wf:wire(#js_fun{function = Fun, args = Args}).

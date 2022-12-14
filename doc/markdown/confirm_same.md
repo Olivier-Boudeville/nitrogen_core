@@ -11,7 +11,7 @@
 
 ```erlang
    wf:wire(button, email, #validate { validators=[
-     #confirm_same { text="Emails do not match", confirm_id=confirm_email }
+	 #confirm_same { text="Emails do not match", confirm_id=confirm_email }
    ]}),
 
    #label{text="Email Address"},
@@ -29,7 +29,7 @@
    * `text` (string) - The text to display if validation fails.
 
    * `confirm_id` (atom) - Specify the Nitrogen Element ID of the field
-      against which you wish to confirm.
+	  against which you wish to confirm.
 
 ### See Also
 

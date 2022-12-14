@@ -14,12 +14,12 @@
 
 ```erlang
    #article { body=[
-      "Here is some article content",
-      #aside{body=[
-	 GlossaryOfTerms,
-	 #br{},
-	 RelatedArticles
-      ]}
+	  "Here is some article content",
+	  #aside{body=[
+		 GlossaryOfTerms,
+		 #br{},
+		 RelatedArticles
+	  ]}
    ]}.
 
 ```

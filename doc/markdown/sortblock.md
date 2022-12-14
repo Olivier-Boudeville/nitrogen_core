@@ -10,9 +10,9 @@
 
 ```erlang
    #sortblock { tag=block1, items=[
-     #sortitem { tag=item1, body="Item 1" },
-     #sortitem { tag=item2, body="Item 2" },
-     #sortitem { tag=item3, body="Item 3" }
+	 #sortitem { tag=item1, body="Item 1" },
+	 #sortitem { tag=item2, body="Item 2" },
+	 #sortitem { tag=item3, body="Item 3" }
    ]}
 
 ```

@@ -43,21 +43,21 @@ assuming your page is located at `http://localhost/my/awesome/webpage`, the
 
 Here are a few practical examples using the URL above examples:
  *  `image` set to `someimage.png`, the browser will request the image
-     from `http://localhost/my/awesome/someimage.png`.
+	 from `http://localhost/my/awesome/someimage.png`.
 
  *  `image` set to `../otherimage.png`, the browser will request the image
-     from `http://localhost/my/otherimage.png`
+	 from `http://localhost/my/otherimage.png`
 
  *  `image` set to `/images/profile_pic.png`, the browser will request the
-     image from `http://localhost/images/profile_pic.png`. Note how, just like
-     with filesystem directories, preceeding the path with a slash (`/`) will
-     remove any notion of "relative to the page", and will instead request from
-     the root of the server. **(This is the recommended way of referring to
-     images in Nitrogen)**
+	 image from `http://localhost/images/profile_pic.png`. Note how, just like
+	 with filesystem directories, preceeding the path with a slash (`/`) will
+	 remove any notion of "relative to the page", and will instead request from
+	 the root of the server. **(This is the recommended way of referring to
+	 images in Nitrogen)**
 
  *  `image` set to `images/profile_pic.png`, the browser will request the
-     image from `http://localhost/my/awesome/images/profile_pic.png`. **(Note:
-     This is a common typo resulting in a bug.)**
+	 image from `http://localhost/my/awesome/images/profile_pic.png`. **(Note:
+	 This is a common typo resulting in a bug.)**
 
 By default, Nitrogen has a handful of "static paths", which Nitrogen will then
 treat as "special", and instead of trying to route the request to a module,

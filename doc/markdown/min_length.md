@@ -10,7 +10,7 @@
 
 ```erlang
    wf:wire(ButtonID, TextBoxID, #validate { validators=[<br>
-     #min_length { text="Minimum of 4 characters.", length=4 }<br>
+	 #min_length { text="Minimum of 4 characters.", length=4 }<br>
    ]})
 
 ```

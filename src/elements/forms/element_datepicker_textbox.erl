@@ -6,8 +6,8 @@
 -module(element_datepicker_textbox).
 -include("wf.hrl").
 -export([
-    reflect/0,
-    render_element/1
+	reflect/0,
+	render_element/1
 ]).
 
 -spec reflect() -> [atom()].
@@ -15,13 +15,13 @@ reflect() -> record_info(fields, datepicker_textbox).
 
 -spec render_element(#datepicker_textbox{}) -> body().
 render_element(Record) ->
-    Anchor = Record#datepicker_textbox.anchor,
-    Options = action_jquery_effect:options_to_js(Record#datepicker_textbox.options),
+	Anchor = Record#datepicker_textbox.anchor,
+	Options = action_jquery_effect:options_to_js(Record#datepicker_textbox.options),
 
-    Textbox = wf_utils:copy_fields(Record, #textbox{}),
-    Textbox1 = Textbox#textbox{class = [datepicker_textbox, Textbox#textbox.class]},
+	Textbox = wf_utils:copy_fields(Record, #textbox{}),
+	Textbox1 = Textbox#textbox{class = [datepicker_textbox, Textbox#textbox.class]},
 
-    Script = wf:f("Nitrogen.$datepicker(obj('~s'), ~s);", [Anchor, Options]),
-    wf:wire(Anchor, #script{script = Script}),
+	Script = wf:f("Nitrogen.$datepicker(obj('~s'), ~s);", [Anchor, Options]),
+	wf:wire(Anchor, #script{script = Script}),
 
-    element_textbox:render_element(Textbox1).
+	element_textbox:render_element(Textbox1).

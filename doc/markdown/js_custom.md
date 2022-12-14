@@ -29,21 +29,21 @@ goes together with the `#custom` server-side validator.
    % Wire the validator against the 'my_validator' Javascript
    % function, passing in some args...
    wf:wire(ButtonID, TextBoxID, #validate { validators=[
-     #js_custom {
-       text="Validation failed.",
-       function=my_validator,
-       args="{ amount: 5 }"
-     }
+	 #js_custom {
+	   text="Validation failed.",
+	   function=my_validator,
+	   args="{ amount: 5 }"
+	 }
    ]})
 
 ```
 
 ```erlang
    wf:wire(ButtonID, TextBoxID, #validate { validators=[
-     #js_custom {
-       text="Validation failed.",
-       function="function(value, args) { return value == 'the only correct answer'} ",
-       when_empty=true }
+	 #js_custom {
+	   text="Validation failed.",
+	   function="function(value, args) { return value == 'the only correct answer'} ",
+	   when_empty=true }
    ]})
 
 ```

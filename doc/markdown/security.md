@@ -38,20 +38,20 @@ requests through. The text of that handler is here:
 -module (default_security_handler).
 -behaviour (security_handler).
 -export ([
-    init/2,
-    finish/2
+	init/2,
+	finish/2
 ]).
 
 
 init(_Config, State) ->
-    % By default, let all requests through. If we wanted to impose
-    % security, then check the page module (via wf:page_module()),
-    % and if the user doesn't have access, then set a new page module and path info,
-    % via wf_context:page_module(Module), wf_context:path_info(PathInfo).
-    {ok, State}.
+	% By default, let all requests through. If we wanted to impose
+	% security, then check the page module (via wf:page_module()),
+	% and if the user doesn't have access, then set a new page module and path info,
+	% via wf_context:page_module(Module), wf_context:path_info(PathInfo).
+	{ok, State}.
 
 finish(_Config, State) ->
-    {ok, State}.
+	{ok, State}.
 
 ```
 
@@ -69,17 +69,17 @@ a `Loginid` or `undefined`.
 -module (bracketpal_security_handler).
 -behaviour (security_handler).
 -export ([
-    init/2,
-    finish/2
+	init/2,
+	finish/2
 ]).
 
 
 init(_Config, State) ->
-    attempt_cookie_login(),
-    {ok, State}.
+	attempt_cookie_login(),
+	{ok, State}.
 
 finish(_Config, State) ->
-    {ok, State}.
+	{ok, State}.
 
 %% PRIVATE FUNCTIONS %%
 
@@ -89,40 +89,40 @@ finish(_Config, State) ->
 %% authenticate
 
 attempt_cookie_login() ->
-    attempt_cookie_login(session).
+	attempt_cookie_login(session).
 
 attempt_cookie_login(session) ->
-    %% Have we already attempted a cookie login?
-    %% If so, then skip it
-    %% If not, let's try to authenticate with the cookie
-    case wf:session_default(cookie_login_attempted,false) of
-	false -> attempt_cookie_login(cookie);
-	_ -> do_nothing
-    end;
+	%% Have we already attempted a cookie login?
+	%% If so, then skip it
+	%% If not, let's try to authenticate with the cookie
+	case wf:session_default(cookie_login_attempted,false) of
+		false -> attempt_cookie_login(cookie);
+		_ -> do_nothing
+	end;
 attempt_cookie_login(cookie) ->
-    %% Let's read the authentication token from our "quicklogin" cookie
-    case wf:cookie(quicklogin) of
-	undefined ->
-	    %% The cookie is undefined, so obviously there's nothing to log in
-	    do_nothing;
-	Cookie ->
-	    %% Let's check our database to see if we have a user that's
-	    %% associated with our authentication cookie
-	    case db_login:loginid_from_cookie(Cookie) of
+	%% Let's read the authentication token from our "quicklogin" cookie
+	case wf:cookie(quicklogin) of
 		undefined ->
-		  %% No user associated with that token, so let's just do nothing
-		  do_nothing;
-		Loginid ->
-		  %% Yes! We have a login associated with that cookie, so let's
-		  %% Set use the Nitrogen user handler to set the loginid
-		  wf:user(Loginid)
-	    end,
+			%% The cookie is undefined, so obviously there's nothing to log in
+			do_nothing;
+		Cookie ->
+			%% Let's check our database to see if we have a user that's
+			%% associated with our authentication cookie
+			case db_login:loginid_from_cookie(Cookie) of
+				undefined ->
+				  %% No user associated with that token, so let's just do nothing
+				  do_nothing;
+				Loginid ->
+				  %% Yes! We have a login associated with that cookie, so let's
+				  %% Set use the Nitrogen user handler to set the loginid
+				  wf:user(Loginid)
+			end,
 
-	    %% Finally, we've now attempted to do a cookie login, so let's set
-	    %% a session variable so we don't try doing the cookie login again
-	    %% for this session
-	    wf:session(cookie_login_attempted,true)
-    end.
+			%% Finally, we've now attempted to do a cookie login, so let's set
+			%% a session variable so we don't try doing the cookie login again
+			%% for this session
+			wf:session(cookie_login_attempted,true)
+	end.
 
 ```
 

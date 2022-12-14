@@ -10,11 +10,11 @@
 
 ```erlang
    wf:wire(ButtonID, TextBoxID, #validate { validators=[
-     #is_integer {
-       min=1,
-       max=100,
-       text="Must be an integer between 1 and 100."
-     }
+	 #is_integer {
+	   min=1,
+	   max=100,
+	   text="Must be an integer between 1 and 100."
+	 }
    ]})
 
 ```

@@ -10,4 +10,4 @@
 ]).
 
 render_action(#click{target = Target}) ->
-    wf:f(<<"objs('~s').focus(); objs('~s').trigger('click'); ">>, [Target, Target]).
+	wf:f(<<"objs('~s').focus(); objs('~s').trigger('click'); ">>, [Target, Target]).

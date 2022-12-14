@@ -18,13 +18,13 @@ install. To do so, let's add our handlers to  `nitrogen_mochiweb:loop/1`:
 
 ```erlang
   loop(Req) ->
-    {ok, DocRoot} = application:get_env(mochiweb, document_root),
-    RequestBridge = simple_bridge:make_request(mochiweb_request_bridge, Req),
-    ResponseBridge = simple_bridge:make_response(mochiweb_response_bridge, {Req, DocRoot}),
-    nitrogen:init_request(RequestBridge, ResponseBridge),
-    nitrogen:handler(my_config_handler,[]),   %% Add custom config handler
-    nitrogen:handler(my_session_handler,[]),  %% Add custom session handler
-    nitrogen:run().
+	{ok, DocRoot} = application:get_env(mochiweb, document_root),
+	RequestBridge = simple_bridge:make_request(mochiweb_request_bridge, Req),
+	ResponseBridge = simple_bridge:make_response(mochiweb_response_bridge, {Req, DocRoot}),
+	nitrogen:init_request(RequestBridge, ResponseBridge),
+	nitrogen:handler(my_config_handler,[]),   %% Add custom config handler
+	nitrogen:handler(my_session_handler,[]),  %% Add custom session handler
+	nitrogen:run().
 
 ```
 
@@ -41,9 +41,9 @@ Nitrogen's handler system. This function takes two arguments:
  *  `HandlerModule` - The name of the module.
 
  *  `Config` - Any configuration settings for this handler. This variable
-      could be just about anything, a proplist containing API keys or IP
-      addresses of related servers (say for a session handler connected to
-      an external memcache or something.
+	  could be just about anything, a proplist containing API keys or IP
+	  addresses of related servers (say for a session handler connected to
+	  an external memcache or something.
 
 ## nitrogen:handler(HandlerName, HandlerModule, Config)
 
@@ -61,11 +61,11 @@ The rest of the parameters follows the `nitrogen:handler/2` definition.
 In all of the handler behavior functions are found two particular variables:
 
  *  `Config` - When a handler is initialized using `nitrogen:handler/2`, the
-      second argument is `Config`, which is then passed into each handler
-      function.
+	  second argument is `Config`, which is then passed into each handler
+	  function.
 
  *  `State` - The current state of the handler. Each handler maintains its own
-      state.
+	  state.
 
 ## The Handlers
 
@@ -77,36 +77,36 @@ In all of the handler behavior functions are found two particular variables:
 
 #### Core handlers:
  *  [Config Handler](handler_config.md) - Controls how and from where the
-    configuration settings are loaded.
+	configuration settings are loaded.
  *  [Log Handler](log.md) - Controls the logging system for your
-    Nitrogen app.
+	Nitrogen app.
  *  [Process Registry Handler](process_registry.md) - Controls
-    how processes are tracked. The default backend for the process registry
-    is [nprocreg](https://github.com/nitrogen/nprocreg).
+	how processes are tracked. The default backend for the process registry
+	is [nprocreg](https://github.com/nitrogen/nprocreg).
  *  [Crash Handler](crash.md) - Controls how to handle page
-    crashes, including logging and how to present the crash to the user.
+	crashes, including logging and how to present the crash to the user.
  *  [Query Handler](query.md) - Controls the how `wf:q` (and its
-    siblings, `wf:qs`, `wf:mq`, etc), functions retrieve their values from the
-    POST, GET, or other methods.
+	siblings, `wf:qs`, `wf:mq`, etc), functions retrieve their values from the
+	POST, GET, or other methods.
 
 #### Stateful Handlers
  *  [Session Handler](session.md) - Controls how session
-    information and variables are set, stored, and/or distributed.
+	information and variables are set, stored, and/or distributed.
  *  [State Handler](state.md) - Controls how the `wf:state`
-    functions store and retrieve their values. The default uses a simple
-    proplist.
+	functions store and retrieve their values. The default uses a simple
+	proplist.
  *  [Identity Handler](identity.md) - Controls how the identity
-    of the client is stored and retrieved. This is related to the `wf:user`
-    functions.
+	of the client is stored and retrieved. This is related to the `wf:user`
+	functions.
  *  [Role Handler](role.md) - Controls how the roles of the
-    client are stored and retrieved. This is related to the `wf:role`
-    functions.
+	client are stored and retrieved. This is related to the `wf:role`
+	functions.
 
 #### Handlers that possibly redirect
  *  [Route Handler](route.md) - Controls how Nitrogen routes
-    requests to modules or static files.
+	requests to modules or static files.
  *  [Security Handler](security.md) - Controls whether or not a user
-    has access to a resource, and if not, should determine what to do with
-    the request.
+	has access to a resource, and if not, should determine what to do with
+	the request.
  *  [Postback Handler](postback.md) - Controls how postback requests
-    are handled.
+	are handled.

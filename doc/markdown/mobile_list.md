@@ -9,12 +9,12 @@ This element produces a wrapper for [jQuery Mobile Listviews](http://jquerymobil
 
 ```erlang
    #mobile_list {
-      theme=d,
-      body=[
-	 #mobile_listitem { ... },
-	 #mobile_listitem { ... },
-	 #mobile_listitem { ... }
-      ]
+	  theme=d,
+	  body=[
+		 #mobile_listitem { ... },
+		 #mobile_listitem { ... },
+		 #mobile_listitem { ... }
+	  ]
    }
 
 ```

@@ -15,34 +15,34 @@ reflect() -> record_info(fields, qr).
 
 -spec transform_element(#qr{}) -> body().
 transform_element(#qr{data = Empty} = QR) when
-    Empty =:= undefined;
-    Empty =:= <<"">>;
-    Empty =:= ""
+	Empty =:= undefined;
+	Empty =:= <<"">>;
+	Empty =:= ""
 ->
-    transform_element(QR#qr{data = wf:url()});
+	transform_element(QR#qr{data = wf:url()});
 transform_element(#qr{data = Data, size = Size, class = Class, id = Id, title = Title}) ->
-    BSize = wf:to_binary(Size),
-    Cht = <<"qr">>,
-    Chs = <<BSize/binary, "x", BSize/binary>>,
-    Choe = "UTF-8",
+	BSize = wf:to_binary(Size),
+	Cht = <<"qr">>,
+	Chs = <<BSize/binary, "x", BSize/binary>>,
+	Choe = "UTF-8",
 
-    %% Not sure what this is exactly, but it's recommended to stay at H. Feel
-    %% free to examine if you wish. From
-    %% http://www.webmaster-source.com/2010/10/11/generate-qr-codes-on-the-fly-with-the-google-chart-api/
-    Chld = "H",
-    Chl = Data,
+	%% Not sure what this is exactly, but it's recommended to stay at H. Feel
+	%% free to examine if you wish. From
+	%% http://www.webmaster-source.com/2010/10/11/generate-qr-codes-on-the-fly-with-the-google-chart-api/
+	Chld = "H",
+	Chl = Data,
 
-    Path = "http://chart.apis.google.com/chart?",
-    QS = wf:to_qs([
-        {cht, Cht},
-        {chs, Chs},
-        {choe, Choe},
-        {chld, Chld},
-        {chl, Chl}
-    ]),
-    #image{
-        id = Id,
-        class = Class,
-        title = Title,
-        image = [Path, QS]
-    }.
+	Path = "http://chart.apis.google.com/chart?",
+	QS = wf:to_qs([
+		{cht, Cht},
+		{chs, Chs},
+		{choe, Choe},
+		{chld, Chld},
+		{chl, Chl}
+	]),
+	#image{
+		id = Id,
+		class = Class,
+		title = Title,
+		image = [Path, QS]
+	}.

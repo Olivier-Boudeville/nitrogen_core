@@ -9,7 +9,7 @@
 ]).
 
 init(_Config, State) ->
-    {ok, State}.
+	{ok, State}.
 
 finish(_Config, State) ->
     {ok, State}.

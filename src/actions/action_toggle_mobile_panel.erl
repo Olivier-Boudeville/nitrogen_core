@@ -6,8 +6,8 @@
 -module(action_toggle_mobile_panel).
 -include("wf.hrl").
 -export([
-    reflect/0,
-    render_action/1
+	reflect/0,
+	render_action/1
 ]).
 
 -spec reflect() -> [atom()].
@@ -15,4 +15,4 @@ reflect() -> record_info(fields, toggle_mobile_panel).
 
 -spec render_action(#toggle_mobile_panel{}) -> script().
 render_action(#toggle_mobile_panel{target = Target}) ->
-    wf:f(<<"objs('~s').panel(\"toggle\");">>, [Target]).
+	wf:f(<<"objs('~s').panel(\"toggle\");">>, [Target]).

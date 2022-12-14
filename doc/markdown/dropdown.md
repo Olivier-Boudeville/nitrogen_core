@@ -10,9 +10,9 @@ The dropdown element produces an HTML dropdown.
 
 ```erlang
    #dropdown { id=dropdown1, value="2", options=[
-     #option { text="Option 1", value="1" },
-     #option { text="Option 2", value="2" },
-     #option { text="Option 3", value="3" }
+	 #option { text="Option 1", value="1" },
+	 #option { text="Option 2", value="2" },
+	 #option { text="Option 3", value="3" }
    ]}
 
 ```

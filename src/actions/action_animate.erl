@@ -8,10 +8,10 @@
 -compile(export_all).
 
 render_action(Record) ->
-    #jquery_effect{
-        type = animate,
-        options = Record#animate.options,
-        speed = Record#animate.speed,
-        easing = Record#animate.easing,
-        actions = Record#animate.actions
-    }.
+	#jquery_effect{
+		type = animate,
+		options = Record#animate.options,
+		speed = Record#animate.speed,
+		easing = Record#animate.easing,
+		actions = Record#animate.actions
+	}.

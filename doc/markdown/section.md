@@ -13,8 +13,8 @@
 
 ```erlang
    #section{ body=[
-      #h1{text="Some heading"},
-      "Here is some content for this section"
+	  #h1{text="Some heading"},
+	  "Here is some content for this section"
    ]}.
 
 ```

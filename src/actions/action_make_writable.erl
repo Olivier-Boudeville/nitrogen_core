@@ -6,9 +6,9 @@
 -module(action_make_writable).
 -include("wf.hrl").
 -export([
-    render_action/1
+	render_action/1
 ]).
 
 -spec render_action(#make_writable{}) -> actions().
 render_action(#make_writable{target = Target}) ->
-    #script{script = wf:f(<<"objs('~s').prop('readonly',false);">>, [Target])}.
+	#script{script = wf:f(<<"objs('~s').prop('readonly',false);">>, [Target])}.

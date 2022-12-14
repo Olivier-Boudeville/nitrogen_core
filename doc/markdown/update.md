@@ -22,21 +22,21 @@
 
 ```erlang
   wf:wire(my_button, #event{type=click, actions=[
-    #update{target=someDiv, elements="Replace All"}
+	#update{target=someDiv, elements="Replace All"}
   ]}).
 
 ```
 
 ```erlang
   wf:wire(my_button, #event{type=click, actions=[
-    #remove{target=someOtherDiv}
+	#remove{target=someOtherDiv}
   ]}).
 
 ```
 
 ```erlang
   wf:wire(my_button, #event{type=click, actions=[
-    #insert_after{target=someOtherDiv, elements=[#button{text="A new button"}]
+	#insert_after{target=someOtherDiv, elements=[#button{text="A new button"}]
   ]}).
 
 ```

@@ -42,15 +42,15 @@
 
 ```ERLANG
    #button { text="Do Something", actions=[
-      #event{type=click,actions=ListOfActions}
+	  #event{type=click,actions=ListOfActions}
    ]}
 
 ```
 
    * `enter_clicks` (List of Element IDs) - Wires to the provided ElementIDs
-    a `#click{}` event on the provided button if the user presses the "Enter"
-    key when any of the provided `ElementIDs` have the focus. To see a working
-    example, see the [Security Demo](http://nitrogenproject.com/demos/security)
+	a `#click{}` event on the provided button if the user presses the "Enter"
+	key when any of the provided `ElementIDs` have the focus. To see a working
+	example, see the [Security Demo](http://nitrogenproject.com/demos/security)
 
 ### See Also
 
@@ -64,4 +64,4 @@
  *  [Dropdown Option](./option.md)
  *  [Simple Controls Demos](http://nitrogenproject.com/demos/simplecontrols)
  *  [Security Demo](http://nitrogenproject.com/demos/security)
-     (showing the use of the `enter_clicks` attribute)
+	 (showing the use of the `enter_clicks` attribute)

@@ -20,8 +20,8 @@
    #inplace { id=textbox2, text="", view=#image{}, edit=#textbox{} }.
 
    Dropdown = #dropdown{options=[#option{value="option1", text="Option 1"},
-				 #option{value="option2", text="Option 2"},
-				 #option{value="option3", text="Option 3"} ]},
+								 #option{value="option2", text="Option 2"},
+								 #option{value="option3", text="Option 3"} ]},
    #inplace { id=textbox3, text="option2", view=Dropdown#dropdown{actions=#disable{}}, edit=Dropdown }.
 
 ```

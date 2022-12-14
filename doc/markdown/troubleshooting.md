@@ -20,16 +20,16 @@
  *  Have `sync` running. (run in the Erlang shell with `sync:go()`)
 
  *  Have a browser with decent Javsacript debugging and network inspecting
-    (Chrome's inspector, Firebug for Firefox, etc). Because Nitrogen does a lot
-    of AJAX requests, you'll be watching those requests happen, and when or if
-    they error out, you'll see those changes.
+	(Chrome's inspector, Firebug for Firefox, etc). Because Nitrogen does a lot
+	of AJAX requests, you'll be watching those requests happen, and when or if
+	they error out, you'll see those changes.
 
  *  Don't be afraid to use Nitrogen's log handler with: `wf:info/1,2`,
-    `wf:warning/1,2`, or `wf:error/1,2` , or send Erlang terms formatted as
-    strings to the javascript console with `wf:console_log/1,2`.
+	`wf:warning/1,2`, or `wf:error/1,2` , or send Erlang terms formatted as
+	strings to the javascript console with `wf:console_log/1,2`.
 
  *  Finally, when you're really not sure, don't be afraid to dig into the
-    nitrogen source code to see what's going on.
+	nitrogen source code to see what's going on.
 
 ## I got an error on the Erlang shell. What does it mean?
 
@@ -49,29 +49,29 @@
 ```erlang
 =INFO REPORT==== 28-Aug-2013::16:20:02 ===
   {error,error,function_clause,
-	 [{wf_convert,html_encode,
-		      [{link,is_element,element_link,undefined,undefined,
-			     undefined,true,[],[],[],[],[],"My Link",[],false,
-			     true,false,false,"javascript:",undefined,undefined,
-			     false,undefined,undefined},
-		       true],
-		      [{file,"src/lib/wf_convert.erl"},{line,93}]},
-	  {element_span,render_element,1,
-			[{file,"src/elements/html/element_span.erl"},{line,19}]},
-	  {wf_render_elements,call_element_render,3,
-			      [{file,"src/lib/wf_render_elements.erl"},
-			       {line,130}]},
-	  {wf_render_elements,render_element,1,
-			      [{file,"src/lib/wf_render_elements.erl"},
-			       {line,115}]},
-	  {wf_render_elements,render_elements,2,
-			      [{file,"src/lib/wf_render_elements.erl"},
-			       {line,37}]},
-	  {lists,foldl,3,[{file,"lists.erl"},{line,1248}]},
-	  {wf_render_elements,render_elements,2,
-			      [{file,"src/lib/wf_render_elements.erl"},
-			       {line,32}]},
-	  {lists,foldl,3,[{file,"lists.erl"},{line,1248}]}]}
+		 [{wf_convert,html_encode,
+					  [{link,is_element,element_link,undefined,undefined,
+							 undefined,true,[],[],[],[],[],"My Link",[],false,
+							 true,false,false,"javascript:",undefined,undefined,
+							 false,undefined,undefined},
+					   true],
+					  [{file,"src/lib/wf_convert.erl"},{line,93}]},
+		  {element_span,render_element,1,
+						[{file,"src/elements/html/element_span.erl"},{line,19}]},
+		  {wf_render_elements,call_element_render,3,
+							  [{file,"src/lib/wf_render_elements.erl"},
+							   {line,130}]},
+		  {wf_render_elements,render_element,1,
+							  [{file,"src/lib/wf_render_elements.erl"},
+							   {line,115}]},
+		  {wf_render_elements,render_elements,2,
+							  [{file,"src/lib/wf_render_elements.erl"},
+							   {line,37}]},
+		  {lists,foldl,3,[{file,"lists.erl"},{line,1248}]},
+		  {wf_render_elements,render_elements,2,
+							  [{file,"src/lib/wf_render_elements.erl"},
+							   {line,32}]},
+		  {lists,foldl,3,[{file,"lists.erl"},{line,1248}]}]}
 
 ```
 
@@ -88,12 +88,12 @@
 
 ```erlang
    [{wf_convert,html_encode,
-	  [{link,is_element,element_link,undefined,undefined,
-		 undefined,true,[],[],[],[],[],"My Link",[],false,
-		 true,false,false,"javascript:",undefined,undefined,
-		 false,undefined,undefined},
-	   true],
-	  [{file,"src/lib/wf_convert.erl"},{line,93}]},
+		  [{link,is_element,element_link,undefined,undefined,
+				 undefined,true,[],[],[],[],[],"My Link",[],false,
+				 true,false,false,"javascript:",undefined,undefined,
+				 false,undefined,undefined},
+		   true],
+		  [{file,"src/lib/wf_convert.erl"},{line,93}]},
 
 ```
 
@@ -114,8 +114,8 @@
   But if the cause is still not clear, let's go deeper.  The next chunk of the error is this:
 
 ```erlang
-    {element_span,render_element,1,
-	[{file,"src/elements/html/element_span.erl"},{line,19}]},
+	{element_span,render_element,1,
+		[{file,"src/elements/html/element_span.erl"},{line,19}]},
 
 ```
 
@@ -166,23 +166,23 @@ field text::binary() | maybe_improper_list(binary() | maybe_improper_list(any(),
   This is a very general kind of issue, and can be any number of the following:
 
  *  If Erlang crashes right from the get-go, make sure you don't already have
-    that port in use, and make sure you have access to open the specified port in
-    app.config.
+	that port in use, and make sure you have access to open the specified port in
+	app.config.
 
  *  If you know the port is available, and you get an error about "name in use"
-    from epmd, that means you have a node of the same name running on the
-    machine. You can search for instances of the executable `erl` or `beam`
-    running.
+	from epmd, that means you have a node of the same name running on the
+	machine. You can search for instances of the executable `erl` or `beam`
+	running.
 
  *  If Erlang launches without crashing, but the page http://127.0.0.1:8000
-    isn't responding, then either you want to make sure that you don't have a
-    firewall blocking that port from being bound.  Also make sure your config is
-    binding to the right IP address. "`0.0.0.0`" or `{0,0,0,0}` (depending on
-    server config) will bind to any of the machine's IPs.
+	isn't responding, then either you want to make sure that you don't have a
+	firewall blocking that port from being bound.  Also make sure your config is
+	binding to the right IP address. "`0.0.0.0`" or `{0,0,0,0}` (depending on
+	server config) will bind to any of the machine's IPs.
 
  *  If neither of the above solve your problem, there might be something more
-    significant. Feel free to email the
-    [Mailing List](https://groups.google.com/d/forum/nitrogenweb)
+	significant. Feel free to email the
+	[Mailing List](https://groups.google.com/d/forum/nitrogenweb)
 
 ## Why aren't postbacks working?
 
@@ -214,9 +214,9 @@ field text::binary() | maybe_improper_list(binary() | maybe_improper_list(any(),
   either one of two things:
 
  *  Your template doesn't have a
-    : [[[script]]]
-    section like it should (in which case, initializing javascript is never
-    sent to the browser), or
+	: [[[script]]]
+	section like it should (in which case, initializing javascript is never
+	sent to the browser), or
  *  Your postbacks are silently failing on the server.
 
   The most common cause of postbacks silently failing on the server (meaning

@@ -8,8 +8,8 @@
 -export([render_action/1]).
 
 render_action(Record) ->
-    #jquery_effect{
-        type = fade,
-        speed = Record#fade.speed,
-        actions = Record#fade.actions
-    }.
+	#jquery_effect{
+		type = fade,
+		speed = Record#fade.speed,
+		actions = Record#fade.actions
+	}.

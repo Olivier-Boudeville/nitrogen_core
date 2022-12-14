@@ -9,14 +9,14 @@
   selectors. These selectors can be used in three contexts:
 
  *  As the target (first parameter) of `wf:wire/2`,
-    `wf:update/2`, `wf:insert_top/2`,
-    `wf:insert_bottom/2`, etc.
+	`wf:update/2`, `wf:insert_top/2`,
+	`wf:insert_bottom/2`, etc.
 
  *  As the trigger (first parameter) or target (second parameter) of
-    `wf:wire/3`.
+	`wf:wire/3`.
 
  *  As the `trigger` or `target` of an `#event{}`
-    action.
+	action.
 
   Path matching in Nitrogen is complicated because it must provide a
   simple, straight-forward interface while still accounting for potential
@@ -56,50 +56,50 @@
    path.
 
    1. If the selector has multiple parts separated by commas, then the
-      selector is split, and each part is combined.
+	  selector is split, and each part is combined.
 
    2. If the selector is "page", then a reference to the DOM document
-      is returned.
+	  is returned.
 
    3. The string "##" is replaced with ".wfid_". This allows you to
-      specify Nitrogen elementIDs in a string selector. For example
-      "##myelementid > .someclass" will be rewritten to
-      ".wfid_myelementid > .someclass". This is done because Nitrogen
-      uses classes to tag your elements with their ID, so an element
-      with ID of 'myelementid' will be tagged with a class called
-      '.wfid_myelementid'.
+	  specify Nitrogen elementIDs in a string selector. For example
+	  "##myelementid > .someclass" will be rewritten to
+	  ".wfid_myelementid > .someclass". This is done because Nitrogen
+	  uses classes to tag your elements with their ID, so an element
+	  with ID of 'myelementid' will be tagged with a class called
+	  '.wfid_myelementid'.
 
    4. If the string "me" is found surrounded by non-word characters,
-      it is replaced with the anchor that was set. This allows
-      you to write paths such as "me > .image" which will apply to all
-      elements with class ".image" under the current element.
+	  it is replaced with the anchor that was set. This allows
+	  you to write paths such as "me > .image" which will apply to all
+	  elements with class ".image" under the current element.
 
    5. If the path is a one word string and it is the name of an HTML
-      element such as "table", "div", "h1", etc., then try matching as
-      a Nitrogen element ID first, and if that doesn't work, then try
-      matching as an HTML element.
+	  element such as "table", "div", "h1", etc., then try matching as
+	  a Nitrogen element ID first, and if that doesn't work, then try
+	  matching as an HTML element.
 
    6. If a string is found containing only words separated by periods
-      (for example, "element1.element2"), then it is assumed to be a
-      nested series of elements, and is converted to ".wfid_element1
-      .wfid_element2". This will match all Nitrogen elements named
-      'element2' underneath any Nitrogen elements named 'element1'.
+	  (for example, "element1.element2"), then it is assumed to be a
+	  nested series of elements, and is converted to ".wfid_element1
+	  .wfid_element2". This will match all Nitrogen elements named
+	  'element2' underneath any Nitrogen elements named 'element1'.
 
    7. If the path begins with "body", then match using a call to
-      `jQuery(path)`. This will match any elements in the context of the
-      entire document.
+	  `jQuery(path)`. This will match any elements in the context of the
+	  entire document.
 
    8. Otherwise, Nitrogen will try to match elements as closely as
-      possible starting at the current anchor. First, try to match the
-      path under the current anchor using
-      `jQuery(anchor).find(path)`. If results were found, then stop
-      and return.  Otherwise, call `jQuery(anchor).parents()` to get a
-      list of parents, and then for each parent, call
-      `jQuery(parent).find(path)`. If results were found, then stop
-      and return.
+	  possible starting at the current anchor. First, try to match the
+	  path under the current anchor using
+	  `jQuery(anchor).find(path)`. If results were found, then stop
+	  and return.  Otherwise, call `jQuery(anchor).parents()` to get a
+	  list of parents, and then for each parent, call
+	  `jQuery(parent).find(path)`. If results were found, then stop
+	  and return.
 
    9. Finally, if no elements were found, then Nitrogen resorts to
-      matching `jQuery(path)`.
+	  matching `jQuery(path)`.
 
 ## Nitrogen Specific Selectors
 

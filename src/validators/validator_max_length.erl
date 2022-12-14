@@ -9,20 +9,20 @@
 -compile(export_all).
 
 render_action(Record) ->
-    TriggerPath = Record#max_length.trigger,
-    TargetPath = Record#max_length.target,
-    Text = wf:js_escape(Record#max_length.text),
-    Length = Record#max_length.length,
-    CustomValidatorAction = #custom{
-        trigger = TriggerPath,
-        target = TargetPath,
-        function = fun validate/2,
-        text = Text,
-        tag = Record,
-        attach_to = Record#max_length.attach_to
-    },
-    validator_custom:render_action(CustomValidatorAction),
-    wf:f("v.add(Validate.Length, { maximum: ~p, tooLongMessage: \"~ts\" });", [Length, Text]).
+	TriggerPath = Record#max_length.trigger,
+	TargetPath = Record#max_length.target,
+	Text = wf:js_escape(Record#max_length.text),
+	Length = Record#max_length.length,
+	CustomValidatorAction = #custom{
+		trigger = TriggerPath,
+		target = TargetPath,
+		function = fun validate/2,
+		text = Text,
+		tag = Record,
+		attach_to = Record#max_length.attach_to
+	},
+	validator_custom:render_action(CustomValidatorAction),
+	wf:f("v.add(Validate.Length, { maximum: ~p, tooLongMessage: \"~ts\" });", [Length, Text]).
 
 validate(Record, Value) ->
-    Record#max_length.length >= length(Value).
+	Record#max_length.length >= length(Value).

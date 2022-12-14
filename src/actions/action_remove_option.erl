@@ -8,6 +8,6 @@
 -export([render_action/1]).
 
 render_action(#remove_option{target = Target, value = Value}) ->
-    wf:f("objs('~s').find(\"option[value='~ts']\").remove();", [
-        Target, wf:js_escape(wf:to_list(Value))
-    ]).
+	wf:f("objs('~s').find(\"option[value='~ts']\").remove();", [
+		Target, wf:js_escape(wf:to_list(Value))
+	]).

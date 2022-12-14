@@ -10,11 +10,11 @@
 
 ```erlang
    #iframe {
-       src = "//www.youtube.com/embed/AAF58aJSr28?rel=0",
-       name = "homeVideo",
-       allowfullscreen = "",
-       html_id = "homeVideo",
-       frameborder = "0"
+	   src = "//www.youtube.com/embed/AAF58aJSr28?rel=0",
+	   name = "homeVideo",
+	   allowfullscreen = "",
+	   html_id = "homeVideo",
+	   frameborder = "0"
    }
 
 ```
@@ -22,8 +22,8 @@
 ### Attributes
 
    * `src` (string) - Set the HTML `src` attribute of the iframe. This can
-    be either an absolute URL (`http://hostname.com/path/to/src`) or a
-    relative URL (`/path/to/src`).
+	be either an absolute URL (`http://hostname.com/path/to/src`) or a
+	relative URL (`/path/to/src`).
 
    * `srcdoc` (string) - Set the HTML `srcdoc` attribute of the iframe.
 

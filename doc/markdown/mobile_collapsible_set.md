@@ -13,12 +13,12 @@
 
 ```erlang
    #mobile_collapsible_set {
-      collapsed=true,
-      body=[
-	 #collapsible{ ... },
-	 #collapsible{ ... },
-	 #collapsible{ ... }
-      ]
+	  collapsed=true,
+	  body=[
+		 #collapsible{ ... },
+		 #collapsible{ ... },
+		 #collapsible{ ... }
+	  ]
    }
 
 ```

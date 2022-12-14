@@ -11,12 +11,12 @@
 
 ```erlang
    #datepicker_textbox{
-      id=date1,
-      text="5/25/2013",
-      options=[
-	 {dateFormat, "mm/dd/yy"},
-	 {showButtonPanel, true}
-      ]
+	  id=date1,
+	  text="5/25/2013",
+	  options=[
+		 {dateFormat, "mm/dd/yy"},
+		 {showButtonPanel, true}
+	  ]
    }
 
 ```
@@ -32,28 +32,28 @@
    Here are a few common options:
 
   * `formatDate` (format string) - Change the format of the displayed
-      date (e.g.: `"yy-mm-dd"`, `"mm/dd/yy"` ).
+	  date (e.g.: `"yy-mm-dd"`, `"mm/dd/yy"` ).
 
   * `showOtherMonths` (boolean) - Set to true to allow the datepicker to
-      show the previous and next month's last and first days in the otherwise
-      blank spaces.
+	  show the previous and next month's last and first days in the otherwise
+	  blank spaces.
 
   * `selectOtherMonths` (boolean) - If `showOtherMonths` is true, then
-      clicking those leading and trailing dates will also put the date in the
-      textbox.
+	  clicking those leading and trailing dates will also put the date in the
+	  textbox.
 
   * `numberOfMonths` (integer) - Display the specified number of months
-      in the calendar popup rather than just a single month.
+	  in the calendar popup rather than just a single month.
 
   * `changeMonth` (boolean) - Put a "Month" dropdown box in the calendar
-      popup
+	  popup
 
   * `changeYear` (boolean) - Put a "Year" dropdown box in the calendar
-      popup
+	  popup
 
   * `showButtonPanel` (boolean) - Put a button panel below the calendar
-      popup which includes a "Today" button, and a "Close" button (the text of
-      which [can be customized](http://api.jqueryui.com/datepicker/#option-showButtonPanel)).
+	  popup which includes a "Today" button, and a "Close" button (the text of
+	  which [can be customized](http://api.jqueryui.com/datepicker/#option-showButtonPanel)).
 
 * `disabled` (boolean) - Set to true to disable this textbox in the
    browser (sets the HTML `disabled` property, effectly greying out the
@@ -77,11 +77,11 @@
 ```
 
    * `next` (atom) - If set with a valid control ID, pressing the enter key
-      in the textbox will automatically move focus to the specified control.
+	  in the textbox will automatically move focus to the specified control.
 
    * `postback` (Erlang term) - If set, pressing the enter key in the
-      textbox will automatically initiate a Nitrogen postback with the supplied
-      term.
+	  textbox will automatically initiate a Nitrogen postback with the supplied
+	  term.
 
    * `html_name` (string) - The name attribute of the textbox.
 

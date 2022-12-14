@@ -8,12 +8,12 @@ The list element produces an HTML list element (`<ol>` and `<ul>`).
 
 ```erlang
    #list{
-      numbered=true,
-      body=[
-	 #listitem{ ... },
-	 #listitem{ ... },
-	 #listitem{ ... }
-      ]
+	  numbered=true,
+	  body=[
+		 #listitem{ ... },
+		 #listitem{ ... },
+		 #listitem{ ... }
+	  ]
    }.
 
 ```

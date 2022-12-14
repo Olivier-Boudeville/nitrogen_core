@@ -6,8 +6,8 @@
 -module(element_password).
 -include("wf.hrl").
 -export([
-    reflect/0,
-    transform_element/1
+	reflect/0,
+	transform_element/1
 ]).
 
 -spec reflect() -> [atom()].
@@ -15,8 +15,8 @@ reflect() -> record_info(fields, password).
 
 -spec transform_element(#password{}) -> nitrogen_element().
 transform_element(Record) ->
-    Textbox = wf_utils:copy_fields(Record, #textbox{}),
-    Textbox#textbox{
-        class = [password, Record#password.class],
-        type = password
-    }.
+	Textbox = wf_utils:copy_fields(Record, #textbox{}),
+	Textbox#textbox{
+		class = [password, Record#password.class],
+		type = password
+	}.

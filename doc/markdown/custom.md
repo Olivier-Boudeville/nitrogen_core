@@ -13,18 +13,18 @@
    % Function to validate that a value is either upper or lower case,
    % depending on the value of Tag...
    F = fun(Tag, Value) ->
-     case Tag of
-       upper -> string:to_upper(Value) == Value;
-       lower -> string:to_lower(Value) == Value
-     end
+	 case Tag of
+	   upper -> string:to_upper(Value) == Value;
+	   lower -> string:to_lower(Value) == Value
+	 end
    end,
 
    % Wire the validator in upper case mode...
    wf:wire(ButtonID, TextBoxID, #validate { validators=[
-     %% If we wanted to validate lowercase, we could change
-     %% tag to 'lower' and it would execute the 'lower' clause
-     %% in the case statement above.
-     #custom { text="Must be uppercase", function=F, tag=upper }
+	 %% If we wanted to validate lowercase, we could change
+	 %% tag to 'lower' and it would execute the 'lower' clause
+	 %% in the case statement above.
+	 #custom { text="Must be uppercase", function=F, tag=upper }
    ]})
 
 ```

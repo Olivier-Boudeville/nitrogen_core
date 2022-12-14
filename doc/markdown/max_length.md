@@ -10,7 +10,7 @@
 
 ```erlang
    wf:wire(ButtonID, TextBoxID, #validate { validators=[<br>
-     #max_length { text="Maximum of 7 characters.", length=7 }<br>
+	 #max_length { text="Maximum of 7 characters.", length=7 }<br>
    ]})
 
 ```

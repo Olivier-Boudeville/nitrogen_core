@@ -32,8 +32,8 @@
 
 ```erlang
    #template { files="./priv/templates/myTemplate.html", bindings=[
-     {'Binding1', binding1},
-     {'Binding2', binding2}
+	 {'Binding1', binding1},
+	 {'Binding2', binding2}
    ]}
 
 ```
