@@ -200,21 +200,6 @@ to_module_callback(Tag) ->
 			[{Tag, '', []}]
 	end.
 
-Opts = [{capture, all_but_first, list}],
-
-case re:run(Tag, MFARegExp, Opts) of
-    {match, [M, F, A, Rest]} ->
-        Module = wf:to_atom(string:strip(M)),
-        Function = wf:to_atom(string:strip(F)),
-        ArgString = A,
-        case Rest of
-            [] -> [{Module, Function, ArgString}];
-            _ -> [{Module, Function, ArgString} | to_module_callback(Rest)]
-        end;
-    nomatch ->
-        %% This prepares it to be handled by convert_callback_tuple_to_function/5
-        [{Tag, '', []}]
-end.
 
 %%% EVALUATE %%%
 
