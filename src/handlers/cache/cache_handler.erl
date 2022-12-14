@@ -43,45 +43,44 @@
 	State :: term()
 ) -> {ok, State :: term()}.
 
-% @doc get_cached(Key, Function, TTL, State) -> {ok, Value, NewState}
-% Return the cache value associated with Key. If it is not found,
-% then run the Function, store the resulting value in cache under
-% Key, and return the value.
--spec get_cached(
-	Key :: any(),
-	Function :: function(),
-	TTL :: integer() | undefined | infinity
-) -> {ok, term()}.
-get_cached(Key, Function, TTL) ->
+
+% @doc Returns the cache value associated with the specified key.
+%
+% If it is not found, then run the Function, store the resulting value in cache
+% under Key, and return the value.
+%
+-spec get_cached( Key :: any(), Function :: function(),
+				  TTL :: integer() | undefined | infinity ) -> { ok, term() }.
+get_cached( Key, Function, TTL ) ->
+
 	ContextedFun = fun() ->
-		%% capture existing caching state before evaluating
+
+		% Capture existing caching state before evaluating:
 		Caching = wf_context:caching(),
 
-		%% let us know we're caching
+		% Let us know we are caching:
 		wf_context:caching(true),
 
-		%% Process the caching function
+		% Process the caching function:
 		Result = Function(),
 
-		%% Restore the caching status to its previous state (and if the state is unchanged, save some cycles by skipping it
+		% Restores the caching status to its previous state (and if the state is
+		% unchanged, save some cycles by skipping it:
+		%
 		?WF_IF(not (Caching), wf_context:caching(Caching)),
 
-		%% Return the result
+		% Returns the result:
 		Result
+
 	end,
-	{ok, _Value} = wf_handler:call(cache_handler, get_cached, [Key, ContextedFun, TTL]).
 
-    P =
-        {ok, Value} = wf_handler:call(
-            cache_handler,
-            get_cached,
-            [Key, ContextedFun, TTL]
-        ),
+	{ ok, _Value } = wf_handler:call( cache_handler, get_cached,
+									  [ Key, ContextedFun, TTL ] ).
 
-    %trace_utils:debug_fmt( "[~w] Getting cached value for key '~p': '~p'.",
-    %					   [ self(), Key, Value ] ),
+	%trace_utils:debug_fmt( "[~w] Getting cached value for key '~p': '~p'.",
+	%   [ self(), Key, Value ] ),
 
-    P.
+
 
 % Set the cached value directly without checking if it currently exists. If a
 % value already exists for that key, it is replaced.
