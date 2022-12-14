@@ -1,7 +1,5 @@
-.PHONY: test deps
-
 .PHONY: all deps compile dialyzer-deps-compile update-rebar      \
-	   clean eunit test dash-docs travis vim
+		clean eunit test dash-docs travis vim
 
 
 # Note: if, when executing a rebar-based target, an error like:
