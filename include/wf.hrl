@@ -3,6 +3,7 @@
 -define(wf_inc, ok).
 -include("compat.hrl").
 -include("wf_test.hrl").
+
 -compile(nowarn_export_all).
 
 % This is the parse_transform to allow extending fields:
@@ -14,7 +15,7 @@
 
 %%% TYPES FOR DIALYZER %%%
 
-%% Allow Dialyzer to be run on the .ebin files:
+%% Allow Dialyzer to be run on the BEAM files:
 -compile(debug_info).
 
 -type nitrogen_element() :: tuple().
@@ -47,7 +48,6 @@
 -type html() :: string() | binary() | iolist().
 -type script() :: string() | binary() | iolist().
 -type url() :: text() | atom().
--type path() :: string() | binary().
 -type html_name() :: string() | binary() | atom().
 -type mobile_theme() :: string() | binary() | atom().
 -type comet_name() :: term().
@@ -76,7 +76,7 @@
 -type encoding() :: none | unicode | auto | encoding_function().
 -type context_data() ::
 	iolist()
-	| {file, Filename :: path()}
+	| {file, Filename :: wf:path()}
 	| {stream, Size :: integer(), fun()}
 	| {sendfile, integer(), Size :: integer(), Path :: any()}.
 -type context_type() ::
@@ -708,7 +708,7 @@
 }).
 -record(file, {
 	?ELEMENT_BASE(element_file),
-	file :: path(),
+	file :: wf:path(),
 	include_panel = true :: boolean(),
 	html_encode = false :: boolean()
 }).

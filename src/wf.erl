@@ -7,6 +7,10 @@
 -include("wf.hrl").
 -compile(export_all).
 
+-type path() :: string() | binary().
+
+-export_types([ path/0 ]).
+
 %%% EXPOSE WIRE, UPDATE, FLASH %%%
 wire(Actions) ->
 	ok = wire(undefined, undefined, Actions).
